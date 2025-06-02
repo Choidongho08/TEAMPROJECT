@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -127,11 +131,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Console.h" />
     <ClInclude Include="Core\Core.h" />
+    <ClInclude Include="Core\Mci.h" />
+    <ClInclude Include="DH\AsciiObject.h" />
+    <ClInclude Include="DH\Entity.h" />
+    <ClInclude Include="DH\Enums.h" />
+    <ClInclude Include="DH\GameLogic.h" />
+    <ClInclude Include="DH\KeyController.h" />
+    <ClInclude Include="DH\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Console.cpp" />
     <ClCompile Include="Core\Core.cpp" />
     <ClCompile Include="Core\Main.cpp" />
+    <ClCompile Include="Core\Mci.cpp" />
+    <ClCompile Include="DH\AsciiObject.cpp" />
+    <ClCompile Include="DH\Entity.cpp" />
+    <ClCompile Include="DH\GameLogic.cpp" />
+    <ClCompile Include="DH\KeyController.cpp" />
+    <ClCompile Include="DH\TitleScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
