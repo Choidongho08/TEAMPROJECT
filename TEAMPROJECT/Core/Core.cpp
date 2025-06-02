@@ -1,7 +1,9 @@
 #include "Core.h"
-
+#include<iostream>
 void Core::Run()
 {
+	std::cout << "けいしぉ" << std::endl;
+	// けいしかいしぉ
 	while (true)
 	{
 		Update();
