@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <fstream>
 
-void Init(AsciiObjcets& objs, char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer)
+void Init(AsciiObjcets& objs, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
 	SetConsoleFont(L"NSimSun", {1, 1}, FW_BOLD);
 
@@ -67,7 +67,7 @@ void LoadStage(char gameMap[MAP_HEIGHT][MAP_WIDTH])
 	
 }
 
-void PlayerInit(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer)
+void PlayerInit(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
 	// 맵 데이터에 의해서 플레이어 위치 세팅
 	for (int i = 0; i < MAP_HEIGHT; ++i)
@@ -75,17 +75,17 @@ void PlayerInit(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer)
 		for (int j = 0; j < MAP_WIDTH; ++j)
 		{
 			if (gameMap[i][j] == (char)Tile::START)
-				(*pPlayer).position.tStartPos = { j, i };
+				(*pPlayer).pos.tStartPos = { j, i };
 			else if(gameMap[i][j] == (char)Tile::GOAL)
-				(*pPlayer).position.tEndPos = { j, i };
+				(*pPlayer).pos.tEndPos = { j, i };
 		}
 	}
-	pPlayer->position.tPos = pPlayer->position.tStartPos;
+	pPlayer->pos.tPos = pPlayer->pos.tStartPos;
 	// pPlayer->state.bombcnt = 0;
-	pPlayer->state = { 1,1,false,false,false };
+	pPlayer->state = { false, false, false, false };
 }
 
-void Update(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, Scene& eCurScene, vector<BOMB>& vecBomb)
+void Update(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, Scene& eCurScene)
 {
 	HandleInput(gameMap, pPlayer, vecBomb);
 	if(GetAsyncKeyState(VK_SPACE) & 0x8000)
@@ -94,30 +94,30 @@ void Update(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, Scene& eCurSce
 
 	RemoveDeadBomb(vecBomb);
 
-	if (pPlayer->position.tPos == pPlayer->position.tEndPos)
+	if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
 	{
 		// PlaySound();
 		eCurScene = Scene::QUIT;
 	}
 }
 
-void HandleInput(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB>& vecBomb)
+void HandleInput(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
-	pPlayer->position.tNewPos = pPlayer->position.tPos;
+	pPlayer->pos.tNewPos = pPlayer->pos.tPos;
 	Key eKey = KeyController();
 	switch (eKey)
 	{
 	case Key::UP:
-		--pPlayer->position.tNewPos.y;
+		--pPlayer->pos.tNewPos.y;
 		break;
 	case Key::DOWN:
-		++pPlayer->position.tNewPos.y;
+		++pPlayer->pos.tNewPos.y;
 		break;
 	case Key::LEFT:
-		--pPlayer->position.tNewPos.x;
+		--pPlayer->pos.tNewPos.x;
 		break;
 	case Key::RIGHT:
-		++pPlayer->position.tNewPos.x;
+		++pPlayer->pos.tNewPos.x;
 		break;
 	//case Key::W:
 	//	pPlayer->state.isTrans = !pPlayer->state.isTrans;
@@ -131,19 +131,19 @@ void HandleInput(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BO
 		break;
 	}
 	// clamp함수는 c++17에 나옴
-	pPlayer->position.tNewPos.x = std::clamp(pPlayer->position.tNewPos.x, 0,  MAP_WIDTH - 2);
-	pPlayer->position.tNewPos.y = std::clamp(pPlayer->position.tNewPos.y, 0,  MAP_HEIGHT - 1);
+	pPlayer->pos.tNewPos.x = std::clamp(pPlayer->pos.tNewPos.x, 0,  MAP_WIDTH - 2);
+	pPlayer->pos.tNewPos.y = std::clamp(pPlayer->pos.tNewPos.y, 0,  MAP_HEIGHT - 1);
 
-	if (gameMap[pPlayer->position.tNewPos.y][pPlayer->position.tNewPos.x] != (char)Tile::WALL)
-		pPlayer->position.tPos = pPlayer->position.tNewPos;
+	if (gameMap[pPlayer->pos.tNewPos.y][pPlayer->pos.tNewPos.x] != (char)Tile::WALL)
+		pPlayer->pos.tPos = pPlayer->pos.tNewPos;
 }
 
-void SpawnBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB>& vecBomb)
+void SpawnBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
 	if (pPlayer->state.bombcnt >= 5)
 		return;
 
-	const POS& playerPos = pPlayer->position.tPos;
+	const POS& playerPos = pPlayer->pos.tPos;
 	if (gameMap[playerPos.y][playerPos.x] == (char)Tile::ROAD)
 	{
 		gameMap[playerPos.y][playerPos.x] = (char)Tile::BOMB;
@@ -152,7 +152,7 @@ void SpawnBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB
 	}
 }
 
-void UpdateBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB>& vecBomb)
+void UpdateBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
 	// 라이프 줄이고 깜빡거리다가 터지기
 	const int bombFlashInterval = 5;
@@ -176,7 +176,7 @@ void UpdateBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOM
 	}
 }
 
-void ExplosionBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, POS bombPos, vector<POS>& vecEffect)
+void ExplosionBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, POS bombPos, vector<POS>& vecEffect)
 {
 	PlaySoundID(SOUNDID::EXPLOSION, false);
 
@@ -211,20 +211,20 @@ void ExplosionBomb(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, POS bom
 
 	// 맞으면 태초로'
 	
-	const POS& playerPos = pPlayer->position.tPos;
+	const POS& playerPos = pPlayer->pos.tPos;
 	int dx = std::abs(playerPos.x - bombPos.x);
 	int dy = std::abs(playerPos.y - bombPos.y);
 
 	if ((dx == 0 || dx <= POWER) && (dy == 0 || dy <= POWER))
 	{
-		pPlayer->position.tPos = pPlayer->position.tStartPos;
+		pPlayer->pos.tPos = pPlayer->pos.tStartPos;
 	}
 
 	// if (std::find(vecEffect.begin(), vecEffect.end(), pPlayer->position.tPos) == vecEffect.end())
 	//		pPlayer->position.tPos = pPlayer->position.tStartPos;
 }
 
-void RemoveDeadBomb(vector<BOMB>& vecBomb)
+void RemoveDeadBomb()
 {
 	vector<BOMB>::iterator iter = vecBomb.begin();
 	for (; iter != vecBomb.end();)
@@ -237,14 +237,14 @@ void RemoveDeadBomb(vector<BOMB>& vecBomb)
 	}
 }
 
-void Render(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB>& vecBomb)
+void Render(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, Enemy* pEnemy)
 {
 	for (int i = 0; i < MAP_HEIGHT; ++i)
 	{
 		for (int j = 0; j < MAP_WIDTH; ++j)
 		{
 			// 플레이어 그리기
-			if (pPlayer->position.tPos.x == j && pPlayer->position.tPos.y == i)
+			if (pPlayer->pos.tPos.x == j && pPlayer->pos.tPos.y == i)
 				cout << "⊙";
 			// 타일 그리기
 			else
@@ -275,7 +275,7 @@ void Render(char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB>& 
 	RenderUI(pPlayer);
 }
 
-void RenderUI(PPLAYER pPlayer)
+void RenderUI(Player* pPlayer)
 {
 	COORD resolution = GetConsoleResolution();
 	int x = resolution.X / 2;
@@ -298,7 +298,7 @@ void RenderUI(PPLAYER pPlayer)
 	cout << "=================" << endl;
 }
 
-void GameScene(Scene& eCurScene, char gameMap[MAP_HEIGHT][MAP_WIDTH], PPLAYER pPlayer, vector<BOMB>& vecBomb)
+void GameScene(Scene& eCurScene, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
 	Update(gameMap, pPlayer, eCurScene, vecBomb);
 	//system("cls");
@@ -325,7 +325,7 @@ void RenderInfo()
 	cout << "조작법" << endl;
 }
 
-void RenderEffect(vector<BOMB>& vecBomb)
+void RenderEffect()
 {
 	SetColor(COLOR::RED);
 	for (auto& bomb : vecBomb)

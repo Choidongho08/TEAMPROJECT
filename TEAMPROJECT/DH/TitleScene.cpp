@@ -41,12 +41,12 @@ Menu GetCurMenu()
 	COORD resolution = GetConsoleResolution();
 	int x = resolution.X / 3;
 	static int y = resolution.Y / 3 * 2;
-	static int originy = y;
+	static int originY = y;
 	Key eKey = KeyController();
 	switch (eKey)
 	{
 	case Key::UP:
-		if (y > originy)
+		if (y > originY)
 		{
 			Gotoxy(x - 2, y);
 			cout << " ";
@@ -56,7 +56,7 @@ Menu GetCurMenu()
 		}
 		break;
 	case Key::DOWN:
-		if (y < originy + 2)
+		if (y < originY + 2)
 		{
 			Gotoxy(x - 2, y);
 			cout << " ";
@@ -66,9 +66,9 @@ Menu GetCurMenu()
 		}
 		break;
 	case Key::SPACE:
-		if (originy == y) return Menu::START;
-		else if (originy + 1 == y) return Menu::INFO;
-		else if (originy + 2 == y) return Menu::QUIT;
+		if (originY == y) return Menu::START;
+		else if (originY + 1 == y) return Menu::INFO;
+		else if (originY + 2 == y) return Menu::QUIT;
 		break;
 	}
 	return Menu::FAIL;
