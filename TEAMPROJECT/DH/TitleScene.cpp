@@ -140,15 +140,26 @@ void CrossAnimation(COORD resolution, int delayTime)
 void TitleSceneRender()
 {
 	COORD resolution = GetConsoleResolution();
-	int y = resolution.Y / 3;
+	int y = resolution.Y / 5;
 	Gotoxy(0, y);
 	int coutmode = _setmode(_fileno(stdout), _O_U16TEXT);
-	wcout << L"		██████╗  ██████╗ ███╗   ███╗██████╗ ███╗   ███╗ █████╗ ███╗   ██╗ " << endl;
-	wcout << L"		██╔══██╗██╔═══██╗████╗ ████║██╔══██╗████╗ ████║██╔══██╗████╗  ██║ " << endl;
-	wcout << L"		██████╔╝██║   ██║██╔████╔██║██████╔╝██╔████╔██║███████║██╔██╗ ██║ " << endl;
-	wcout << L"		██╔══██╗██║   ██║██║╚██╔╝██║██╔══██╗██║╚██╔╝██║██╔══██║██║╚██╗██║ " << endl;
-	wcout << L"		██████╔╝╚██████╔╝██║ ╚═╝ ██║██████╔╝██║ ╚═╝ ██║██║  ██║██║ ╚████║ " << endl;
-	wcout << L"		╚═════╝  ╚═════╝ ╚═╝     ╚═╝╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ " << endl;
+                                                                                          
+	wcout << L"        ,--,                                                                             " << endl;
+	wcout << L"      ,--.'|                             ,-.            ____                             " << endl; 
+	wcout << L"   ,--,  | :                         ,--/ /|          ,'  , `.                           " << endl; 
+	wcout << L",---.'|  : '                       ,--. :/ |       ,-+-,.' _ |                     ,---, " << endl; 
+	wcout << L"|   | : _' |                       :  : ' /     ,-+-. ;   , ||                 ,-+-. /  |" << endl; 
+	wcout << L":   : |.'  |    ,---.      ,---.   |  '  /     ,--.'|'   |  ||    ,--.--.     ,--.'|'   |" << endl; 
+	wcout << L"|   ' '  ; :   /     \    /     \  '  |  :    |   |  ,', |  |,   /       \   |   |  ,,' |" << endl; 
+	wcout << L"'   |  .'. |  /    /  |  /    / '  |  |   \   |   | /  | |--'   .--.  .-. |  |   | /  | |" << endl; 
+	wcout << L"|   | :  | ' .    ' / | .    ' /   '  : |. \  |   : |  | ,       \__\/: . .  |   | |  | |" << endl; 
+	wcout << L"'   : |  : ; '   ;   /| '   ; :__  |  | ' \ \ |   : |  |/        ,, .--.; |  |   | |  |/ " << endl; 
+	wcout << L"|   | '  ,/  '   |  / | '   | '.'| '  : |--'  |   | |`-'        /  /  ,.  |  |   | |--'  " << endl; 
+	wcout << L";   : ;--'   |   :    | |   :    : ;  |,'     |   ;/           ;  :   .'   \ |   |/      " << endl; 
+	wcout << L"|   ,/        \   \  /   \   \  /  '--'       '---'            |  ,     .-./ '---'       " << endl; 
+	wcout << L"'---'          `----'     `----'                                `--`---'                 " << endl; 
+                                                                                          
+
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
 	int x = resolution.X / 3;
 	y = resolution.Y / 3 * 2;
