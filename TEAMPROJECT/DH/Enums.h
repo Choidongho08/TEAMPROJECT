@@ -17,5 +17,10 @@ enum class Scene
 
 enum class Tile
 {
-	WALL = '0', ROAD, START, GOAL, BOMB, FLASH_BOMB, EXTRA_BOMB, SLIME, PUSH, END
+	WALL = '0', ROAD, PLAYER_START, ITEM, ENEMY, ENEMY_START, END
+};
+
+enum class Skill
+{
+	KILL, SIGHT, DASH, END
 };
