@@ -9,7 +9,7 @@
 
 void Init(AsciiObjcets& objs, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
-	SetConsoleFont(L"NSimSun", {1, 1}, FW_BOLD);
+	SetConsoleFont(L"NSimSun", {20, 20}, FW_BOLD);
 
 	// 사운드 초기화
 	if (!InitAllSounds()) return;
