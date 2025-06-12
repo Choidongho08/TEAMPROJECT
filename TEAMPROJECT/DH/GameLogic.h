@@ -16,6 +16,7 @@ void Init(AsciiObjcets& objs, char gameMap
     [MAP_HEIGHT][MAP_WIDTH], Player* pPlayer);
 void PlayerInit(char gameMap[MAP_HEIGHT][MAP_WIDTH],
     Player* pPlayer);
+void EnemyInit(char gameMap[MAP_HEIGHT][MAP_WIDTH], vector<Enemy>* pEnemies);
 void LoadStage(char gameMap[MAP_HEIGHT][MAP_WIDTH]);
 
 void Update(char gameMap[MAP_HEIGHT][MAP_WIDTH],
@@ -24,10 +25,10 @@ void HandleInput(char gameMap[MAP_HEIGHT][MAP_WIDTH],
     Player* pPlayer);
 
 void Render(char gameMap[MAP_HEIGHT][MAP_WIDTH],
-    Player* pPlayer, Enemy* pEnemy);
+    Player* pPlayer, vector<Enemy>* pEnemies[]);
 void RenderUI(Player* pPlayer);
 void GameScene(Scene& eCurScene, char gameMap[MAP_HEIGHT][MAP_WIDTH],
-    Player* pPlayer);
+    Player* pPlayer, vector<Enemy>* pEnemies[]);
 void InfoScene(Scene& eCurScene);
 void RenderInfo();
 void RenderEffect();
