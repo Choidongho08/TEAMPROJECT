@@ -9,8 +9,8 @@ int main()
 	Scene curScene = Scene::TITLE;
 	AsciiObjcets objs;
 	char gameMap[MAP_HEIGHT][MAP_WIDTH] = {};
-	PLAYER player = {};
-	vector<BOMB> vecBomb;
+	Player player = {};
+	vector<Enemy> enemies = {};
 	Init(objs, gameMap, &player);
 	while (curScene != Scene::QUIT)
 	{
@@ -20,7 +20,7 @@ int main()
 			TitleScene(curScene, objs);
 			break;
 		case Scene::GAME:
-			GameScene(curScene, gameMap, &player, vecBomb);
+			GameScene(curScene, gameMap, &player, &enemies);
 			break;
 		case Scene::INFO:
 			InfoScene(curScene);

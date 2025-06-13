@@ -135,10 +135,13 @@
     <ClInclude Include="Core\Core.h" />
     <ClInclude Include="Core\Mci.h" />
     <ClInclude Include="DH\AsciiObject.h" />
+    <ClInclude Include="DH\Enemy.h" />
     <ClInclude Include="DH\Entity.h" />
     <ClInclude Include="DH\Enums.h" />
     <ClInclude Include="DH\GameLogic.h" />
     <ClInclude Include="DH\KeyController.h" />
+    <ClInclude Include="DH\Map.h" />
+    <ClInclude Include="DH\Player.h" />
     <ClInclude Include="DH\TitleScene.h" />
   </ItemGroup>
   <ItemGroup>

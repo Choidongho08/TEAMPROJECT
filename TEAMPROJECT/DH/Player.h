@@ -2,6 +2,15 @@
 #include "Entity.h"
 #include "Enemy.h"
 
+class PlayerState : public EntityState
+{
+public:
+    bool isHaveSkill;
+    bool isKillEnemy;
+    bool isSightLight;
+    bool isDash;
+};
+
 class Player : public Entity
 {
 public:
@@ -46,13 +55,4 @@ public:
             pos.tNewPos = dashEndPos;
         }
     }
-};
-
-class PlayerState : public EntityState
-{
-public: 
-    bool isHaveSkill;
-    bool isKillEnemy;
-    bool isSightLight;
-    bool isDash;
 };

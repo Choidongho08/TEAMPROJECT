@@ -17,7 +17,7 @@ void Init(AsciiObjcets& objs, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlay
 	PlaySoundID(SOUNDID::BGM, true);
 
 	// 콘솔창 관련 초기화
-	SetConsoleSettings(800, 600, false, L"2-2 BOMBMAN Game");
+	SetConsoleSettings(800, 600, false, L"HackMan");
 	SetCursorVisual(true, 50);
 	ObjectInit(objs);
 	LoadStage(gameMap);
@@ -103,9 +103,8 @@ void EnemyInit(char gameMap[MAP_HEIGHT][MAP_WIDTH], vector<Enemy>* pEnemies)
 void Update(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, Scene& eCurScene)
 {
 	HandleInput(gameMap, pPlayer);
-	if(GetAsyncKeyState(VK_SPACE) & 0x8000)
-		SpawnBomb(gameMap, pPlayer);
-	UpdateBomb(gameMap, pPlayer);
+	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		return;
 
 	// if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
 	// {
@@ -304,7 +303,7 @@ void RenderUI(Player* pPlayer)
 	cout << "=================" << endl;
 }
 
-void GameScene(Scene& eCurScene, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, vector<Enemy>* pEnemies[])
+void GameScene(Scene& eCurScene, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, vector<Enemy>* pEnemies)
 {
 	Update(gameMap, pPlayer, eCurScene);
 	//system("cls");

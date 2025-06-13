@@ -45,9 +45,6 @@
     <ClInclude Include="Core\Mci.h">
       <Filter>소스 파일\Core\HEADER</Filter>
     </ClInclude>
-    <ClInclude Include="DH\Entity.h">
-      <Filter>소스 파일\DH</Filter>
-    </ClInclude>
     <ClInclude Include="DH\GameLogic.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
@@ -61,6 +58,18 @@
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
     <ClInclude Include="DH\TitleScene.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Enemy.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Player.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Entity.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Map.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
   </ItemGroup>

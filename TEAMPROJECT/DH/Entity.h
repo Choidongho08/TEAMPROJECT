@@ -1,7 +1,5 @@
 #pragma once
 #include "Enums.h"
-#include "Player.h"
-#include "Enemy.h"
 #include <vector>
 
 typedef struct _pos
@@ -13,13 +11,13 @@ typedef struct _pos
     {
         return (x == other.x && y == other.y);
     }
-    POS operator - (const _pos& other) const
+    _pos operator - (const _pos& other) const
     {
-        return POS(x - other.x, y - other.y);
+        return _pos(x - other.x, y - other.y);
     }
-    POS operator * (const int& num) const
+    _pos operator * (const int& num) const
     {
-        return POS(x * num, y * num);
+        return _pos(x * num, y * num);
     }
 }POS, * PPOS;
 
