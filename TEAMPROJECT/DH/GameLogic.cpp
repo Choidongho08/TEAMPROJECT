@@ -51,7 +51,7 @@ void LoadStage(char gameMap[MAP_HEIGHT][MAP_WIDTH])
 	// strcpy_s(gameMap[19],	"00300000000000000000");
 
 	// 2. 외부는 txt파일로
-	std::ifstream mapFile("Stage.txt");
+	std::ifstream mapFile("../JH/Stage.txt");
 	if (mapFile.is_open())
 	{
 		for (int i = 0; i < MAP_HEIGHT; ++i)
