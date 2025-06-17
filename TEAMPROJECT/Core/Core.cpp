@@ -21,16 +21,15 @@ CORE Core::Initialize()
 {
 	vector<AsciiObject> AsciiObjects;
 
-	vector<string> plane =
-	{
-		"                    _                                      ",
-		"                  -=\\`\\                                    ",
-		"              |\\ ____\\_\\__                                 ",
-		"            -=\\c`\"\"\"\"\"\"\" \"`)                               ",
-		"               `~~~~~/ /~~`                                ",
-		"                 -==/ /                                    ",
-		"                   '-'                                     "
-	};
+	vector<string> plane;
+	plane.push_back("                    _                                      ");
+	plane.push_back("                  -=\\`\\                                    ");
+	plane.push_back("              |\\ ____\\_\\__                                 ");
+	plane.push_back("            -=\\c`\"\"\"\"\"\"\" \"`)                               ");
+	plane.push_back("               `~~~~~/ /~~`                                ");
+	plane.push_back("                 -==/ /                                    ");
+	plane.push_back("                   '-'                                     ");
+		
 	AsciiObject planeObj{ plane };
 
 	AsciiObjects.push_back(planeObj);
