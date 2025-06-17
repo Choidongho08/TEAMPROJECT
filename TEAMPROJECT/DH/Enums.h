@@ -22,5 +22,5 @@ enum class Tile
 
 enum class Skill
 {
-	KILL, SIGHT, DASH, END
+	None, KILL, SIGHT, DASH, END
 };

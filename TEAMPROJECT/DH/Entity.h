@@ -32,13 +32,16 @@ typedef struct _TagEntityPos
 class EntityState
 {
 public:
-    bool isAlive;
+    bool _isAlive;
 };
 
 class Entity
 {
 public:
-    ENTITYPOS pos;
-    EntityState state;
+    ENTITYPOS _pos;
+    EntityState _state;
+
+    Entity(ENTITYPOS entityPos, EntityState entityState);
+    ~Entity();
 };
 
