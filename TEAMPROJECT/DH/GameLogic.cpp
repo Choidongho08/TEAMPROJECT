@@ -9,17 +9,17 @@
 
 void Init(AsciiObjcets& objs, char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 {
-	SetConsoleFont(L"NSimSun", {20, 20}, FW_BOLD);
+	SetConsoleFont(L"NSimSun", {15, 15}, FW_BOLD);
 
 	// 사운드 초기화
-	if (!InitAllSounds()) return;
+	//if (!InitAllSounds()) return;
 
-	PlaySoundID(SOUNDID::BGM, true);
+	//PlaySoundID(SOUNDID::BGM, true);
 
 	// 콘솔창 관련 초기화
-	SetConsoleSettings(800, 600, false, L"HackMan");
+	SetConsoleSettings(1000, 600, false, L"HackMan");
 	SetCursorVisual(true, 50);
-	ObjectInit(objs);
+	//ObjectInit(objs);
 	LoadStage(gameMap);
 	PlayerInit(gameMap, pPlayer);
 }
@@ -51,7 +51,7 @@ void LoadStage(char gameMap[MAP_HEIGHT][MAP_WIDTH])
 	// strcpy_s(gameMap[19],	"00300000000000000000");
 
 	// 2. 외부는 txt파일로
-	std::ifstream mapFile("../JH/Stage.txt");
+	std::ifstream mapFile("JH/Stage.txt");
 	if (mapFile.is_open())
 	{
 		for (int i = 0; i < MAP_HEIGHT; ++i)
@@ -74,8 +74,10 @@ void PlayerInit(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer)
 	{
 		for (int j = 0; j < MAP_WIDTH; ++j)
 		{
-			if (gameMap[i][j] == (char)Tile::PLAYER_START)
+			if (gameMap[i][j] == (char)Tile::PLAYER_START) {
 				(*pPlayer).pos.tStartPos = { j, i };
+				gameMap[i][j] = (char)Tile::ROAD;
+			}
 		}
 	}
 	pPlayer->pos.tPos = pPlayer->pos.tStartPos;
@@ -258,8 +260,8 @@ void Render(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, vector<Enemy>*
 					cout << "■";
 				else if (gameMap[i][j] == (char)Tile::ROAD)
 					cout << "  ";
-				// else if (gameMap[i][j] == (char)Tile::START)
-				// 	cout << "◈";
+				else if (gameMap[i][j] == (char)Tile::ENEMY_START)
+					cout << "◈";
 				// else if (gameMap[i][j] == (char)Tile::GOAL)
 				// 	cout << "℡";
 				// else if (gameMap[i][j] == (char)Tile::BOMB)
@@ -283,7 +285,7 @@ void Render(char gameMap[MAP_HEIGHT][MAP_WIDTH], Player* pPlayer, vector<Enemy>*
 void RenderUI(Player* pPlayer)
 {
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 2;
+	int x = resolution.X / 1.5;
 	int y = resolution.Y / 10;
 	Gotoxy(x, y++);
 	cout << "=================" << endl;
@@ -327,7 +329,22 @@ void InfoScene(Scene& eCurScene)
 
 void RenderInfo()
 {
-	cout << "조작법" << endl;
+	Gotoxy(0, 0);
+	COORD resolution = GetConsoleResolution();
+	int x = resolution.X;
+	int y = resolution.Y;
+	Gotoxy(x, y++);
+	cout << "=================" << endl;
+	Gotoxy(x, y++);
+	cout << "[ 조작     방법 ]" << endl;
+	Gotoxy(x, y++);
+	cout << "-----------------" << endl;
+	Gotoxy(x, y++);
+	cout << "움직임 : W,A,S,D " << endl;
+	Gotoxy(x, y++);
+	cout << "스킬 : 키가 뭐야 동호야" << endl;
+	Gotoxy(x, y++);
+	cout << "=================" << endl;
 }
 
 void RenderEffect()
