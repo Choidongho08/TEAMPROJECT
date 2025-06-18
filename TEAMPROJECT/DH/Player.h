@@ -1,4 +1,5 @@
 #pragma once
+#include "Map.h"
 #include "Entity.h"
 #include "Enemy.h"
 
@@ -14,45 +15,14 @@ public:
 class Player : public Entity
 {
 public:
-    PlayerState state;
-    POS forwardPos;
-    Skill skill;
+    PlayerState _state;
+    POS _forward;
+    Skill _skill;
 
-    void UseSkill(char gameMap[MAP_HEIGHT][MAP_WIDTH], Skill skillEnum, Enemy* pEnemy)
-    {
-        if (!state.isHaveSkill) return;
+    Player();
+    Player(PlayerState playerState, ENTITYPOS playerPos);
 
-        forwardPos = pos.tNewPos - pos.tPos;
-
-        if (skillEnum == Skill::KILL)
-        {
-            if (forwardPos == (*pEnemy).pos.tPos)
-            {
-                (*pEnemy).state.isAlive = false;
-            }
-            state.isHaveSkill = false;
-        }
-        else if (skillEnum == Skill::SIGHT)
-        {
-            if (forwardPos == (*pEnemy).pos.tPos)
-            {
-                (*pEnemy).state.isAlive = false;
-            }
-            state.isHaveSkill = false;
-        }
-        else if (skillEnum == Skill::DASH)
-        {
-            POS dashEndPos{ 0,0 };
-            int num = 1;
-            while (true)
-            {
-                dashEndPos = forwardPos * num;
-                if (gameMap[dashEndPos.x][dashEndPos.y] == (char)Tile::WALL)
-                    break;
-
-                num++;
-            }
-            pos.tNewPos = dashEndPos;
-        }
-    }
+    void Move(POS nextPos);
+    void SetSkill(Skill skill);
+    void UseSkill(char gameMap[MAP_HEIGHT][MAP_WIDTH], Skill skillEnum, Enemy* pEnemy);
 };
