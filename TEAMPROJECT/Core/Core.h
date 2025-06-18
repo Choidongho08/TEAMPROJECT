@@ -4,25 +4,27 @@
 #include "AsciiObject.h"
 #include "Mci.h"
 
-struct CORE
-{
-	TitleScene titleScene;
-	GameLogic gameLogic;
-	Scene curScene;
-	vector<AsciiObject> AsciiObjects;
-};
-
 class Core
 {
 public:
+	static Core* Instance;
+
 private:
+	TitleScene _titleScene;
+	GameLogic _gameLogic;
+	Scene _curScene;
+	vector<AsciiObject> _asciiObjects;
+	vector<vector<char>> _gameMap;
 
 public:
+	Core();
+
 	void Run();
-	CORE Initialize();
+	void ChangeScene(Scene newScene);
+	Scene GetCurrentScene();
 
 private:
-	void Update(CORE core);
+	void Update();
 	void Render();
 };
 

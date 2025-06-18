@@ -1,5 +1,4 @@
 #pragma once
-#include "../DH/Map.h"
 #include "../DH/Enums.h"
 #include "AsciiObject.h"
 #include "../DH/Entity.h"
@@ -18,25 +17,21 @@ class GameLogic
 public:
 
 private:
-    vector<AsciiObject>* objs;
-    char** gameMap;
-    Scene* pCurScene;
+    vector<AsciiObject>* _pObjs;
+    std::vector<std::vector<char>>* _pGameMap;
 
-    Player player;
-    vector<Enemy> enemies;
+    Player _player;
+    vector<Enemy> _enemies;
 
+    int MAP_HEIGHT;
+    int MAP_WIDTH;
 public:
-    GameLogic(
-        vector<AsciiObject>* objs,
-        char** gameMap,
-        Scene *curScene
-        )
-        : objs(objs), gameMap(gameMap), pCurScene(curScene)
-    {
-        
-    }
+    GameLogic();
 
-    void Initialized();
+    void Initialized(
+        vector<AsciiObject>* objs,
+        std::vector<std::vector<char>>* gameMap
+    );
     void Update();
 private:
     void PlayerInit();

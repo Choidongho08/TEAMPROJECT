@@ -141,7 +141,6 @@
     <ClInclude Include="DH\Enemy.h" />
     <ClInclude Include="DH\Entity.h" />
     <ClInclude Include="DH\Enums.h" />
-    <ClInclude Include="DH\Map.h" />
     <ClInclude Include="DH\Player.h" />
   </ItemGroup>
   <ItemGroup>
@@ -153,6 +152,7 @@
     <ClCompile Include="Core\Main.cpp" />
     <ClCompile Include="Core\Mci.cpp" />
     <ClCompile Include="Core\TitleScene.cpp" />
+    <ClCompile Include="DH\Enemy.cpp" />
     <ClCompile Include="DH\Entity.cpp" />
     <ClCompile Include="DH\Player.cpp" />
   </ItemGroup>

@@ -2,23 +2,12 @@
 
 using std::vector;
 
-void Core::Run()
-{
-	CORE core = Initialize();
-	
-	ReleaseAllSounds();
+Core* Core::Instance = nullptr;
 
-	while (true)
-	{
-		Update(core);
-		Render();
-		// FrameSync
-		FrameSync(20);
-	}
-}
-
-CORE Core::Initialize()
+Core::Core()
 {
+	Instance = this;
+
 	vector<AsciiObject> AsciiObjects;
 
 	vector<string> plane;
@@ -29,40 +18,68 @@ CORE Core::Initialize()
 	plane.push_back("               `~~~~~/ /~~`                                ");
 	plane.push_back("                 -==/ /                                    ");
 	plane.push_back("                   '-'                                     ");
-		
+
 	AsciiObject planeObj{ plane };
 
 	AsciiObjects.push_back(planeObj);
-
-	char** gameMap = new char* [MAP_HEIGHT];
+	
 	// for (int i = 0; i < MAP_HEIGHT; ++i)
 	// {
 	//		gameMap[i] = new char[MAP_WIDTH];
 	// }
 
-	Scene curScene;
-	curScene = Scene::TITLE;
+	ChangeScene(Scene::TITLE);
 
-	TitleScene titleScene = { &curScene, &AsciiObjects };
-	GameLogic gameLogic = { &AsciiObjects, gameMap, &curScene };
-
-	gameLogic.Initialized();
-	titleScene.Initialized();
-
-	return CORE{ titleScene, gameLogic, curScene, AsciiObjects };
+	// return CORE{ titleScene, gameLogic, curScene, AsciiObjects };
 }
 
-void Core::Update(CORE core)
+void Core::Run()
 {
-	while (core.curScene != Scene::QUIT)
+	ReleaseAllSounds();
+
+	while (true)
 	{
-		switch (core.curScene)
+		Update();
+		Render();
+		// FrameSync
+		FrameSync(20);
+	}
+}
+
+void Core::ChangeScene(Scene newScene)
+{
+	_curScene = newScene;
+
+	switch (newScene)
+	{
+	case Scene::TITLE:
+		_titleScene.Initialized(&_asciiObjects);
+		break;
+	case Scene::GAME:
+		_gameLogic.Initialized(&_asciiObjects, &_gameMap);
+		break;
+	case Scene::INFO:
+		// InfoScene(curScene);
+		break;
+	}
+}
+
+Scene Core::GetCurrentScene()
+{
+	return _curScene;
+}
+
+void Core::Update()
+{
+	while (_curScene != Scene::QUIT)
+	{
+		switch (_curScene)
 		{
 		case Scene::TITLE:
-			core.titleScene.Update();
+			_titleScene.Update();
 			break;
 		case Scene::GAME:
-			core.gameLogic.Update(); // curScene, gameMap, &player, &enemies);
+			_gameLogic.Update(); // curScene, gameMap, &player, &enemies);
 			break;
 		case Scene::INFO:
 			// InfoScene(curScene);

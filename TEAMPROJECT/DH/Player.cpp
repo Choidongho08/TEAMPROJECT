@@ -25,23 +25,23 @@ void Player::SetSkill(Skill skill)
     _skill = skill;
 }
 
-void Player::UseSkill(char gameMap[MAP_HEIGHT][MAP_WIDTH], Skill skillEnum, Enemy* pEnemy)
+void Player::UseSkill(std::vector<std::vector<char>>* pGameMap, Skill skillEnum, Enemy* enemy)
 {
     if (!_state.isHaveSkill) return;
 
     if (skillEnum == Skill::KILL)
     {
-        if (_forward == (*pEnemy)._pos.tPos)
+        if (_forward == (*enemy)._pos.tPos)
         {
-            (*pEnemy)._state._isAlive = false;
+            (*enemy)._state._isAlive = false;
         }
         _state.isHaveSkill = false;
     }
     else if (skillEnum == Skill::SIGHT)
     {
-        if (_forward == (*pEnemy)._pos.tPos)
+        if (_forward == (*enemy)._pos.tPos)
         {
-            (*pEnemy)._state._isAlive = false;
+            (*enemy)._state._isAlive = false;
         }
         _state.isHaveSkill = false;
     }
@@ -52,7 +52,7 @@ void Player::UseSkill(char gameMap[MAP_HEIGHT][MAP_WIDTH], Skill skillEnum, Enem
         while (true)
         {
             dashEndPos = _forward * num;
-            if (gameMap[dashEndPos.x][dashEndPos.y] == (char)Tile::WALL)
+            if ((*pGameMap)[dashEndPos.x][dashEndPos.y] == (char)Tile::WALL)
                 break;
 
             num++;

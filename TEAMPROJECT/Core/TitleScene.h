@@ -6,19 +6,15 @@
 class TitleScene
 {
 public:
-	Scene* _pCurScene;
-	vector<AsciiObject>* _objs;
+	vector<AsciiObject>* _pObjs;
 	COLOR textColor;
 	COLOR bgColor;
 
-	TitleScene(Scene* pCurScene, vector<AsciiObject>* objs)
-		: _pCurScene(pCurScene), _objs(objs)
-	{
+	TitleScene();
 
-	}
 	void Render();
 	void Update();
-	void Initialized();
+	void Initialized(vector<AsciiObject>* objs);
 
 	Menu GetCurMenu();
 	void EnterAnimation();

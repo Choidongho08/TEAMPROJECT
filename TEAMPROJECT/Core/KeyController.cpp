@@ -10,7 +10,7 @@ Key KeyController()
 	}
 	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
-		//Sleep(100);
+		//Sleep(100);  
 		return Key::DOWN;
 	}
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
@@ -38,7 +38,7 @@ Key KeyController()
 		//Sleep(100);
 		return Key::SPACE;
 	}
-	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+ 	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
 	{
 		Sleep(60);
 		return Key::ESC;

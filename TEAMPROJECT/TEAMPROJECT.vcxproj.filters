@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -45,19 +41,7 @@
     <ClInclude Include="Core\Mci.h">
       <Filter>소스 파일\Core\HEADER</Filter>
     </ClInclude>
-    <ClInclude Include="DH\GameLogic.h">
-      <Filter>소스 파일\DH</Filter>
-    </ClInclude>
-    <ClInclude Include="DH\KeyController.h">
-      <Filter>소스 파일\DH</Filter>
-    </ClInclude>
     <ClInclude Include="DH\Enums.h">
-      <Filter>소스 파일\DH</Filter>
-    </ClInclude>
-    <ClInclude Include="DH\AsciiObject.h">
-      <Filter>소스 파일\DH</Filter>
-    </ClInclude>
-    <ClInclude Include="DH\TitleScene.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
     <ClInclude Include="DH\Enemy.h">
@@ -69,8 +53,17 @@
     <ClInclude Include="DH\Entity.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
-    <ClInclude Include="DH\Map.h">
-      <Filter>소스 파일\DH</Filter>
+    <ClInclude Include="Core\AsciiObject.h">
+      <Filter>소스 파일\Core\HEADER</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\TitleScene.h">
+      <Filter>소스 파일\Core\HEADER</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameLogic.h">
+      <Filter>소스 파일\Core\HEADER</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\KeyController.h">
+      <Filter>소스 파일\Core\HEADER</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -80,26 +73,32 @@
     <ClCompile Include="Core\Core.cpp">
       <Filter>소스 파일\Core\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Main.cpp">
-      <Filter>소스 파일\Core\CPP</Filter>
-    </ClCompile>
     <ClCompile Include="Core\Mci.cpp">
       <Filter>소스 파일\Core\CPP</Filter>
     </ClCompile>
     <ClCompile Include="DH\Entity.cpp">
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
-    <ClCompile Include="DH\GameLogic.cpp">
+    <ClCompile Include="DH\Player.cpp">
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
-    <ClCompile Include="DH\KeyController.cpp">
-      <Filter>소스 파일\DH</Filter>
+    <ClCompile Include="Core\GameLogic.cpp">
+      <Filter>소스 파일\Core\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="DH\AsciiObject.cpp">
-      <Filter>소스 파일\DH</Filter>
+    <ClCompile Include="Core\KeyController.cpp">
+      <Filter>소스 파일\Core\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="DH\TitleScene.cpp">
-      <Filter>소스 파일\DH</Filter>
+    <ClCompile Include="Core\AsciiObject.cpp">
+      <Filter>소스 파일\Core\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\TitleScene.cpp">
+      <Filter>소스 파일\Core\CPP</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\Enemy.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

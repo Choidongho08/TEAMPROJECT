@@ -1,5 +1,4 @@
 #pragma once
-#include "Map.h"
 #include "Entity.h"
 #include "Enemy.h"
 
@@ -24,5 +23,5 @@ public:
 
     void Move(POS nextPos);
     void SetSkill(Skill skill);
-    void UseSkill(char gameMap[MAP_HEIGHT][MAP_WIDTH], Skill skillEnum, Enemy* pEnemy);
+    void UseSkill(std::vector<std::vector<char>>* pGameMap, Skill skillEnum, Enemy* pEnemy);
 };

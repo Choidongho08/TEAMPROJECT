@@ -4,6 +4,21 @@
 #include "../Core/Console.h"
 #include "AsciiObject.h"
 #include "KeyController.h"
+#include "Core.h"
+
+TitleScene::TitleScene()
+{
+	_pObjs = nullptr;
+	textColor = COLOR::WHITE;
+	bgColor = COLOR::BLACK;
+}
+
+void TitleScene::Initialized(vector<AsciiObject>* objs)
+{
+	_pObjs = objs;
+	textColor = COLOR::WHITE;
+	bgColor = COLOR::BLACK;
+}
 
 void TitleScene::Render()
 {
@@ -42,12 +57,14 @@ void TitleScene::Render()
 
 void TitleScene::Update()
 {
-	for (auto obj : *_objs)
-	{
-		obj.ObjectUpdate();
-		obj.ObjectRender(textColor, bgColor);
-	}
-	if (*_pCurScene != Scene::TITLE)
+	this->bgColor = COLOR::BLUE;
+	// for (auto obj : *this->_pObjs)
+	// {
+	// 	obj.ObjectUpdate();
+	// 	obj.ObjectRender(textColor, bgColor);
+	// }
+	
+	if (Core::Instance->GetCurrentScene() != Scene::TITLE)
 		return;
 
 	Render();
@@ -58,24 +75,19 @@ void TitleScene::Update()
 	{
 	case Menu::START:
 		EnterAnimation();
-		*_pCurScene = Scene::GAME;
+		Core::Instance->ChangeScene(Scene::GAME);
 		break;
 	case Menu::INFO:
-		*_pCurScene = Scene::INFO;
+		Core::Instance->ChangeScene(Scene::INFO);
 		break;
 	case Menu::QUIT:
-		*_pCurScene = Scene::QUIT;
+		Core::Instance->ChangeScene(Scene::QUIT);
 		break;
 	}
-	for (auto obj : *(_objs))
-	{
-		obj.ObjectUpdate();
-	}
-}
-
-void TitleScene::Initialized()
-{
-
+	// for (auto obj : *(_pObjs))
+	// {
+	// 	obj.ObjectUpdate();
+	// }
 }
 
 Menu TitleScene::GetCurMenu()
