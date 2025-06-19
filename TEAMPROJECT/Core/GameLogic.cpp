@@ -86,25 +86,22 @@ void GameLogic::EntityInit()
 	_player = Player();
 	_player.Initialize(_gameMap.GetMapRow(), _gameMap.GetMapRow(), &_gameMap);
 
+
 	int enemyCnt = 0;
-	for (auto enemy : _enemies)
+	for (int i = 0; i < _gameMap.GetMapRow(); ++i)
 	{
-		enemy = Enemy();
-		for (int i = 0; i < _gameMap.GetMapRow(); ++i)
+		for (int j = 0; j < _gameMap.GetMapCol(); ++j)
 		{
-			for (int j = 0; j < _gameMap.GetMapCol(); ++j)
+			if ((_gameMap).isTile(i, j, Tile::ENEMY_SPAWN))
 			{
-				if ((_gameMap).isTile(i, j, Tile::ENEMY_SPAWN))
-				{
-					enemy._pos.tStartPos = { j, i };
-					enemy.Initialize(POS{ j, i }, enemyCnt < _maxFollowingEnemyCnt);
-				}
+				Enemy enemy = Enemy(_gameMap);
+				enemy._pos.tStartPos = { j, i };
+				enemy.Initialize(POS{ j, i }, enemyCnt < _maxFollowingEnemyCnt);
+				_enemies.push_back(enemy);
+				enemyCnt++;
 			}
 		}
-		enemy._pos.tPos = enemy._pos.tStartPos;
-		enemy._state = { false };
 	}
-	enemyCnt++;
 }
 
 void GameLogic::ItemInit()
