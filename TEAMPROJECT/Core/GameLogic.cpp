@@ -60,7 +60,6 @@ void GameLogic::PlayerInit()
 		}
 	}
 	_player._pos.tPos = _player._pos.tStartPos;
-	_player._state = { true, false, false, false, false };
 	_player.Initialize(MAP_HEIGHT, MAP_WIDTH, _pGameMap);
 }
 
