@@ -248,6 +248,17 @@ void GameLogic::RenderUI()
 		 Gotoxy(x, y++);
 		 cout << "-----------------------" << endl;
 	 }
+
+	 Gotoxy(x, y++);
+	 cout << "-----------------------" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-                     -" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-    ½ºÄÚ¾î : 0       -" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-                     -" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-----------------------" << endl;
 	
 }
 
