@@ -15,8 +15,6 @@ GameLogic::GameLogic()
 	_pObjs = nullptr;
 	_pGameMap = nullptr;
 
-	MAP_HEIGHT = 0;
-	MAP_WIDTH = 0;
 	maxFollowingEnemyCnt = 2;
 }
 
