@@ -59,7 +59,7 @@ void Core::ChangeScene(Scene newScene)
 		_gameLogic.Initialized(&_asciiObjects, &_gameMap, 2);
 		break;
 	case Scene::INFO:
-		// InfoScene(curScene);
+		_gameLogic.InfoSceneInit();
 		break;
 	}
 }
@@ -82,7 +82,7 @@ void Core::Update()
 			_gameLogic.Update(); // curScene, gameMap, &player, &enemies);
 			break;
 		case Scene::INFO:
-			// InfoScene(curScene);
+			_gameLogic.InfoScene();
 			break;
 		}
 	}

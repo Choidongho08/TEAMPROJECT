@@ -6,6 +6,9 @@
 #include "KeyController.h"
 #include <algorithm>
 #include <fstream>
+#include<random>
+#include <format>
+using std::format;
 
 GameLogic::GameLogic()
 {
@@ -14,14 +17,9 @@ GameLogic::GameLogic()
 
 	MAP_HEIGHT = 0;
 	MAP_WIDTH = 0;
-	maxFollowingEnemyCnt = 2;
 }
 
-void GameLogic::Initialized(
-	vector<AsciiObject>* objs,
-	std::vector<std::vector<char>>* gameMap,
-	int maxFollowingEnemy
-)
+void GameLogic::Initialized(vector<AsciiObject>* objs, std::vector<std::vector<char>>* gameMap)
 {
 	_pObjs = objs;
 	_pGameMap = gameMap;
@@ -38,6 +36,7 @@ void GameLogic::Initialized(
 	SetCursorVisual(true, 50);
 	
 	LoadStage();
+	ItemInit();
 
 	PlayerInit();
 	EnemyInit();
@@ -46,12 +45,21 @@ void GameLogic::Initialized(
 void GameLogic::PlayerInit()
 {
 	_player = Player();
-	_player.Initialize(MAP_HEIGHT, MAP_WIDTH, _pGameMap);
+
+	for (int i = 0; i < MAP_HEIGHT; ++i)
+	{
+		for (int j = 0; j < MAP_WIDTH; ++j)
+		{
+			if ((*_pGameMap)[i][j] == (char)Tile::PLAYER_START)
+				_player._pos.tStartPos = { j, i };
+		}
+	}
+	_player._pos.tPos = _player._pos.tStartPos;
+	_player._state = { true, false, false, false, false };
 }
 
 void GameLogic::EnemyInit()
 {
-	int enemyCnt = 0;
 	for (auto enemy : _enemies)
 	{
 		enemy = Enemy();
@@ -60,17 +68,21 @@ void GameLogic::EnemyInit()
 		{
 			for (int j = 0; j < MAP_WIDTH; ++j)
 			{
-				if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_START)
-					enemy.Initialize(POS{j, i}, enemyCnt < maxFollowingEnemyCnt);
+				if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_SPAWN)
+					enemy._pos.tStartPos = { j, i };
 			}
 		}
+		enemy._pos.tPos = enemy._pos.tStartPos;
+		enemy._state = { false };
 	}
-	enemyCnt++;
 }
 
 void GameLogic::LoadStage()
 {
-	std::ifstream mapFile("Stage.txt");
+	srand((unsigned int)time(NULL));
+	int stageNumber = rand() % 3 + 1;
+	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
+	std::ifstream mapFile(mapFileName);
 	if (mapFile.is_open())
 	{
 		// 초기화
@@ -100,6 +112,24 @@ void GameLogic::LoadStage()
 	else
 		cout << "맵 파일 초기화 실패" << endl;
 }
+
+void GameLogic::ItemInit()
+{
+	int itemCount = 0;
+	srand((unsigned int)time(NULL));
+	while (itemCount < 5)
+	{
+		int y = rand() % MAP_HEIGHT;
+		int x = rand() % MAP_WIDTH;
+
+		if ((*_pGameMap)[y][x] == (char)Tile::ROAD)
+		{
+			(*_pGameMap)[y][x] = (char)Tile::ITEM;
+			itemCount++;
+		}
+	}
+}
+
 
 void GameLogic::Update()
 {
@@ -163,10 +193,10 @@ void GameLogic::Render()
 				else if ((*_pGameMap)[i][j] == (char)Tile::PLAYER_START)
 					cout << "  ";
 				else if ((*_pGameMap)[i][j] == (char)Tile::ITEM)
-					cout << "  ";
+					cout << "★";
 				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY)
 					cout << "  ";
-				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_START)
+				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_SPAWN)
 					cout << "  ";
 			}
 		}
@@ -218,12 +248,32 @@ void GameLogic::InfoScene()
 		Core::Instance->ChangeScene(Scene::TITLE);
 		system("cls");
 	}
+	Gotoxy(0, 0);
 	RenderInfo();
+}
+
+void GameLogic::InfoSceneInit()
+{
+	system("cls");
 }
 
 void GameLogic::RenderInfo()
 {
-	cout << "조작법" << endl;
+	 COORD resolution = GetConsoleResolution();
+	 int x = resolution.X/ 3;
+	 int y = resolution.Y/3;
+	 Gotoxy(x, y++);
+	 cout << "=======================" << endl;
+	 Gotoxy(x, y++);
+	 cout << "[    조작      방법   ]" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-----------------------" << endl;
+	 Gotoxy(x, y++);
+	 cout << "조작키 : ↑, →, ←, ↓"  << endl;
+	 Gotoxy(x, y++);
+	 cout << "스킬 : 키가 뭐야 동호야 " << endl;
+	 Gotoxy(x, y++);
+	 cout << "=======================" << endl;
 }
 
 void GameLogic::RenderEffect()

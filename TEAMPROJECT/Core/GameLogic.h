@@ -35,17 +35,19 @@ public:
         int maxFollowingEnemy
     );
     void Update();
+    void InfoScene();
+	void InfoSceneInit();
 private:
     void PlayerInit();
     void EnemyInit();
     void LoadStage();
+	void ItemInit();
     
     void HandleInput();
 
     void Render();
     void RenderUI();
     void GameScene();
-    void InfoScene();
     void RenderInfo();
     void RenderEffect();
 };
