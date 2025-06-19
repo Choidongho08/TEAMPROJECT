@@ -247,6 +247,11 @@ void GameLogic::InfoScene()
 	RenderInfo();
 }
 
+void GameLogic::InfoSceneInit()
+{
+	system("cls");
+}
+
 void GameLogic::RenderInfo()
 {
 	 COORD resolution = GetConsoleResolution();

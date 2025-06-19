@@ -59,7 +59,7 @@ void Core::ChangeScene(Scene newScene)
 		_gameLogic.Initialized(&_asciiObjects, &_gameMap);
 		break;
 	case Scene::INFO:
-		_gameLogic.InfoScene();
+		_gameLogic.InfoSceneInit();
 		break;
 	}
 }

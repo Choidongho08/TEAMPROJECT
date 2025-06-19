@@ -34,6 +34,7 @@ public:
     );
     void Update();
     void InfoScene();
+	void InfoSceneInit();
 private:
     void PlayerInit();
     void EnemyInit();
