@@ -56,7 +56,7 @@ void Core::ChangeScene(Scene newScene)
 		_titleScene.Initialized(&_asciiObjects);
 		break;
 	case Scene::GAME:
-		_gameLogic.Initialized(&_asciiObjects, &_gameMap, 2);
+		_gameLogic.Initialized(&_asciiObjects, 2);
 		break;
 	case Scene::INFO:
 		_gameLogic.InfoSceneInit();

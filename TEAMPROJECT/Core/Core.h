@@ -14,7 +14,6 @@ private:
 	GameLogic _gameLogic;
 	Scene _curScene;
 	vector<AsciiObject> _asciiObjects;
-	vector<vector<char>> _gameMap;
 
 public:
 	Core();

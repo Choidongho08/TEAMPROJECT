@@ -13,19 +13,17 @@ using std::format;
 GameLogic::GameLogic()
 {
 	_pObjs = nullptr;
-	_pGameMap = nullptr;
-
-	maxFollowingEnemyCnt = 2;
+	_maxFollowingEnemyCnt = 2;
+	_gameMap = Map();
 }
 
 void GameLogic::Initialized(
 	vector<AsciiObject>* objs,
-	std::vector<std::vector<char>>* gameMap,
 	int maxFollowingEnemy
 )
 {
+	_maxFollowingEnemyCnt = maxFollowingEnemy;
 	_pObjs = objs;
-	_pGameMap = gameMap;
 
 	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
 
@@ -41,47 +39,8 @@ void GameLogic::Initialized(
 	LoadStage();
 	ItemInit();
 
-	PlayerInit();
-	EnemyInit();
+	EntityInit();
 }
-
-void GameLogic::PlayerInit()
-{
-	_player = Player();
-
-	for (int i = 0; i < MAP_HEIGHT; ++i)
-	{
-		for (int j = 0; j < MAP_WIDTH; ++j)
-		{
-			if ((*_pGameMap)[i][j] == (char)Tile::PLAYER_START)
-				_player._pos.tStartPos = { j, i };
-		}
-	}
-	_player._pos.tPos = _player._pos.tStartPos;
-	_player.Initialize(MAP_HEIGHT, MAP_WIDTH, _pGameMap);
-}
-
-void GameLogic::EnemyInit()
-{
-	int enemyCnt = 0;
-	for (auto enemy : _enemies)
-	{
-		enemy = Enemy();
-		for (int i = 0; i < MAP_HEIGHT; ++i)
-		{
-			for (int j = 0; j < MAP_WIDTH; ++j)
-			{
-				if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_SPAWN)
-					enemy._pos.tStartPos = { j, i };
-				enemy.Initialize(POS{ j, i }, enemyCnt < maxFollowingEnemyCnt);
-			}
-		}
-		enemy._pos.tPos = enemy._pos.tStartPos;
-		enemy._state = { false };
-	}
-	enemyCnt++;
-}
-
 
 void GameLogic::LoadStage()
 {
@@ -93,30 +52,59 @@ void GameLogic::LoadStage()
 	{
 		// 초기화
 		std::string line;
-		_pGameMap->clear();
+
+		int row = 0;
+		int col = 0;
 
 		while (std::getline(mapFile, line))
 		{
-			if (MAP_HEIGHT == 0)
-				MAP_WIDTH = line.length(); // 첫 줄의 문자 수로 열 수 결정
+			if (row == 0)
+				col = line.length(); // 첫 줄의 문자 수로 열 수 결정
 
-			MAP_HEIGHT++;
+			row++;
 
-			std::vector<char> mapHeight;
+			std::vector<int> mapRow;
 
 			for (char ch : line)
 			{
-				mapHeight.push_back(ch);
+				mapRow.push_back(ch - '0');
 			}
-			// mapHeight.push_back(' '); // 마지막  null
-			_pGameMap->push_back(mapHeight);
+
+			_gameMap.InitializeMap(mapRow);
 		} // 맵 길이 구하면서 맵 초기화
 
+		_gameMap.SetMapRowCol(row, col);
 		mapFile.close();
 		return;
 	}
 	else
 		cout << "맵 파일 초기화 실패" << endl;
+}
+
+void GameLogic::EntityInit()
+{
+	_player = Player();
+	_player.Initialize(_gameMap.GetMapRow(), _gameMap.GetMapRow(), &_gameMap);
+
+	int enemyCnt = 0;
+	for (auto enemy : _enemies)
+	{
+		enemy = Enemy();
+		for (int i = 0; i < _gameMap.GetMapRow(); ++i)
+		{
+			for (int j = 0; j < _gameMap.GetMapCol(); ++j)
+			{
+				if ((_gameMap).isTile(i, j, Tile::ENEMY_SPAWN))
+				{
+					enemy._pos.tStartPos = { j, i };
+					enemy.Initialize(POS{ j, i }, enemyCnt < _maxFollowingEnemyCnt);
+				}
+			}
+		}
+		enemy._pos.tPos = enemy._pos.tStartPos;
+		enemy._state = { false };
+	}
+	enemyCnt++;
 }
 
 void GameLogic::ItemInit()
@@ -125,12 +113,12 @@ void GameLogic::ItemInit()
 	srand((unsigned int)time(NULL));
 	while (itemCount < 5)
 	{
-		int y = rand() % MAP_HEIGHT;
-		int x = rand() % MAP_WIDTH;
+		int y = rand() % _gameMap.GetMapRow();
+		int x = rand() % _gameMap.GetMapCol();
 
-		if ((*_pGameMap)[y][x] == (char)Tile::ROAD)
+		if (_gameMap.isTile(y, x, Tile::ROAD))
 		{
-			(*_pGameMap)[y][x] = (char)Tile::ITEM;
+			_gameMap.SetMapTile(y, x, Tile::ITEM);
 			itemCount++;
 		}
 	}
@@ -173,18 +161,18 @@ void GameLogic::HandleInput()
 		break;
 	}
 	// clamp함수는 c++17에 나옴
-	_player._pos.tNewPos.x = std::clamp(_player._pos.tNewPos.x, 0, MAP_WIDTH);
-	_player._pos.tNewPos.y = std::clamp(_player._pos.tNewPos.y, 0, MAP_HEIGHT);
+	_player._pos.tNewPos.x = std::clamp(_player._pos.tNewPos.x, 0, _gameMap.GetMapCol());
+	_player._pos.tNewPos.y = std::clamp(_player._pos.tNewPos.y, 0, _gameMap.GetMapRow());
 
-	if ((*_pGameMap)[_player._pos.tNewPos.y][_player._pos.tNewPos.x] != (char)Tile::WALL)
+	if(!_gameMap.isTile(_player._pos.tNewPos.y, _player._pos.tNewPos.x, Tile::WALL))
 		_player._pos.tPos = _player._pos.tNewPos;
 }
 
 void GameLogic::Render()
 {
-	for (int i = 0; i < MAP_HEIGHT; ++i)
+	for (int i = 0; i < _gameMap.GetMapRow(); ++i)
 	{
-		for (int j = 0; j < MAP_WIDTH; ++j)
+		for (int j = 0; j < _gameMap.GetMapCol(); ++j)
 		{
 			// 플레이어 그리기
 			if (_player._pos.tPos.x == j && _player._pos.tPos.y == i)
@@ -192,17 +180,17 @@ void GameLogic::Render()
 			// 타일 그리기
 			else
 			{
-				if ((*_pGameMap)[i][j] == (char)Tile::WALL)
+				if (_gameMap.isTile(i,j, Tile::WALL))
 					cout << "■";
-				else if ((*_pGameMap)[i][j] == (char)Tile::ROAD)
+				else if (_gameMap.isTile(i, j, Tile::ROAD))
 					cout << "  ";
-				else if ((*_pGameMap)[i][j] == (char)Tile::PLAYER_START)
+				else if (_gameMap.isTile(i, j, Tile::PLAYER_START))
 					cout << "  ";
-				else if ((*_pGameMap)[i][j] == (char)Tile::ITEM)
+				else if (_gameMap.isTile(i, j, Tile::ITEM))
 					cout << "★";
-				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY)
+				else if (_gameMap.isTile(i, j, Tile::ENEMY))
 					cout << "  ";
-				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_SPAWN)
+				else if (_gameMap.isTile(i, j, Tile::ENEMY_SPAWN))
 					cout << "  ";
 			}
 		}
