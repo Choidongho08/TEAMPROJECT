@@ -14,9 +14,14 @@ GameLogic::GameLogic()
 
 	MAP_HEIGHT = 0;
 	MAP_WIDTH = 0;
+	maxFollowingEnemyCnt = 2;
 }
 
-void GameLogic::Initialized(vector<AsciiObject>* objs, std::vector<std::vector<char>>* gameMap)
+void GameLogic::Initialized(
+	vector<AsciiObject>* objs,
+	std::vector<std::vector<char>>* gameMap,
+	int maxFollowingEnemy
+)
 {
 	_pObjs = objs;
 	_pGameMap = gameMap;
@@ -41,21 +46,12 @@ void GameLogic::Initialized(vector<AsciiObject>* objs, std::vector<std::vector<c
 void GameLogic::PlayerInit()
 {
 	_player = Player();
-
-	for (int i = 0; i < MAP_HEIGHT; ++i)
-	{
-		for (int j = 0; j < MAP_WIDTH; ++j)
-		{
-			if ((*_pGameMap)[i][j] == (char)Tile::PLAYER_START)
-				_player._pos.tStartPos = { j, i };
-		}
-	}
-	_player._pos.tPos = _player._pos.tStartPos;
-	_player._state = { true, false, false, false, false };
+	_player.Initialize(MAP_HEIGHT, MAP_WIDTH, _pGameMap);
 }
 
 void GameLogic::EnemyInit()
 {
+	int enemyCnt = 0;
 	for (auto enemy : _enemies)
 	{
 		enemy = Enemy();
@@ -65,12 +61,11 @@ void GameLogic::EnemyInit()
 			for (int j = 0; j < MAP_WIDTH; ++j)
 			{
 				if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_START)
-					enemy._pos.tStartPos = { j, i };
+					enemy.Initialize(POS{j, i}, enemyCnt < maxFollowingEnemyCnt);
 			}
 		}
-		enemy._pos.tPos = enemy._pos.tStartPos;
-		enemy._state = { false };
 	}
+	enemyCnt++;
 }
 
 void GameLogic::LoadStage()

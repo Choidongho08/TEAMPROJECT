@@ -25,12 +25,14 @@ private:
 
     int MAP_HEIGHT;
     int MAP_WIDTH;
+    int maxFollowingEnemyCnt;
 public:
     GameLogic();
 
     void Initialized(
         vector<AsciiObject>* objs,
-        std::vector<std::vector<char>>* gameMap
+        std::vector<std::vector<char>>* gameMap,
+        int maxFollowingEnemy
     );
     void Update();
 private:

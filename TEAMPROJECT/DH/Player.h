@@ -21,6 +21,12 @@ public:
     Player();
     Player(PlayerState playerState, ENTITYPOS playerPos);
 
+    void Initialize(
+        int mapHeight,
+        int mapWidth,
+        std::vector<std::vector<char>>* pGameMap
+    );
+    void Update();
     void Move(POS nextPos);
     void SetSkill(Skill skill);
     void UseSkill(std::vector<std::vector<char>>* pGameMap, Skill skillEnum, Enemy* pEnemy);

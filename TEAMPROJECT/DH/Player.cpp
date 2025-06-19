@@ -14,6 +14,29 @@ Player::Player(PlayerState playerState, ENTITYPOS playerPos) : Entity(playerPos,
     _skill = Skill::None;
 }
 
+void Player::Initialize(
+    int mapHeight,
+    int mapWidth,
+    std::vector<std::vector<char>>* pGameMap
+)
+{
+    for (int i = 0; i < mapHeight; ++i)
+    {
+        for (int j = 0; j < mapWidth; ++j)
+        {
+            if ((*pGameMap)[i][j] == (char)Tile::PLAYER_START)
+                _pos.tStartPos = { j, i };
+        }
+    }
+    _pos.tPos = _pos.tStartPos;
+    _state = { true, false, false, false, false };
+}
+
+void Player::Update()
+{
+
+}
+
 void Player::Move(POS nextPos)
 {
     _pos.tNewPos = nextPos;
