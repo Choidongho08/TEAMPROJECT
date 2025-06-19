@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <fstream>
 #include<random>
+#include <format>
+using std::format;
 
 GameLogic::GameLogic()
 {
@@ -77,7 +79,10 @@ void GameLogic::EnemyInit()
 
 void GameLogic::LoadStage()
 {
-	std::ifstream mapFile("Stage.txt");
+	srand((unsigned int)time(NULL));
+	int stageNumber = rand() % 3 + 1;
+	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
+	std::ifstream mapFile(mapFileName);
 	if (mapFile.is_open())
 	{
 		// √ ±‚»≠
