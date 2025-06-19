@@ -4,6 +4,7 @@
 #include "../DH/Entity.h"
 #include "../DH/Player.h"
 #include "../DH/Enemy.h"
+#include "../DH/Map.h"
 #include <vector>
 
 using std::vector;
@@ -18,29 +19,25 @@ public:
 
 private:
     vector<AsciiObject>* _pObjs;
-    std::vector<std::vector<char>>* _pGameMap;
 
     Player _player;
     vector<Enemy> _enemies;
+    Map _gameMap;
 
-    int MAP_HEIGHT;
-    int MAP_WIDTH;
-    int maxFollowingEnemyCnt;
+    int _maxFollowingEnemyCnt;
 public:
     GameLogic();
 
     void Initialized(
         vector<AsciiObject>* objs,
-        std::vector<std::vector<char>>* gameMap,
         int maxFollowingEnemy
     );
     void Update();
     void InfoScene();
 	void InfoSceneInit();
 private:
-    void PlayerInit();
-    void EnemyInit();
     void LoadStage();
+    void EntityInit();
 	void ItemInit();
     
     void HandleInput();

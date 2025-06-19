@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h";
+#include "AStar.h"
 
 class EnemyState : public EntityState
 {
@@ -11,11 +12,13 @@ class Enemy : public Entity
 {
 public:
 	EnemyState _state;
+	AStar _playerFindAStar;
 private:
 
 public:
-	Enemy();
-	void Initialize(
+	Enemy(Map& m);
+
+	void Initialize (
 		POS startPos,
 		bool isFollowing
 	);

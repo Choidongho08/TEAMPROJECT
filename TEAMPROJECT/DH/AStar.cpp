@@ -1,87 +1,5 @@
 #include "AStar.h"
 
-
-
-void Map::printMap(const vector<Node*>& path) {
-    vector<vector<char>> display(ROW, vector<char>(COL, '.'));
-
-    for (int i = 0; i < ROW; i++) {
-        for (int j = 0; j < COL; j++) {
-            if (grid[i][j] == 1) display[i][j] = '#';
-        }
-    }
-
-    for (auto node : path) {
-        display[node->x][node->y] = '*';
-    }
-
-    for (int i = 0; i < ROW; i++) {
-        for (int j = 0; j < COL; j++) {
-            cout << display[i][j] << ' ';
-        }
-        cout << endl;
-    }
-}
-
-void Map::printCurrentState(const vector<Node*>& path,
-    const vector<vector<bool>>& closedList,
-    const vector<Node*>& openList,
-    Node* current) {
-    vector<vector<char>> display(ROW, vector<char>(COL, '.'));
-
-    // 장애물 표시
-    for (int i = 0; i < ROW; i++) {
-        for (int j = 0; j < COL; j++) {
-            if (grid[i][j] == 1) display[i][j] = '#';
-        }
-    }
-
-    // Closed List 표시 (이미 검사한 노드)
-    for (int i = 0; i < ROW; i++) {
-        for (int j = 0; j < COL; j++) {
-            if (closedList[i][j]) display[i][j] = 'X';
-        }
-    }
-
-    // Open List 표시 (검사할 노드)
-    for (const auto& node : openList) {
-        display[node->x][node->y] = 'O';
-    }
-
-    // 현재 경로 표시
-    for (auto node : path) {
-        display[node->x][node->y] = '*';
-    }
-
-    // 현재 검사 중인 노드 표시
-    if (current) {
-        display[current->x][current->y] = 'C';
-    }
-
-    // 맵 상태 출력
-    system("cls");
-    cout << "\nCurrent Map State:\n";
-    cout << "C: Current Node, O: Open List, X: Closed List, *: Path, #: Obstacle\n\n";
-
-    for (int i = 0; i < ROW; i++) {
-        for (int j = 0; j < COL; j++) {
-            cout << display[i][j] << ' ';
-        }
-        cout << endl;
-    }
-
-    // Open List 정보 출력
-    cout << "\nOpen List Nodes:\n";
-    for (const auto& node : openList) {
-        cout << "(" << node->x << "," << node->y << ") ";
-        cout << "f=" << node->f << " g=" << node->g << " h=" << node->h << endl;
-    }
-
-    cout << "\nPass any key!" << endl;
-    _getch();
-}
-
-
 double AStar::heuristic(int x1, int y1, int x2, int y2) {
     // Manhattan distance와 Euclidean distance의 조합
     double deltaX = abs(x2 - x1);
@@ -99,9 +17,7 @@ vector<Node*> AStar::reconstructPath(Node* node) {
     return path;
 }
 
-
-
-vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
+vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY, Map map) {
     // 1. 초기화
     // - 시작 노드를 열린 목록에 추가
     // - 시작 노드의 f, g 값 초기화
@@ -111,8 +27,8 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
     // priority_queue(우선순위 큐)는 내부적으로 힙(heap) 정렬을 사용하여 노드들을 f값에 따라 자동 정렬합니다.
     priority_queue<Node*, vector<Node*>, CompareNode> openPQ;           // 탐색할 노드들을 담는 목록
     vector<Node*> openList;                                             // 시각화를 위한 열린 목록
-    vector<vector<bool>> closedList(ROW, vector<bool>(COL, false));     // 이미 탐색한 노드들을 담는 목록
-    vector<vector<double>> gScore(ROW, vector<double>(COL, INFINITY));
+    vector<vector<bool>> closedList(map.GetMapRow(), vector<bool>(map.GetMapCol(), false));     // 이미 탐색한 노드들을 담는 목록
+    vector<vector<double>> gScore(map.GetMapRow(), vector<double>(map.GetMapRow(), INFINITY));
 
     start->h = heuristic(startX, startY, goalX, goalY);                 // 시작 노드의 휴리스틱 비용
     start->f = start->h;                                                // f = g + h: 시작 노드의 총 예상 비용
@@ -143,7 +59,6 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
         // - 현재 노드가 목표 노드인지 확인
         if (current->x == goalX && current->y == goalY) {
             currentPath = reconstructPath(current);
-            map.printCurrentState(currentPath, closedList, openList, current);
             cout << "\nPath found!\n";
             return currentPath;
         }
@@ -156,7 +71,6 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
 
         closedList[current->x][current->y] = true;
         currentPath = reconstructPath(current);
-        map.printCurrentState(currentPath, closedList, openList, current);
 
         // 2.4 인접 노드 탐색
         // - 현재 노드의 모든 인접 노드들을 평가

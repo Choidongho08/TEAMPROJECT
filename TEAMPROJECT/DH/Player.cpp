@@ -17,14 +17,14 @@ Player::Player(PlayerState playerState, ENTITYPOS playerPos) : Entity(playerPos,
 void Player::Initialize(
     int mapHeight,
     int mapWidth,
-    std::vector<std::vector<char>>* pGameMap
+    Map* gameMap
 )
 {
     for (int i = 0; i < mapHeight; ++i)
     {
         for (int j = 0; j < mapWidth; ++j)
         {
-            if ((*pGameMap)[i][j] == (char)Tile::PLAYER_START)
+            if ((*gameMap).isTile(i, j, Tile::PLAYER_START))
                 _pos.tStartPos = { j, i };
         }
     }

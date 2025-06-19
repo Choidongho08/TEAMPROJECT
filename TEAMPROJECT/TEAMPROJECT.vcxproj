@@ -142,6 +142,8 @@
     <ClInclude Include="DH\Enemy.h" />
     <ClInclude Include="DH\Entity.h" />
     <ClInclude Include="DH\Enums.h" />
+    <ClInclude Include="DH\Map.h" />
+    <ClInclude Include="DH\Node.h" />
     <ClInclude Include="DH\Player.h" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +158,7 @@
     <ClCompile Include="DH\AStar.cpp" />
     <ClCompile Include="DH\Enemy.cpp" />
     <ClCompile Include="DH\Entity.cpp" />
+    <ClCompile Include="DH\Map.cpp" />
     <ClCompile Include="DH\Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

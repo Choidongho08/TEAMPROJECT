@@ -1,6 +1,8 @@
 #include "Enemy.h"
 
-Enemy::Enemy() : Entity({ {0,0}, {0,0}, {0,0} }, { true })
+Enemy::Enemy(Map& m) :
+	_playerFindAStar(m),
+	Entity({ {0,0}, {0,0}, {0,0} }, { true })
 {
 	_state = EnemyState{ true, false };
 }

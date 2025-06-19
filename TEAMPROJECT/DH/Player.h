@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Enemy.h"
+#include "Map.h"
 
 class PlayerState : public EntityState
 {
@@ -22,7 +23,7 @@ public:
     void Initialize(
         int mapHeight,
         int mapWidth,
-        std::vector<std::vector<char>>* pGameMap
+        Map* gameMap
     );
     void Update();
     void Move(POS nextPos);
