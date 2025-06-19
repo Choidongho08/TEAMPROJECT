@@ -38,6 +38,7 @@ private:
     void PlayerInit();
     void EnemyInit();
     void LoadStage();
+	void ItemInit();
     
     void HandleInput();
 

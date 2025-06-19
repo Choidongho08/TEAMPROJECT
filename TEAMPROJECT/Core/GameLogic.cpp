@@ -6,6 +6,7 @@
 #include "KeyController.h"
 #include <algorithm>
 #include <fstream>
+#include<random>
 
 GameLogic::GameLogic()
 {
@@ -33,6 +34,7 @@ void GameLogic::Initialized(vector<AsciiObject>* objs, std::vector<std::vector<c
 	SetCursorVisual(true, 50);
 	
 	LoadStage();
+	ItemInit();
 
 	PlayerInit();
 	EnemyInit();
@@ -106,6 +108,24 @@ void GameLogic::LoadStage()
 		cout << "맵 파일 초기화 실패" << endl;
 }
 
+void GameLogic::ItemInit()
+{
+	int itemCount = 0;
+	srand((unsigned int)time(NULL));
+	while (itemCount < 5)
+	{
+		int y = rand() % MAP_HEIGHT;
+		int x = rand() % MAP_WIDTH;
+
+		if ((*_pGameMap)[y][x] == (char)Tile::ROAD)
+		{
+			(*_pGameMap)[y][x] = (char)Tile::ITEM;
+			itemCount++;
+		}
+	}
+}
+
+
 void GameLogic::Update()
 {
 	GameScene();
@@ -168,7 +188,7 @@ void GameLogic::Render()
 				else if ((*_pGameMap)[i][j] == (char)Tile::PLAYER_START)
 					cout << "  ";
 				else if ((*_pGameMap)[i][j] == (char)Tile::ITEM)
-					cout << "  ";
+					cout << "★";
 				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY)
 					cout << "  ";
 				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_START)
