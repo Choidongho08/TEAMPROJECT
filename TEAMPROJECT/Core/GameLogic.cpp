@@ -223,12 +223,27 @@ void GameLogic::InfoScene()
 		Core::Instance->ChangeScene(Scene::TITLE);
 		system("cls");
 	}
+	Gotoxy(0, 0);
 	RenderInfo();
 }
 
 void GameLogic::RenderInfo()
 {
-	cout << "조작법" << endl;
+	 COORD resolution = GetConsoleResolution();
+	 int x = resolution.X/ 3;
+	 int y = resolution.Y/3;
+	 Gotoxy(x, y++);
+	 cout << "=======================" << endl;
+	 Gotoxy(x, y++);
+	 cout << "[    조작      방법   ]" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-----------------------" << endl;
+	 Gotoxy(x, y++);
+	 cout << "조작키 : ↑, →, ←, ↓"  << endl;
+	 Gotoxy(x, y++);
+	 cout << "스킬 : 키가 뭐야 동호야 " << endl;
+	 Gotoxy(x, y++);
+	 cout << "=======================" << endl;
 }
 
 void GameLogic::RenderEffect()

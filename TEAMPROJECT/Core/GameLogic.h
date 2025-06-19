@@ -33,6 +33,7 @@ public:
         std::vector<std::vector<char>>* gameMap
     );
     void Update();
+    void InfoScene();
 private:
     void PlayerInit();
     void EnemyInit();
@@ -43,7 +44,6 @@ private:
     void Render();
     void RenderUI();
     void GameScene();
-    void InfoScene();
     void RenderInfo();
     void RenderEffect();
 };
