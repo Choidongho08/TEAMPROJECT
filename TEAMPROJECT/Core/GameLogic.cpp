@@ -216,13 +216,32 @@ void GameLogic::Render()
 
 void GameLogic::RenderUI()
 {
+	string skill;
+	switch (_player._skill)
+	{
+	case Skill::None:
+		skill = "None";
+		break;
+	case Skill::KILL:
+		skill = "KILL";
+		break;
+	case Skill::SIGHT:
+		skill = "SIGHT";
+		break;
+	case Skill::DASH:
+		skill = "DASH";
+		break;
+	default:
+		skill = "알 수 없음";
+		break;
+	}
 	 COORD resolution = GetConsoleResolution();
 	 int x = resolution.X / 1.5;
 	 int y = resolution.Y / 10;
 	 Gotoxy(x, y++);
 	 cout << "=======================" << endl;
 	 Gotoxy(x, y++);
-	 cout << (_player._state.isHaveSkill ? "아이템 O" : "아이템 X") << endl;
+	 cout << "현재 보유 스킬 : " << skill << endl;
 	 if (_player._state.isHaveSkill) {
 		 Gotoxy(x, y++);
 		 cout << "-----------------------" << endl;
