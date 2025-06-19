@@ -14,7 +14,7 @@ public:
 class Player : public Entity
 {
 public:
-    PlayerState _state;
+    PlayerState _state
     POS _forward;
     Skill _skill;
 
