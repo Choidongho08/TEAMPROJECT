@@ -66,7 +66,7 @@ void GameLogic::EnemyInit()
 		{
 			for (int j = 0; j < MAP_WIDTH; ++j)
 			{
-				if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_START)
+				if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_SPAWN)
 					enemy._pos.tStartPos = { j, i };
 			}
 		}
@@ -191,7 +191,7 @@ void GameLogic::Render()
 					cout << "¡Ú";
 				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY)
 					cout << "  ";
-				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_START)
+				else if ((*_pGameMap)[i][j] == (char)Tile::ENEMY_SPAWN)
 					cout << "  ";
 			}
 		}

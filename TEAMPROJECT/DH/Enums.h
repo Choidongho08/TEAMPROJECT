@@ -17,7 +17,7 @@ enum class Scene
 
 enum class Tile
 {
-	WALL = '0', ROAD, PLAYER_START, ITEM, ENEMY, ENEMY_START, END
+	WALL = '0', ROAD, PLAYER_START, ITEM, ENEMY, ENEMY_SPAWN, END
 };
 
 enum class Skill
