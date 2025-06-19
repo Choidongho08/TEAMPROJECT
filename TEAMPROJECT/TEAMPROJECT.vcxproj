@@ -138,6 +138,7 @@
     <ClInclude Include="Core\KeyController.h" />
     <ClInclude Include="Core\Mci.h" />
     <ClInclude Include="Core\TitleScene.h" />
+    <ClInclude Include="DH\AStar.h" />
     <ClInclude Include="DH\Enemy.h" />
     <ClInclude Include="DH\Entity.h" />
     <ClInclude Include="DH\Enums.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Core\Main.cpp" />
     <ClCompile Include="Core\Mci.cpp" />
     <ClCompile Include="Core\TitleScene.cpp" />
+    <ClCompile Include="DH\AStar.cpp" />
     <ClCompile Include="DH\Enemy.cpp" />
     <ClCompile Include="DH\Entity.cpp" />
     <ClCompile Include="DH\Player.cpp" />

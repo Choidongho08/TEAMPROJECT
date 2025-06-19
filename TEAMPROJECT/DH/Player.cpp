@@ -29,7 +29,7 @@ void Player::Initialize(
         }
     }
     _pos.tPos = _pos.tStartPos;
-    _state = { true, false, false, false, false };
+    _state = { true, false, Skill::None};
 }
 
 void Player::Update()

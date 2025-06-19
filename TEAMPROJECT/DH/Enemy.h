@@ -19,5 +19,7 @@ public:
 		POS startPos,
 		bool isFollowing
 	);
+	void Move();
+	void AStarMove();
 private:
 };

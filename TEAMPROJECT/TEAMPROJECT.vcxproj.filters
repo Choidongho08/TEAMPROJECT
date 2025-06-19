@@ -65,6 +65,9 @@
     <ClInclude Include="Core\KeyController.h">
       <Filter>소스 파일\Core\HEADER</Filter>
     </ClInclude>
+    <ClInclude Include="DH\AStar.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Console.cpp">
@@ -99,6 +102,9 @@
     </ClCompile>
     <ClCompile Include="DH\Enemy.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\AStar.cpp">
+      <Filter>소스 파일\DH</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

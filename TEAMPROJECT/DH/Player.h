@@ -6,9 +6,7 @@ class PlayerState : public EntityState
 {
 public:
     bool isHaveSkill;
-    bool isKillEnemy;
-    bool isSightLight;
-    bool isDash;
+    Skill whatSkill;
 };
 
 class Player : public Entity
