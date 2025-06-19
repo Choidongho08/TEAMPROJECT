@@ -35,7 +35,7 @@ void GameLogic::Initialized(
 	PlaySoundID(SOUNDID::BGM, true);
 
 	// 콘솔창 관련 초기화
-	SetConsoleSettings(800, 600, false, L"HackMan");
+	SetConsoleSettings(1200, 600, false, L"HackMan");
 	SetCursorVisual(true, 50);
 	
 	LoadStage();
@@ -214,25 +214,69 @@ void GameLogic::Render()
 
 void GameLogic::RenderUI()
 {
-	// COORD resolution = GetConsoleResolution();
-	// int x = resolution.X / 2;
-	// int y = resolution.Y / 10;
-	// Gotoxy(x, y++);
-	// cout << "=================" << endl;
-	// Gotoxy(x, y++);
-	// cout << "[ 플레이어 상태 ]" << endl;
-	// Gotoxy(x, y++);
-	// cout << "-----------------" << endl;
-	// Gotoxy(x, y++);
-	// cout << "폭탄 파워 : " << pPlayer->state.bombpower << endl;
-	// Gotoxy(x, y++);
-	// cout << "폭탄 개수 : " << pPlayer->state.bombcnt << endl;
-	// Gotoxy(x, y++);
-	// cout << "Push 능력 : " << (pPlayer->state.isPushOnOff ? "ON " : "OFF") << endl;
-	// Gotoxy(x, y++);
-	// cout << "슬라임 능력 : " << (pPlayer->state.isTrans ? "ON " : "OFF") << endl;
-	// Gotoxy(x, y++);
-	// cout << "=================" << endl;
+	string skill;
+	switch (_player._skill)
+	{
+	case Skill::None:
+		skill = "None";
+		break;
+	case Skill::KILL:
+		skill = "KILL";
+		break;
+	case Skill::SIGHT:
+		skill = "SIGHT";
+		break;
+	case Skill::DASH:
+		skill = "DASH";
+		break;
+	default:
+		skill = "알 수 없음";
+		break;
+	}
+	 COORD resolution = GetConsoleResolution();
+	 int x = resolution.X / 1.5;
+	 int y = resolution.Y / 10;
+	 Gotoxy(x, y++);
+	 cout << "=======================" << endl;
+	 Gotoxy(x, y++);
+	 cout << "현재 보유 스킬 : " << skill << endl;
+	 if (_player._state.isHaveSkill) {
+		 Gotoxy(x, y++);
+		 cout << "-----------------------" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-                     -" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-                     -" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-                     -" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-----------------------" << endl;
+	 }
+	 else
+	 {
+		 Gotoxy(x, y++);
+		 cout << "-----------------------" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-                     -" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-    아이뗌 우마이    -" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-                     -" << endl;
+		 Gotoxy(x, y++);
+		 cout << "-----------------------" << endl;
+	 }
+
+	 Gotoxy(x, y++);
+	 cout << "-----------------------" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-                     -" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-    스코어 : 0       -" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-                     -" << endl;
+	 Gotoxy(x, y++);
+	 cout << "-----------------------" << endl;
+	
 }
 
 void GameLogic::GameScene()
@@ -277,7 +321,7 @@ void GameLogic::RenderInfo()
 	 Gotoxy(x, y++);
 	 cout << "조작키 : ↑, →, ←, ↓"  << endl;
 	 Gotoxy(x, y++);
-	 cout << "스킬 : 키가 뭐야 동호야 " << endl;
+	 cout << "스킬 : 스페이스바      " << endl;
 	 Gotoxy(x, y++);
 	 cout << "=======================" << endl;
 }
