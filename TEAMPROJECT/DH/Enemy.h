@@ -14,7 +14,7 @@ public:
 private:
 
 public:
-	Enemy()
+	Enemy();
 	void Initialize(
 		POS startPos,
 		bool isFollowing
