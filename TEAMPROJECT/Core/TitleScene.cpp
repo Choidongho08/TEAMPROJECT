@@ -23,28 +23,29 @@ void TitleScene::Initialized(vector<AsciiObject>* objs)
 void TitleScene::Render()
 {
 	COORD resolution = GetConsoleResolution();
-	int y = resolution.Y / 5;
-	Gotoxy(0, y);
+	int x = resolution.X / 10;
+	int y = resolution.Y / 8;
 	int coutmode = _setmode(_fileno(stdout), _O_U16TEXT);
 
-	wcout << L"        ,--,                                                                             " << endl;
-	wcout << L"      ,--.'|                             ,-.            ____                             " << endl;
-	wcout << L"   ,--,  | :                         ,--/ /|          ,'  , `.                           " << endl;
-	wcout << L",---.'|  : '                       ,--. :/ |       ,-+-,.' _ |                     ,---, " << endl;
-	wcout << L"|   | : _' |                       :  : ' /     ,-+-. ;   , ||                 ,-+-. /  |" << endl;
-	wcout << L":   : |.'  |    ,---.      ,---.   |  '  /     ,--.'|'   |  ||    ,--.--.     ,--.'|'   |" << endl;
-	wcout << L"|   ' '  ; :   /     \    /     \  '  |  :    |   |  ,', |  |,   /       \   |   |  ,,' |" << endl;
-	wcout << L"'   |  .'. |  /    /  |  /    / '  |  |   \   |   | /  | |--'   .--.  .-. |  |   | /  | |" << endl;
-	wcout << L"|   | :  | ' .    ' / | .    ' /   '  : |. \  |   : |  | ,       \__\/: . .  |   | |  | |" << endl;
-	wcout << L"'   : |  : ; '   ;   /| '   ; :__  |  | ' \ \ |   : |  |/        ,, .--.; |  |   | |  |/ " << endl;
-	wcout << L"|   | '  ,/  '   |  / | '   | '.'| '  : |--'  |   | |`-'        /  /  ,.  |  |   | |--'  " << endl;
-	wcout << L";   : ;--'   |   :    | |   :    : ;  |,'     |   ;/           ;  :   .'   \ |   |/      " << endl;
-	wcout << L"|   ,/        \   \  /   \   \  /  '--'       '---'            |  ,     .-./ '---'       " << endl;
-	wcout << L"'---'          `----'     `----'                                `--`---'                 " << endl;
+	
+	Gotoxy(x, y);   wcout << L"        ,--,                                                                             " << endl;
+	Gotoxy(x, ++y); wcout << L"      ,--.'|                             ,-.            ____                             " << endl;
+	Gotoxy(x, ++y); wcout << L"   ,--,  | :                         ,--/ /|          ,'  , `.                           " << endl;
+	Gotoxy(x, ++y); wcout << L",---.'|  : '                       ,--. :/ |       ,-+-,.' _ |                     ,---, " << endl;
+	Gotoxy(x, ++y); wcout << L"|   | : _' |                       :  : ' /     ,-+-. ;   , ||                 ,-+-. /  |" << endl;
+	Gotoxy(x, ++y); wcout << L":   : |.'  |    ,---.      ,---.   |  '  /     ,--.'|'   |  ||    ,--.--.     ,--.'|'   |" << endl;
+	Gotoxy(x, ++y); wcout << L"|   ' '  ; :   /     \    /     \  '  |  :    |   |  ,', |  |,   /       \   |   |  ,,' |" << endl;
+	Gotoxy(x, ++y); wcout << L"'   |  .'. |  /    /  |  /    / '  |  |   \   |   | /  | |--'   .--.  .-. |  |   | /  | |" << endl;
+	Gotoxy(x, ++y); wcout << L"|   | :  | ' .    ' / | .    ' /   '  : |. \  |   : |  | ,       \__\/: . .  |   | |  | |" << endl;
+	Gotoxy(x, ++y); wcout << L"'   : |  : ; '   ;   /| '   ; :__  |  | ' \ \ |   : |  |/        ,, .--.; |  |   | |  |/ " << endl;
+	Gotoxy(x, ++y); wcout << L"|   | '  ,/  '   |  / | '   | '.'| '  : |--'  |   | |`-'        /  /  ,.  |  |   | |--'  " << endl;
+	Gotoxy(x, ++y); wcout << L";   : ;--'   |   :    | |   :    : ;  |,'     |   ;/           ;  :   .'   \ |   |/      " << endl;
+	Gotoxy(x, ++y); wcout << L"|   ,/        \   \  /   \   \  /  '--'       '---'            |  ,     .-./ '---'       " << endl;
+	Gotoxy(x, ++y); wcout << L"'---'          `----'     `----'                                `--`---'                 " << endl;
 
 
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
-	int x = resolution.X / 3;
+	x = resolution.X / 2.5;
 	y = resolution.Y / 3 * 2;
 	Gotoxy(x, y);
 	cout << "게임 시작";
@@ -93,7 +94,7 @@ void TitleScene::Update()
 Menu TitleScene::GetCurMenu()
 {
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 3;
+	int x = resolution.X / 2.5;
 	static int y = resolution.Y / 3 * 2;
 	static int originY = y;
 	Key eKey = KeyController();
