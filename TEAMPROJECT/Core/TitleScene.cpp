@@ -24,7 +24,7 @@ void TitleScene::Render()
 {
 	COORD resolution = GetConsoleResolution();
 	int x = resolution.X / 11;
-	int y = resolution.Y / 8;
+	int y = resolution.Y / 7;
 	int coutmode = _setmode(_fileno(stdout), _O_U16TEXT);
 
 	Gotoxy(x, ++y); wcout<<L" ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄    ▄       ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄ " << endl;
