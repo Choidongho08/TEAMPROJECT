@@ -48,9 +48,9 @@ void TitleScene::Render()
 	y = resolution.Y / 3 * 2;
 	Gotoxy(x, y);
 	cout << "게임 시작";
-	Gotoxy(x, y + 1);
-	cout << "게임 정보";
 	Gotoxy(x, y + 2);
+	cout << "게임 정보";
+	Gotoxy(x, y + 4);
 	cout << "게임 종료";
 
 }
@@ -102,27 +102,35 @@ Menu TitleScene::GetCurMenu()
 	case Key::UP:
 		if (y > originY)
 		{
-			Gotoxy(x - 2, y);
-			cout << " ";
-			Gotoxy(x - 2, --y);
-			cout << ">";
+			Gotoxy(x - 5, y);
+			cout << "    ";
+			Gotoxy(x + 10, y);
+			cout << "  ";
+			Gotoxy(x - 4, ----y);
+			cout << "> [";
+			Gotoxy(x + 10, y);
+			cout << "]";
 			Sleep(100);
 		}
 		break;
 	case Key::DOWN:
-		if (y < originY + 2)
+		if (y < originY + 4)
 		{
-			Gotoxy(x - 2, y);
-			cout << " ";
-			Gotoxy(x - 2, ++y);
-			cout << ">";
+			Gotoxy(x - 5, y);
+			cout << "    ";
+			Gotoxy(x + 10, y);
+			cout << "  ";
+			Gotoxy(x - 4, ++++y);
+			cout << "> [";
+			Gotoxy(x + 10, y);
+			cout << "]";
 			Sleep(100);
 		}
 		break;
 	case Key::SPACE:
 		if (originY == y) return Menu::START;
-		else if (originY + 1 == y) return Menu::INFO;
-		else if (originY + 2 == y) return Menu::QUIT;
+		else if (originY + 2 == y) return Menu::INFO;
+		else if (originY + 4 == y) return Menu::QUIT;
 		break;
 	}
 	return Menu::FAIL;

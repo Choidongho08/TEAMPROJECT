@@ -231,7 +231,7 @@ void GameLogic::RenderUI()
 		 Gotoxy(x, y++);
 		 cout << "-                     -" << endl;
 		 Gotoxy(x, y++);
-		 cout << "-                     -" << endl;
+		 cout << "-    아이뗌 우마이    -" << endl;
 		 Gotoxy(x, y++);
 		 cout << "-                     -" << endl;
 		 Gotoxy(x, y++);
@@ -244,7 +244,7 @@ void GameLogic::RenderUI()
 		 Gotoxy(x, y++);
 		 cout << "-                     -" << endl;
 		 Gotoxy(x, y++);
-		 cout << "-    아이뗌 우마이    -" << endl;
+		 cout << "-                     -" << endl;
 		 Gotoxy(x, y++);
 		 cout << "-                     -" << endl;
 		 Gotoxy(x, y++);
