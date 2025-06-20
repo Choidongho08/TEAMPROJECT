@@ -107,7 +107,7 @@ Menu TitleScene::GetCurMenu()
 			Gotoxy(x + 10, y);
 			cout << "  ";
 			Gotoxy(x - 4, ----y);
-			cout << "> [";
+			cout << "  [";
 			Gotoxy(x + 10, y);
 			cout << "]";
 			Sleep(100);
@@ -121,7 +121,7 @@ Menu TitleScene::GetCurMenu()
 			Gotoxy(x + 10, y);
 			cout << "  ";
 			Gotoxy(x - 4, ++++y);
-			cout << "> [";
+			cout << "  [";
 			Gotoxy(x + 10, y);
 			cout << "]";
 			Sleep(100);

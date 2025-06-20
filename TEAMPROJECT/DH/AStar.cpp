@@ -53,13 +53,11 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY, Map 
             openList.end());
 
         steps++;
-        cout << "\nStep " << steps << ":\n";
 
         // 3.2 목표 도달 확인
         // - 현재 노드가 목표 노드인지 확인
         if (current->x == goalX && current->y == goalY) {
             currentPath = reconstructPath(current);
-            cout << "\nPath found!\n";
             return currentPath;
         }
 
