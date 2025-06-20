@@ -15,8 +15,8 @@ Player::Player(PlayerState playerState, ENTITYPOS playerPos) : Entity(playerPos,
 }
 
 void Player::Initialize(
-    int mapHeight,
     int mapWidth,
+    int mapHeight,
     Map* gameMap
 )
 {
@@ -24,7 +24,7 @@ void Player::Initialize(
     {
         for (int j = 0; j < mapWidth; ++j)
         {
-            if ((*gameMap).isTile(i, j, Tile::PLAYER_START))
+            if ((*gameMap).isTile(j, i, Tile::PLAYER_START))
                 _pos.tStartPos = { j, i };
         }
     }

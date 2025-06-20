@@ -40,6 +40,7 @@ private:
     void EntityInit();
 	void ItemInit();
     
+    void EnemiesMove();
     void HandleInput();
 
     void Render();

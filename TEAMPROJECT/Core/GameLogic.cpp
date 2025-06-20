@@ -84,7 +84,7 @@ void GameLogic::LoadStage()
 void GameLogic::EntityInit()
 {
 	_player = Player();
-	_player.Initialize(_gameMap.GetMapRow(), _gameMap.GetMapRow(), &_gameMap);
+	_player.Initialize(_gameMap.GetMapCol(), _gameMap.GetMapRow(), &_gameMap);
 
 
 	int enemyCnt = 0;
@@ -92,10 +92,9 @@ void GameLogic::EntityInit()
 	{
 		for (int j = 0; j < _gameMap.GetMapCol(); ++j)
 		{
-			if ((_gameMap).isTile(i, j, Tile::ENEMY_SPAWN))
+			if ((_gameMap).isTile(j, i, Tile::ENEMY_SPAWN))
 			{
 				Enemy enemy = Enemy(_gameMap);
-				enemy._pos.tStartPos = { j, i };
 				enemy.Initialize(POS{ j, i }, enemyCnt < _maxFollowingEnemyCnt);
 				_enemies.push_back(enemy);
 				enemyCnt++;
@@ -113,9 +112,9 @@ void GameLogic::ItemInit()
 		int y = rand() % _gameMap.GetMapRow();
 		int x = rand() % _gameMap.GetMapCol();
 
-		if (_gameMap.isTile(y, x, Tile::ROAD))
+		if (_gameMap.isTile(x, y, Tile::COIN))
 		{
-			_gameMap.SetMapTile(y, x, Tile::ITEM);
+			_gameMap.SetMapTile(x, y, Tile::ITEM);
 			itemCount++;
 		}
 	}
@@ -125,14 +124,22 @@ void GameLogic::ItemInit()
 void GameLogic::Update()
 {
 	GameScene();
-	if (GetAsyncKeyState(VK_SPACE) & 0x8000)
-		return;
 
 	// if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
 	// {
 	// 	// PlaySound();
 	// 	eCurScene = Scene::QUIT;
 	// }
+}
+
+void GameLogic::EnemiesMove()
+{
+	for (auto enemy : _enemies)
+	{
+		_gameMap.SetMapTile(enemy._pos.tPos.x, enemy._pos.tPos.y, Tile::ROAD);
+		// enemy.Move();
+		// _gameMap.SetMapTile(enemy._pos.tPos.x, enemy._pos.tPos.y, Tile::ENEMY);
+	}
 }
 
 void GameLogic::HandleInput()
@@ -161,7 +168,9 @@ void GameLogic::HandleInput()
 	_player._pos.tNewPos.x = std::clamp(_player._pos.tNewPos.x, 0, _gameMap.GetMapCol());
 	_player._pos.tNewPos.y = std::clamp(_player._pos.tNewPos.y, 0, _gameMap.GetMapRow());
 
-	if(!_gameMap.isTile(_player._pos.tNewPos.y, _player._pos.tNewPos.x, Tile::WALL))
+	_player._forward = _player._pos.tNewPos - _player._pos.tPos;
+
+	if(!_gameMap.isTile(_player._pos.tNewPos.x, _player._pos.tNewPos.y, Tile::WALL))
 		_player._pos.tPos = _player._pos.tNewPos;
 }
 
@@ -177,17 +186,21 @@ void GameLogic::Render()
 			// 타일 그리기
 			else
 			{
-				if (_gameMap.isTile(i,j, Tile::WALL))
+				if (_gameMap.isTile(j,i, Tile::WALL))
 					cout << "■";
-				else if (_gameMap.isTile(i, j, Tile::ROAD))
+				if (_gameMap.isTile(j,i, Tile::BROKEN_WALL))
+					cout << "▩";
+				else if (_gameMap.isTile(j, i, Tile::ROAD))
 					cout << "  ";
-				else if (_gameMap.isTile(i, j, Tile::PLAYER_START))
+				else if (_gameMap.isTile(j, i, Tile::COIN))
+					cout << "＊";
+				else if (_gameMap.isTile(j, i, Tile::PLAYER_START))
 					cout << "  ";
-				else if (_gameMap.isTile(i, j, Tile::ITEM))
+				else if (_gameMap.isTile(j, i, Tile::ITEM))
 					cout << "★";
-				else if (_gameMap.isTile(i, j, Tile::ENEMY))
-					cout << "  ";
-				else if (_gameMap.isTile(i, j, Tile::ENEMY_SPAWN))
+				else if (_gameMap.isTile(j, i, Tile::ENEMY))
+					cout << "zz";
+				else if (_gameMap.isTile(j, i, Tile::ENEMY_SPAWN))
 					cout << "  ";
 			}
 		}
@@ -269,9 +282,10 @@ void GameLogic::GameScene()
 	//system("cls");
 	Gotoxy(0, 0);
 	HandleInput();
+	EnemiesMove();
 	Render();
 
-	FrameSync(8);
+	FrameSync(6);
 }
 
 void GameLogic::InfoScene()

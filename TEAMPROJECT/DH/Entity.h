@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+
 #include "Enums.h"
 
 typedef struct _pos

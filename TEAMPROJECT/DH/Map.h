@@ -22,7 +22,7 @@ public:
 
     void SetMapTile(int x, int y, Tile tile)
     {
-        grid[x][y] = (int)tile;
+        grid[y][x] = (int)tile;
     }
 
     void SetMapRowCol(int row, int col)
@@ -47,7 +47,7 @@ public:
 
     bool isTile(int x, int y, Tile tile)
     {
-        return grid[x][y] == (int)tile;
+        return grid[y][x] == (int)tile;
     }
 
     bool isValid(int x, int y) const
@@ -57,7 +57,7 @@ public:
 
     bool isWalkable(int x, int y) const 
     {
-        return isValid(x, y) && grid[x][y] == 0;
+        return isValid(x, y) && grid[y][x] == 0;
     }
 
     bool isDiagonalWalkable(int x1, int y1, int x2, int y2) const 
