@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 
 #include "Enums.h"
 
@@ -51,5 +52,6 @@ public:
     ~Entity();
 
     void Rotate(Direction direction);
+    void Render(std::string s);
 };
 

@@ -1,10 +1,8 @@
 #pragma once
 #include<vector>
-#include<string>
 #include "Console.h"
 
 using std::vector;
-using std::string;
 
 class AsciiObject
 {

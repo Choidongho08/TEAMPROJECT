@@ -17,7 +17,7 @@ enum class Scene
 
 enum class Tile
 {
-	WALL = 0, COIN, PLAYER_START, ITEM, ENEMY, ENEMY_SPAWN, BROKEN_WALL, ROAD, END
+	WALL = 0, COIN, PLAYER_START, ITEM, ENEMY_SPAWN, BROKEN_WALL, ROAD, END
 };
 
 enum class Direction

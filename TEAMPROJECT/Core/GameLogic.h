@@ -45,7 +45,8 @@ private:
 
     void Render();
     void RenderUI();
-    void GameScene();
     void RenderInfo();
     void RenderEffect();
+
+    void DebugLog(string str);
 };

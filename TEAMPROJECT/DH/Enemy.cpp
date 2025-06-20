@@ -30,8 +30,8 @@ void Enemy::Move()
 		Direction randDir = (Direction)i;
 		Rotate(randDir);
 
-		int x = (_pos.tPos + _forward).x;
-		int y = (_pos.tPos + _forward).y;
+		int x = _pos.tNewPos.x;
+		int y = _pos.tNewPos.y;
 
 		_pos.tNewPos.x = std::clamp(_pos.tNewPos.x, 0, _gameMap->GetMapCol());
 		_pos.tNewPos.y = std::clamp(_pos.tNewPos.y, 0, _gameMap->GetMapRow());
@@ -39,7 +39,8 @@ void Enemy::Move()
 		if (!_gameMap->isTile(x, y, Tile::WALL)) // 보고 있는 방향이 WALL이 아니면 무한루프 아웃
 			break;
 	}
-	_pos.tNewPos = _pos.tPos + _forward;
+	_forward = _pos.tNewPos - _pos.tPos;
+	_pos.tPos = _pos.tNewPos;
 }
 
 void Enemy::AStarMove()
