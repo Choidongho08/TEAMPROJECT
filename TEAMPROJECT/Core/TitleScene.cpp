@@ -23,25 +23,23 @@ void TitleScene::Initialized(vector<AsciiObject>* objs)
 void TitleScene::Render()
 {
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 10;
+	int x = resolution.X / 11;
 	int y = resolution.Y / 8;
 	int coutmode = _setmode(_fileno(stdout), _O_U16TEXT);
 
-	
-	Gotoxy(x, y);   wcout << L"        ,--,                                                                             " << endl;
-	Gotoxy(x, ++y); wcout << L"      ,--.'|                             ,-.            ____                             " << endl;
-	Gotoxy(x, ++y); wcout << L"   ,--,  | :                         ,--/ /|          ,'  , `.                           " << endl;
-	Gotoxy(x, ++y); wcout << L",---.'|  : '                       ,--. :/ |       ,-+-,.' _ |                     ,---, " << endl;
-	Gotoxy(x, ++y); wcout << L"|   | : _' |                       :  : ' /     ,-+-. ;   , ||                 ,-+-. /  |" << endl;
-	Gotoxy(x, ++y); wcout << L":   : |.'  |    ,---.      ,---.   |  '  /     ,--.'|'   |  ||    ,--.--.     ,--.'|'   |" << endl;
-	Gotoxy(x, ++y); wcout << L"|   ' '  ; :   /     \    /     \  '  |  :    |   |  ,', |  |,   /       \   |   |  ,,' |" << endl;
-	Gotoxy(x, ++y); wcout << L"'   |  .'. |  /    /  |  /    / '  |  |   \   |   | /  | |--'   .--.  .-. |  |   | /  | |" << endl;
-	Gotoxy(x, ++y); wcout << L"|   | :  | ' .    ' / | .    ' /   '  : |. \  |   : |  | ,       \__\/: . .  |   | |  | |" << endl;
-	Gotoxy(x, ++y); wcout << L"'   : |  : ; '   ;   /| '   ; :__  |  | ' \ \ |   : |  |/        ,, .--.; |  |   | |  |/ " << endl;
-	Gotoxy(x, ++y); wcout << L"|   | '  ,/  '   |  / | '   | '.'| '  : |--'  |   | |`-'        /  /  ,.  |  |   | |--'  " << endl;
-	Gotoxy(x, ++y); wcout << L";   : ;--'   |   :    | |   :    : ;  |,'     |   ;/           ;  :   .'   \ |   |/      " << endl;
-	Gotoxy(x, ++y); wcout << L"|   ,/        \   \  /   \   \  /  '--'       '---'            |  ,     .-./ '---'       " << endl;
-	Gotoxy(x, ++y); wcout << L"'---'          `----'     `----'                                `--`---'                 " << endl;
+	Gotoxy(x, ++y); wcout<<L" ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄    ▄       ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄ " << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌     ▐░░▌     ▐░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌ ▐░▌      ▐░▌░▌   ▐░▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌▐░▌       ▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌          ▐░▌░▌        ▐░▌ ▐░▐░▌ ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌ ▐░▌   ▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          ▐░░▌         ▐░▌  ▐░▌  ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌░▌        ▐░▌   ▀   ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌   ▐░▌ ▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌▐░▌       ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌    ▐░▌▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▌      ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌     ▐░▐░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌     ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌      ▐░░▌" << endl;
+	Gotoxy(x, ++y); wcout<<L" ▀         ▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀    ▀       ▀         ▀  ▀         ▀  ▀        ▀▀ " << endl;
+
+
 
 
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
