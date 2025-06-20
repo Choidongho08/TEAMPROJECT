@@ -20,6 +20,11 @@ enum class Tile
 	WALL = 0, ROAD, PLAYER_START, ITEM, ENEMY, ENEMY_SPAWN, END
 };
 
+enum class Direction
+{
+	NONE, RIGHT, LEFT, UP, DOWN
+};
+
 enum class Skill
 {
 	None, KILL, SIGHT, DASH, END

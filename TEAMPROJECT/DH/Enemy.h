@@ -13,7 +13,9 @@ class Enemy : public Entity
 public:
 	EnemyState _state;
 	AStar _playerFindAStar;
+
 private:
+	Map* _gameMap;
 
 public:
 	Enemy(Map& m);

@@ -11,6 +11,10 @@ typedef struct _pos
     {
         return (x == other.x && y == other.y);
     }
+    _pos operator + (const _pos& other) const
+    {
+        return _pos(x + other.x, y + other.y);
+    }
     _pos operator - (const _pos& other) const
     {
         return _pos(x - other.x, y - other.y);
@@ -40,8 +44,11 @@ class Entity
 public:
     ENTITYPOS _pos;
     EntityState _state;
+    POS _forward;
 
     Entity(ENTITYPOS entityPos, EntityState entityState);
     ~Entity();
+
+    void Rotate(Direction direction);
 };
 

@@ -27,6 +27,8 @@ enum class COLOR
 	LIGHT_GREEN, MINT, LIGHT_RED, LIGHT_VIOLET,
 	LIGHT_YELLOW, WHITE, END
 };
+int Random();
+int Random(int extra, int extra2);
 void SetColor(COLOR _textcolor = COLOR::WHITE, COLOR _bgcolor = COLOR::BLACK);
 void FrameSync(unsigned int frame);
 

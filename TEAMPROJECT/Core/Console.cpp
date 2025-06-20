@@ -44,6 +44,18 @@ COORD GetConsoleResolution()
 	//return COORD{ width, height };
 }
 
+int Random()
+{
+	srand((unsigned int)time(nullptr));
+	return rand();
+}
+
+int Random(int extra, int extra2)
+{
+	srand((unsigned int)time(nullptr));
+	return rand() % extra + extra2;
+}
+
 void Gotoxy(int _x, int _y)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
