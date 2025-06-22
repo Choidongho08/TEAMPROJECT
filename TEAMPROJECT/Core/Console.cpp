@@ -56,7 +56,7 @@ int Random(int extra, int extra2)
 	return rand() % extra + extra2;
 }
 
-void Gotoxy(int _x, int _y)
+void GotoXY(int _x, int _y)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD Cur = { _x, _y };
@@ -64,7 +64,7 @@ void Gotoxy(int _x, int _y)
 	SetConsoleCursorPosition(handle, Cur);
 }
 
-BOOL IsGotoxy(int _x, int _y)
+BOOL IsGotoXY(int _x, int _y)
 {
 	HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD Cur = { _x, _y };
@@ -129,4 +129,9 @@ void SetConsoleFont(LPCWSTR fontName, COORD _size, UINT _weight)
 	wcscpy_s(cf.FaceName, fontName); // 폰트이름 복사
 	// 폰트 정보 Set
 	SetCurrentConsoleFontEx(handle, false, &cf);
+}
+
+void COUT(string s)
+{
+	cout << s;
 }

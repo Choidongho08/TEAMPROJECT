@@ -27,17 +27,17 @@ void TitleScene::Render()
 	int y = resolution.Y / 7;
 	int coutmode = _setmode(_fileno(stdout), _O_U16TEXT);
 
-	Gotoxy(x, ++y); wcout<<L" ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄    ▄       ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄ " << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌     ▐░░▌     ▐░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌ ▐░▌      ▐░▌░▌   ▐░▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌▐░▌       ▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌          ▐░▌░▌        ▐░▌ ▐░▐░▌ ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌ ▐░▌   ▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          ▐░░▌         ▐░▌  ▐░▌  ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌░▌        ▐░▌   ▀   ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌   ▐░▌ ▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌▐░▌       ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌    ▐░▌▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▌      ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌     ▐░▐░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌     ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌      ▐░░▌" << endl;
-	Gotoxy(x, ++y); wcout<<L" ▀         ▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀    ▀       ▀         ▀  ▀         ▀  ▀        ▀▀ " << endl;
+	GotoXY(x, ++y); wcout<<L" ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄    ▄       ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄ " << endl;
+	GotoXY(x, ++y); wcout<<L"▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌     ▐░░▌     ▐░░▌▐░░░░░░░░░░░▌▐░░▌      ▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░▌       ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀▀▀ ▐░▌ ▐░▌      ▐░▌░▌   ▐░▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌░▌     ▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌▐░▌       ▐░▌▐░▌ ▐░▌▐░▌▐░▌       ▐░▌▐░▌▐░▌    ▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░█▄▄▄▄▄▄▄█░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌          ▐░▌░▌        ▐░▌ ▐░▐░▌ ▐░▌▐░█▄▄▄▄▄▄▄█░▌▐░▌ ▐░▌   ▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░░░░░░░░░░░▌▐░░░░░░░░░░░▌▐░▌          ▐░░▌         ▐░▌  ▐░▌  ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌  ▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░█▀▀▀▀▀▀▀█░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌          ▐░▌░▌        ▐░▌   ▀   ▐░▌▐░█▀▀▀▀▀▀▀█░▌▐░▌   ▐░▌ ▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░▌          ▐░▌▐░▌       ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌    ▐░▌▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░█▄▄▄▄▄▄▄▄▄ ▐░▌ ▐░▌      ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌     ▐░▐░▌" << endl;
+	GotoXY(x, ++y); wcout<<L"▐░▌       ▐░▌▐░▌       ▐░▌▐░░░░░░░░░░░▌▐░▌  ▐░▌     ▐░▌       ▐░▌▐░▌       ▐░▌▐░▌      ▐░░▌" << endl;
+	GotoXY(x, ++y); wcout<<L" ▀         ▀  ▀         ▀  ▀▀▀▀▀▀▀▀▀▀▀  ▀    ▀       ▀         ▀  ▀         ▀  ▀        ▀▀ " << endl;
 
 
 
@@ -45,11 +45,11 @@ void TitleScene::Render()
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
 	x = resolution.X / 2.5;
 	y = resolution.Y / 3 * 2;
-	Gotoxy(x, y);
+	GotoXY(x, y);
 	cout << "게임 시작";
-	Gotoxy(x, y + 2);
+	GotoXY(x, y + 2);
 	cout << "게임 정보";
-	Gotoxy(x, y + 4);
+	GotoXY(x, y + 4);
 	cout << "게임 종료";
 
 }
@@ -101,13 +101,13 @@ Menu TitleScene::GetCurMenu()
 	case Key::UP:
 		if (y > originY)
 		{
-			Gotoxy(x - 5, y);
+			GotoXY(x - 5, y);
 			cout << "    ";
-			Gotoxy(x + 10, y);
+			GotoXY(x + 10, y);
 			cout << "  ";
-			Gotoxy(x - 4, ----y);
+			GotoXY(x - 4, ----y);
 			cout << "  [";
-			Gotoxy(x + 10, y);
+			GotoXY(x + 10, y);
 			cout << "]";
 			Sleep(100);
 		}
@@ -115,13 +115,13 @@ Menu TitleScene::GetCurMenu()
 	case Key::DOWN:
 		if (y < originY + 4)
 		{
-			Gotoxy(x - 5, y);
+			GotoXY(x - 5, y);
 			cout << "    ";
-			Gotoxy(x + 10, y);
+			GotoXY(x + 10, y);
 			cout << "  ";
-			Gotoxy(x - 4, ++++y);
+			GotoXY(x - 4, ++++y);
 			cout << "  [";
-			Gotoxy(x + 10, y);
+			GotoXY(x + 10, y);
 			cout << "]";
 			Sleep(100);
 		}
@@ -184,12 +184,12 @@ void TitleScene::CrossAnimation(COORD resolution, int delayTime)
 	{
 		for (int j = 0; j < resolution.Y; j += 2)
 		{
-			Gotoxy(i * 2, j);
+			GotoXY(i * 2, j);
 			cout << "  ";
 		}
 		for (int j = 1; j < resolution.Y; j += 2)
 		{
-			Gotoxy(resolution.X - 2 - i * 2, j);
+			GotoXY(resolution.X - 2 - i * 2, j);
 			cout << "  ";
 		}
 		Sleep(delayTime);

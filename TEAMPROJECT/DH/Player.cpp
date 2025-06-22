@@ -2,7 +2,7 @@
 
 Player::Player() : Entity({{0,0}, {0,0}, {0,0}}, {true})
 {
-    _state = { false };
+    _state = { 0, false, (int)Skill::None };
     _forward = { 0,0 };
     _skill = Skill::None;
 }
@@ -29,7 +29,7 @@ void Player::Initialize(
         }
     }
     _pos.tPos = _pos.tStartPos;
-    _state = { true, false, Skill::None};
+    _state = { 0, false, (int)Skill::None};
 }
 
 void Player::Update()
@@ -37,10 +37,42 @@ void Player::Update()
 
 }
 
-void Player::Move(POS nextPos)
+void Player::Move()
 {
-    _pos.tNewPos = nextPos;
-    _forward = nextPos - _pos.tPos;
+    _pos.tPos = _pos.tNewPos;
+    _forward = _pos.tNewPos - _pos.tPos;
+}
+
+void Player::HandleInput(Map& gameMap)
+{
+    _pos.tNewPos = _pos.tPos;
+    Key eKey = KeyController();
+    switch (eKey)
+    {
+    case Key::UP:
+        --_pos.tNewPos.y;
+        break;
+    case Key::DOWN:
+        ++_pos.tNewPos.y;
+        break;
+    case Key::LEFT:
+        --_pos.tNewPos.x;
+        break;
+    case Key::RIGHT:
+        ++_pos.tNewPos.x;
+        break;
+    case Key::SPACE: // 스킬
+        //SpawnBomb(gameMap, pPlayer, vecBomb);
+        break;
+    }
+    // clamp함수는 c++17에 나옴
+    _pos.tNewPos.x = std::clamp(_pos.tNewPos.x, 0, gameMap.GetMapCol());
+    _pos.tNewPos.y = std::clamp(_pos.tNewPos.y, 0, gameMap.GetMapRow());
+
+    _forward = _pos.tNewPos - _pos.tPos;
+
+    if (!gameMap.isTile(_pos.tNewPos.x, _pos.tNewPos.y, Tile::WALL))
+        Move();
 }
 
 void Player::SetSkill(Skill skill)

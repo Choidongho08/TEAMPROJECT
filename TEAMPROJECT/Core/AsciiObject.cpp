@@ -20,7 +20,7 @@ void AsciiObject::ObjectRender(COLOR txtColor, COLOR bgColor)
 	SetColor(txtColor, bgColor);
 	for (int i = 0; i < objCnt; ++i)
 	{
-		Gotoxy(0, i);
+		GotoXY(0, i);
 		cout << obj[i];
 	}
 	SetColor();

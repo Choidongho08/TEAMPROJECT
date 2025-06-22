@@ -1,4 +1,4 @@
-#include "GameLogic.h"
+ï»¿#include "GameLogic.h"
 #include "Core.h"
 #include "Console.h"
 #include "Mci.h"
@@ -27,12 +27,12 @@ void GameLogic::Initialized(
 
 	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
 
-	// »ç¿îµå ÃÊ±âÈ­
+	// ì‚¬ìš´ë“œ ì´ˆê¸°í™”
 	// if (!InitAllSounds()) return;
 
 	PlaySoundID(SOUNDID::BGM, true);
 
-	// ÄÜ¼ÖÃ¢ °ü·Ã ÃÊ±âÈ­
+	// ì½˜ì†”ì°½ ê´€ë ¨ ì´ˆê¸°í™”
 	SetConsoleSettings(1200, 600, false, L"HackMan");
 	SetCursorVisual(true, 50);
 	
@@ -50,7 +50,7 @@ void GameLogic::LoadStage()
 	std::ifstream mapFile(mapFileName);
 	if (mapFile.is_open())
 	{
-		// ÃÊ±âÈ­
+		// ì´ˆê¸°í™”
 		std::string line;
 
 		int row = 0;
@@ -59,7 +59,7 @@ void GameLogic::LoadStage()
 		while (std::getline(mapFile, line))
 		{
 			if (row == 0)
-				col = line.length(); // Ã¹ ÁÙÀÇ ¹®ÀÚ ¼ö·Î ¿­ ¼ö °áÁ¤
+				col = line.length(); // ì²« ì¤„ì˜ ë¬¸ì ìˆ˜ë¡œ ì—´ ìˆ˜ ê²°ì •
 
 			row++;
 
@@ -71,14 +71,14 @@ void GameLogic::LoadStage()
 			}
 
 			_gameMap.InitializeMap(mapRow);
-		} // ¸Ê ±æÀÌ ±¸ÇÏ¸é¼­ ¸Ê ÃÊ±âÈ­
+		} // ë§µ ê¸¸ì´ êµ¬í•˜ë©´ì„œ ë§µ ì´ˆê¸°í™”
 
 		_gameMap.SetMapRowCol(row, col);
 		mapFile.close();
 		return;
 	}
 	else
-		cout << "¸Ê ÆÄÀÏ ÃÊ±âÈ­ ½ÇÆĞ" << endl;
+		cout << "ë§µ íŒŒì¼ ì´ˆê¸°í™” ì‹¤íŒ¨" << endl;
 }
 
 void GameLogic::EntityInit()
@@ -123,7 +123,13 @@ void GameLogic::ItemInit()
 
 void GameLogic::Update()
 {
-	GameScene();
+	//system("cls");
+	GotoXY(0, 0);
+	HandleInput();
+	EnemiesMove();
+	Render();
+
+	FrameSync(6);
 
 	// if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
 	// {
@@ -136,9 +142,8 @@ void GameLogic::EnemiesMove()
 {
 	for (auto enemy : _enemies)
 	{
-		_gameMap.SetMapTile(enemy._pos.tPos.x, enemy._pos.tPos.y, Tile::ROAD);
-		// enemy.Move();
-		// _gameMap.SetMapTile(enemy._pos.tPos.x, enemy._pos.tPos.y, Tile::ENEMY);
+		enemy.Move();
+		DebugLog("" + enemy._pos.tPos.x + "" + enemy._pos.tPos.y);
 	}
 }
 
@@ -160,18 +165,19 @@ void GameLogic::HandleInput()
 	case Key::RIGHT:
 		++_player._pos.tNewPos.x;
 		break;
-	case Key::SPACE: // ½ºÅ³
+	case Key::SPACE: // ï¿½ï¿½Å³
 		//SpawnBomb(gameMap, pPlayer, vecBomb);
 		break;
 	}
-	// clampÇÔ¼ö´Â c++17¿¡ ³ª¿È
+	// clampï¿½Ô¼ï¿½ï¿½ï¿½ c++17ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	_player._pos.tNewPos.x = std::clamp(_player._pos.tNewPos.x, 0, _gameMap.GetMapCol());
 	_player._pos.tNewPos.y = std::clamp(_player._pos.tNewPos.y, 0, _gameMap.GetMapRow());
 
 	_player._forward = _player._pos.tNewPos - _player._pos.tPos;
 
-	if(!_gameMap.isTile(_player._pos.tNewPos.x, _player._pos.tNewPos.y, Tile::WALL))
+	if (!_gameMap.isTile(_player._pos.tNewPos.x, _player._pos.tNewPos.y, Tile::WALL))
 		_player._pos.tPos = _player._pos.tNewPos;
+	// _player.HandleInput(_gameMap);
 }
 
 void GameLogic::Render()
@@ -180,28 +186,36 @@ void GameLogic::Render()
 	{
 		for (int j = 0; j < _gameMap.GetMapCol(); ++j)
 		{
-			// ÇÃ·¹ÀÌ¾î ±×¸®±â
+			for (auto enemy : _enemies)
+			{
+				if (enemy._pos.tPos.x == j && enemy._pos.tPos.y == i)
+				{
+					enemy.Render("zz");
+				}
+			}
+			// í”Œë ˆì´ì–´ ê·¸ë¦¬ê¸°
 			if (_player._pos.tPos.x == j && _player._pos.tPos.y == i)
-				cout << "¢Á";
-			// Å¸ÀÏ ±×¸®±â
+				_player.Render("âŠ™");
+				// _player.Render(j, i, "âŠ™");
+			// íƒ€ì¼ ê·¸ë¦¬ê¸°
 			else
 			{
 				if (_gameMap.isTile(j,i, Tile::WALL))
-					cout << "¡á";
+					cout << "â– ";
 				if (_gameMap.isTile(j,i, Tile::BROKEN_WALL))
-					cout << "¢Ì";
+					cout << "â–©";
 				else if (_gameMap.isTile(j, i, Tile::ROAD))
 					cout << "  ";
 				else if (_gameMap.isTile(j, i, Tile::COIN))
-					cout << "£ª";
+					cout << "Â·";
 				else if (_gameMap.isTile(j, i, Tile::PLAYER_START))
 					cout << "  ";
 				else if (_gameMap.isTile(j, i, Tile::ITEM))
-					cout << "¡Ú";
-				else if (_gameMap.isTile(j, i, Tile::ENEMY))
-					cout << "zz";
-				else if (_gameMap.isTile(j, i, Tile::ENEMY_SPAWN))
-					cout << "  ";
+					cout << "â˜…";
+				// else if (_gameMap.isTile(j, i, Tile::ENEMY))
+				// 	cout << "";
+				// else if (_gameMap.isTile(j, i, Tile::ENEMY_SPAWN))
+				// 	cout << "  ";
 			}
 		}
 		cout << endl;
@@ -228,76 +242,72 @@ void GameLogic::RenderUI()
 		skill = "DASH";
 		break;
 	default:
-		skill = "¾Ë ¼ö ¾øÀ½";
+		skill = "ì•Œ ìˆ˜ ì—†ìŒ";
 		break;
 	}
 	 COORD resolution = GetConsoleResolution();
 	 int x = resolution.X / 1.5;
 	 int y = resolution.Y / 10;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
-	 Gotoxy(x, y++);
-	 cout << "ÇöÀç º¸À¯ ½ºÅ³ : " << skill << endl;
+	 GotoXY(x, y++);
+	 cout << "í˜„ì¬ ë³´ìœ  ìŠ¤í‚¬ : " << skill << endl;
 	 if (_player._state.isHaveSkill) {
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-----------------------" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
-		 Gotoxy(x, y++);
-		 cout << "-    ¾ÆÀÌ¶À ¿ì¸¶ÀÌ    -" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
+		 if(_player._state.whatSkill == Skill::DASH)
+			cout << "-       DASH       -" << endl;
+		 else if(_player._state.whatSkill == Skill::KILL)
+			cout << "-       KILL       -" << endl;
+		 else if(_player._state.whatSkill == Skill::SIGHT)
+			cout << "-       SIGHT      -" << endl;
+		 else
+			cout << "-       NONE       -" << endl;
+		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-----------------------" << endl;
 	 }
 	 else
 	 {
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-----------------------" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
-		 Gotoxy(x, y++);
+		 GotoXY(x, y++);
 		 cout << "-----------------------" << endl;
 	 }
 
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
-	 Gotoxy(x, y++);
-	 cout << "-    ½ºÄÚ¾î : 0       -" << endl;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
+	 cout << "-    ìŠ¤ì½”ì–´ : 0       -" << endl;
+	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
 	
 }
 
-void GameLogic::GameScene()
-{
-	//system("cls");
-	Gotoxy(0, 0);
-	HandleInput();
-	EnemiesMove();
-	Render();
-
-	FrameSync(6);
-}
-
 void GameLogic::InfoScene()
 {
-	// Update - ESCÅ°¸¦ ´­·¯¼­ TITLE¾ÀÀ¸·Î µ¹¾Æ°¡°Ô ÇØº¸ÀÚ.
+	// Update - ESCí‚¤ë¥¼ ëˆŒëŸ¬ì„œ TITLEì”¬ìœ¼ë¡œ ëŒì•„ê°€ê²Œ í•´ë³´ì.
 	Key key = KeyController();
 	if (key == Key::ESC)
 	{
 		Core::Instance->ChangeScene(Scene::TITLE);
 		system("cls");
 	}
-	Gotoxy(0, 0);
+	GotoXY(0, 0);
 	RenderInfo();
 }
 
@@ -311,17 +321,17 @@ void GameLogic::RenderInfo()
 	 COORD resolution = GetConsoleResolution();
 	 int x = resolution.X/ 3;
 	 int y = resolution.Y/3;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
-	 Gotoxy(x, y++);
-	 cout << "[    Á¶ÀÛ      ¹æ¹ı   ]" << endl;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
+	 cout << "[    ì¡°ì‘      ë°©ë²•   ]" << endl;
+	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
-	 Gotoxy(x, y++);
-	 cout << "Á¶ÀÛÅ° : ¡è, ¡æ, ¡ç, ¡é"  << endl;
-	 Gotoxy(x, y++);
-	 cout << "½ºÅ³ : ½ºÆäÀÌ½º¹Ù      " << endl;
-	 Gotoxy(x, y++);
+	 GotoXY(x, y++);
+	 cout << "ì¡°ì‘í‚¤	: â†‘ â†’ â† â†“"  << endl;
+	 GotoXY(x, y++);
+	 cout << "ìŠ¤í‚¬	: ìŠ¤í˜ì´ìŠ¤ë°”      " << endl;
+	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 }
 
@@ -335,10 +345,19 @@ void GameLogic::RenderEffect()
 	// 	for (auto& effect : bomb.vecEffect)
 	// 	{
 	// 		Gotoxy(effect.x * 2, effect.y);
-	// 		cout << "¢Æ";
+	// 		cout << "â–’";
 	// 		Sleep(10);
 	// 	}
 	// 	bomb.vecEffect.clear();
 	// }
 	SetColor();
+}
+
+void GameLogic::DebugLog(string str)
+{
+	COORD resolution = GetConsoleResolution();
+	int x = resolution.X / 3;
+	int y = resolution.Y / 3;
+	GotoXY(x, y);
+	cout << str;
 }
