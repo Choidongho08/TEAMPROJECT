@@ -23,6 +23,9 @@ private:
     Player _player;
     vector<Enemy> _enemies;
     Map _gameMap;
+    POS logPos = { 0,0 };
+    int maxDebugCnt = 4;
+    int currDebugCnt = 0;
 
     int _maxFollowingEnemyCnt;
 public:
@@ -48,5 +51,5 @@ private:
     void RenderInfo();
     void RenderEffect();
 
-    void DebugLog(string str);
+    void DebugLog(std::string str);
 };

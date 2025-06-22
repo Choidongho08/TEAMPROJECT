@@ -143,7 +143,7 @@ void GameLogic::EnemiesMove()
 	for (auto enemy : _enemies)
 	{
 		enemy.Move();
-		DebugLog("" + enemy._pos.tPos.x + "" + enemy._pos.tPos.y);
+		DebugLog("( " + std::to_string(enemy._pos.tPos.x) + ", " + std::to_string(enemy._pos.tPos.y) + " )");
 	}
 }
 
@@ -295,7 +295,7 @@ void GameLogic::RenderUI()
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
-	
+	 logPos = POS{ x, y++ };
 }
 
 void GameLogic::InfoScene()
@@ -320,7 +320,7 @@ void GameLogic::RenderInfo()
 {
 	 COORD resolution = GetConsoleResolution();
 	 int x = resolution.X/ 3;
-	 int y = resolution.Y/3;
+	 int y = resolution.Y / 3;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);
@@ -353,11 +353,13 @@ void GameLogic::RenderEffect()
 	SetColor();
 }
 
-void GameLogic::DebugLog(string str)
+void GameLogic::DebugLog(std::string str)
 {
-	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 3;
-	int y = resolution.Y / 3;
-	GotoXY(x, y);
+	if (currDebugCnt >= maxDebugCnt)
+		currDebugCnt = 0;
+
+	GotoXY(logPos.x, logPos.y + currDebugCnt);
 	cout << str;
+	currDebugCnt++;
+	GotoXY(0, 0);
 }
