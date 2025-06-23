@@ -15,6 +15,14 @@ TitleScene::TitleScene()
 
 void TitleScene::Initialized(vector<AsciiObject>* objs)
 {
+	COORD resolution = GetConsoleResolution();
+	int x = resolution.X / 2.5;
+    int y = resolution.Y / 3 * 2;
+	GotoXY(x - 4, y);
+	cout << "  [";
+	GotoXY(x + 10, y);
+	cout << "]";
+
 	_pObjs = objs;
 	textColor = COLOR::WHITE;
 	bgColor = COLOR::BLACK;
