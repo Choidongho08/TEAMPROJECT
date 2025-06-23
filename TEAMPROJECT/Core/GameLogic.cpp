@@ -60,17 +60,16 @@ void GameLogic::LoadStage()
 
 		while (std::getline(mapFile, line))
 		{
+			x = 0;
 			std::vector<Node> rowGrid;
 			for (char ch : line)
 			{
 				Node node = Node(ch - '0', x, y);
+				// Debug::Instance->Log(to_string(x) + "," + to_string(y));
 				rowGrid.push_back(node);
-				GotoXY(0, 25);
-				cout << x << ", " << y;
+				x++;
 			}
 			grid.push_back(rowGrid);
-
-			x++;
 			y++;
 		} // 맵 길이 구하면서 맵 초기화
 
@@ -187,7 +186,6 @@ void GameLogic::Render()
 						entity.Render("⊙");
 					}
 				}
-				
 			}
 			
 			Map.Render(j, i);

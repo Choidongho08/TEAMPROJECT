@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Debug.h"
 
 void Map::InitializeMap(const vector<vector<Node>>& _grid)
 {
@@ -16,6 +17,9 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 				MaxItemCnt++;
 		}
 	}
+	Debug::Instance->Pos(__FILE__, __LINE__);
+	Debug::Instance->Log(PlayerSpawnPos.x);
+	Debug::Instance->Log(PlayerSpawnPos.y);
 }
 
 void Map::Render(int x, int y)

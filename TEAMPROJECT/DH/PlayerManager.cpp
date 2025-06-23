@@ -12,6 +12,6 @@ void PlayerManager::SpawnPlayer(vector<Entity>& entities)
     pos.tPos = pos.tStartPos;
     state = { 0, false, (int)Skill::None };
     player = Player{ state, pos };
-    Debug::Instance->Log(to_string(pos.tStartPos.x) + ", " + to_string(pos.tStartPos.y));
+    Debug::Instance->Log(to_string(map.PlayerSpawnPos.x) + ", " + to_string(map.PlayerSpawnPos.y));
     return;
 }

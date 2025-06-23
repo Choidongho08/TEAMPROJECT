@@ -25,3 +25,29 @@ void Debug::Log(std::string string)
 	cout << string;
 	GotoXY(0,0);
 }
+
+void Debug::Log(int in)
+{
+	GotoXY(x, y++);
+	cout << in;
+	GotoXY(0, 0);
+}
+
+void Debug::Log(float in)
+{
+	GotoXY(x, y++);
+	cout << in;
+	GotoXY(0, 0);
+}
+
+void Debug::Pos(std::string file, int line)
+{
+	size_t pos;
+	string path = "D:\\source\\repos\\TEAMPROJECT\\TEAMPROJECT";
+	pos = file.find(path);
+	string cpp = file.replace(pos, path.length(), "");
+
+	GotoXY(x, y++);
+	cout << cpp << ", " << line;
+	GotoXY(0, 0);
+}
