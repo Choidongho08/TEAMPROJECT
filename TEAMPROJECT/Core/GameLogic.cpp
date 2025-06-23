@@ -232,13 +232,11 @@ void GameLogic::RenderUI()
 		 cout << "-                     -" << endl;
 		 GotoXY(x, y++);
 		 if(PlayerManager.player.state.whatSkill == Skill::DASH)
-			cout << "-       DASH       -" << endl;
+			cout << "-       ▶▶▶        -" << endl;
 		 else if(PlayerManager.player.state.whatSkill == Skill::KILL)
-			cout << "-       KILL       -" << endl;
+			wcout << "-       -- X --       -" << endl;
 		 else if(PlayerManager.player.state.whatSkill == Skill::SIGHT)
-			cout << "-       SIGHT      -" << endl;
-		 else
-			cout << "-       NONE       -" << endl;
+			cout << "-      << ○ >>       -" << endl;
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
 		 GotoXY(x, y++);
@@ -263,7 +261,7 @@ void GameLogic::RenderUI()
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
-	 cout << "-    스코어 : 0       -" << endl;
+	 cout << "     스코어 : 0        " << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
