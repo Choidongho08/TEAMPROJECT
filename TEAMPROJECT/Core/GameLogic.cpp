@@ -11,7 +11,7 @@
 #include "../DH/Debug.h"
 using std::format;
 
-GameLogic::GameLogic() : EnemyManager(Map), PlayerManager(Map)
+GameLogic::GameLogic() : EnemyManager(&Map), PlayerManager(&Map)
 {
 	pObjs = nullptr;
 	maxFollowingEnemyCnt = 2;

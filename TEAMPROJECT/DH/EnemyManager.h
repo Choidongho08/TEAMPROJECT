@@ -9,10 +9,10 @@ public:
 
 private:
 	AStar aStar;
-	Map map;
+	Map* map;
 
 public:
-	EnemyManager(Map& _map) : aStar(_map), map(_map) {}
+	EnemyManager(Map* _map) : aStar(*_map), map(_map) {}
 
 	void SpawnEnemies(vector<Entity>& _entities);
 private:

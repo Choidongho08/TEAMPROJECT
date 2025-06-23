@@ -8,10 +8,10 @@ public:
 	Player player;
 
 private:
-	Map map;
+	Map* map;
 
 public:
-	PlayerManager(Map& _map) : map(_map) {}
+	PlayerManager(Map* _map) : map(_map) {}
 	void SpawnPlayer(vector<Entity>& entities);
 
 private:
