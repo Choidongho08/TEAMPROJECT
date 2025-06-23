@@ -25,7 +25,7 @@ public:
 
 private:
     vector<AsciiObject>* pObjs;
-    vector<Entity> entities;
+    vector<Entity*> entities;
     int maxDebugCnt = 4;
     int currDebugCnt = 0;
 

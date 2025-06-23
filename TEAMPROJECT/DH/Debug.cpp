@@ -5,7 +5,6 @@ Debug* Debug::Instance = nullptr;
 
 Debug::Debug()
 {
-	x = y = 0;
 	Instance = this;
 
 	COORD resolution = GetConsoleResolution();
@@ -17,6 +16,11 @@ Debug::Debug()
 	cout << "LOG";
 	GotoXY(x, y++);
 	cout << "-----------------------" << endl;
+}
+
+Debug::~Debug()
+{
+	// delete Debug::Instance;
 }
 
 void Debug::Log(std::string string)
@@ -40,14 +44,9 @@ void Debug::Log(float in)
 	GotoXY(0, 0);
 }
 
-void Debug::Pos(std::string file, int line)
+void Debug::Pos(std::string path, int line)
 {
-	size_t pos;
-	string path = "D:\\source\\repos\\TEAMPROJECT\\TEAMPROJECT";
-	pos = file.find(path);
-	string cpp = file.replace(pos, path.length(), "");
-
 	GotoXY(x, y++);
-	cout << cpp << ", " << line;
+	cout << path << ", " << line;
 	GotoXY(0, 0);
 }

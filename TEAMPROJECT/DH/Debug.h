@@ -11,6 +11,7 @@ private:
 
 public:
 	Debug();
+	~Debug();
 	
 	void Log(std::string string);
 	void Log(int in);

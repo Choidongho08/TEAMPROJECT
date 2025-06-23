@@ -20,6 +20,7 @@ void Enemy::Initialize(POS _startPos, bool _isFollowing)
 
 void Enemy::Move()
 {
+	pos.tNewPos = pos.tPos + POS{ 1,0 };
 	if (_state.isFollowing)
 	{
 		AStarMove();

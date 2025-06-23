@@ -34,6 +34,6 @@ public:
     void Rotate(Direction _direction);
     void RotationMove();
     void Render(std::string _s);
-    void Move(Map& _map);
+    void Move(Map* _map);
 };
 

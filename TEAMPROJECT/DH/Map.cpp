@@ -17,7 +17,7 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 				MaxItemCnt++;
 		}
 	}
-	Debug::Instance->Pos(__FILE__, __LINE__);
+	Debug::Instance->Pos(__FUNCTION__, __LINE__);
 	Debug::Instance->Log(PlayerSpawnPos.x);
 	Debug::Instance->Log(PlayerSpawnPos.y);
 }

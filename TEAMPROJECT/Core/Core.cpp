@@ -79,7 +79,7 @@ void Core::Update()
 			_titleScene.Update();
 			break;
 		case Scene::GAME:
-			_gameLogic.Update(); // curScene, gameMap, &player, &enemies);
+			_gameLogic.Update();
 			break;
 		case Scene::INFO:
 			_gameLogic.InfoScene();

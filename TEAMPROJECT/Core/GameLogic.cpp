@@ -85,7 +85,7 @@ void GameLogic::LoadStage()
 void GameLogic::EntityInit()
 {
 	PlayerManager.SpawnPlayer(entities);
-	EnemyManager.SpawnEnemies(entities);
+	EnemyManager.SpawnEnemies(&entities);
 }
 
 void GameLogic::ItemInit()
@@ -105,15 +105,14 @@ void GameLogic::ItemInit()
 	}
 }
 
-
 void GameLogic::Update()
 {
 	//system("cls");
 	GotoXY(0, 0);
 	HandleInput();
-	EntitiesMove();
+ 	EntitiesMove();
 	Render();
-
+	
 	FrameSync(6);
 
 	// if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
@@ -131,10 +130,10 @@ void GameLogic::EntitiesMove()
 	}
 	for (auto entity : entities)
 	{
-		entity.Move(Map);
-		entity.pos.tNewPos.x = std::clamp(entity.pos.tNewPos.x, 0, Map.COL);
-		entity.pos.tNewPos.y = std::clamp(entity.pos.tNewPos.y, 0, Map.ROW);
-		entity.pos.tForward = entity.pos.tNewPos - entity.pos.tPos;
+		entity->Move(&Map);
+		entity->pos.tNewPos.x = std::clamp(entity->pos.tNewPos.x, 0, Map.COL);
+		entity->pos.tNewPos.y = std::clamp(entity->pos.tNewPos.y, 0, Map.ROW);
+		entity->pos.tForward = entity->pos.tNewPos - entity->pos.tPos;
 	}
 }
 
@@ -174,19 +173,19 @@ void GameLogic::Render()
 			for (auto entity : entities)
 			{
 				// 적 그리기
-				if (entity.type == ENTITY_TYPE::Enemy)
+				if (entity->type == ENTITY_TYPE::Enemy)
 				{
-					if (entity.pos.tPos.x == j && entity.pos.tPos.y == i)
+					if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
 					{
-						entity.Render("EM");
+						entity->Render("EM");
 					}
 				}
 				// 플레이어 그리기
-				else if (entity.type == ENTITY_TYPE::Player)
+				else if (entity->type == ENTITY_TYPE::Player)
 				{
-					if (entity.pos.tPos.x == j && entity.pos.tPos.y == i)
+					if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
 					{
-						entity.Render("⊙");
+						entity->Render("⊙");
 					}
 				}
 			}

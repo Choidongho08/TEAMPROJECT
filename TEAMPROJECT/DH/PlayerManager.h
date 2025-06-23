@@ -12,7 +12,7 @@ private:
 
 public:
 	PlayerManager(Map* _map) : map(_map) {}
-	void SpawnPlayer(vector<Entity>& entities);
+	void SpawnPlayer(vector<Entity*>& entities);
 
 private:
 };

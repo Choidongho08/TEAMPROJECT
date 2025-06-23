@@ -2,7 +2,7 @@
 #include "KeyController.h"
 
 Key KeyController()
-{
+ {
 	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
 		//Sleep(100);

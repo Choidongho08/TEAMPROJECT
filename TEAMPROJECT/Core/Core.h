@@ -17,6 +17,7 @@ private:
 
 public:
 	Core();
+	~Core() { delete Instance; }
 
 	void Run();
 	void ChangeScene(Scene newScene);
