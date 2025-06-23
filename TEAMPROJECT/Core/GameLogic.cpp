@@ -270,39 +270,84 @@ void GameLogic::RenderUI()
 
 void GameLogic::InfoScene()
 {
-	// Update - ESC키를 눌러서 TITLE씬으로 돌아가게 해보자.
 	Key key = KeyController();
+
+	bool isQNow = (key == Key::Q);
+	bool isENow = (key == Key::E);
+
 	if (key == Key::ESC)
 	{
 		Core::Instance->ChangeScene(Scene::TITLE);
 		system("cls");
 	}
+	else if (isQNow && !wasQPressed)
+	{
+		system("cls");
+		RenderInfo(true);
+	}
+	else if (isENow && !wasEPressed)
+	{
+		system("cls");
+		RenderInfo(false);
+	}
+
+	wasQPressed = isQNow;
+	wasEPressed = isENow;
+
 	GotoXY(0, 0);
-	RenderInfo();
 }
 
 void GameLogic::InfoSceneInit()
 {
 	system("cls");
+	RenderInfo(true);
 }
 
-void GameLogic::RenderInfo()
+void GameLogic::RenderInfo(bool isTrue)
 {
 	 COORD resolution = GetConsoleResolution();
-	 int x = resolution.X/ 3;
+	 int x = resolution.X / 3;
 	 int y = resolution.Y / 3;
-	 GotoXY(x, y++);
-	 cout << "=======================" << endl;
-	 GotoXY(x, y++);
-	 cout << "[    조작      방법   ]" << endl;
-	 GotoXY(x, y++);
-	 cout << "-----------------------" << endl;
-	 GotoXY(x, y++);
-	 cout << "조작키	: ↑ → ← ↓"  << endl;
-	 GotoXY(x, y++);
-	 cout << "스킬	: 스페이스바      " << endl;
-	 GotoXY(x, y++);
-	 cout << "=======================" << endl;
+	 if (isTrue) {
+		 GotoXY(x, y++);
+		 cout << "=======================  ▶";
+		 GotoXY(x, y++);
+		 cout << "[    조작      방법   ]";
+		 GotoXY(x, y++);
+		 cout << "-----------------------";
+		 GotoXY(x, y++);
+		 cout << " 조작키	: ↑ → ← ↓";
+		 GotoXY(x, y++);
+		 cout << " 스킬	: 스페이스바     ";
+		 GotoXY(x, y++);
+		 cout << " 다음 내용 보기 :  E   ";
+		 GotoXY(x, y++);
+		 cout << "=======================";
+	 }
+	 else {
+		 GotoXY(x - 4, y++);
+		 cout << "◀  ==========================";
+		 GotoXY(x, y++);
+		 cout << " [    게임      방법   ]";
+		 GotoXY(x, y++);
+		 cout << "--------------------------";
+		 GotoXY(x, y++);
+		 cout << "1. 적을 피해서 코인을 먹자";
+		 GotoXY(x, y++);
+		 cout << "2. 맵 곳곳에 아이템이 있다";
+		 GotoXY(x, y++);
+		 cout << "3. 아이템을 먹으면 스킬 획득";
+		 GotoXY(x, y++);
+		 cout << " - KILL  : 근처 적 제거";
+		 GotoXY(x, y++);
+		 cout << " - DASH  : 앞으로 대쉬";
+		 GotoXY(x, y++);
+		 cout << " - SIGHT : 시야 넓어짐 ";
+		 GotoXY(x, y++);
+		 cout << " 이전 내용 보기 : Q    ";
+		 GotoXY(x, y++);
+		 cout << "==========================";
+	 }
 }
 
 void GameLogic::RenderEffect()

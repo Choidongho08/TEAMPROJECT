@@ -22,6 +22,8 @@ public:
     Map Map;
     EnemyManager EnemyManager;
     PlayerManager PlayerManager;
+    bool wasQPressed = false;
+    bool wasEPressed = false;
 
 private:
     vector<AsciiObject>* pObjs;
@@ -50,6 +52,6 @@ private:
 
     void Render();
     void RenderUI();
-    void RenderInfo();
+    void RenderInfo(bool isTrue);
     void RenderEffect();
 };

@@ -43,6 +43,16 @@ Key KeyController()
 		Sleep(60);
 		return Key::ESC;
 	}
+	if (GetAsyncKeyState('Q') & 0x8000)
+	{
+		//Sleep(100);
+		return Key::Q;
+	}
+	if (GetAsyncKeyState('E') & 0x8000)
+	{
+		Sleep(60);
+		return Key::E;
+	}
 	
 	return Key::FAIL;
 }

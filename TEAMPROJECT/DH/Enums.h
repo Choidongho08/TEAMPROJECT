@@ -2,7 +2,7 @@
 
 enum class Key
 {
-	UP, DOWN, LEFT, RIGHT, SPACE, ESC, FAIL
+	UP, DOWN, LEFT, RIGHT, SPACE, ESC, FAIL, Q, E
 };
 
 enum class Menu
