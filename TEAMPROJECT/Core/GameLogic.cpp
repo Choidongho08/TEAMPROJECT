@@ -10,11 +10,10 @@
 #include <format>
 using std::format;
 
-GameLogic::GameLogic()
+GameLogic::GameLogic() : EnemyManager(Map), PlayerManager(Map)
 {
-	_pObjs = nullptr;
-	_maxFollowingEnemyCnt = 2;
-	_gameMap = Map();
+	pObjs = nullptr;
+	maxFollowingEnemyCnt = 2;
 }
 
 void GameLogic::Initialized(
@@ -22,8 +21,8 @@ void GameLogic::Initialized(
 	int maxFollowingEnemy
 )
 {
-	_maxFollowingEnemyCnt = maxFollowingEnemy;
-	_pObjs = objs;
+	maxFollowingEnemyCnt = maxFollowingEnemy;
+	pObjs = objs;
 
 	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
 
@@ -38,7 +37,6 @@ void GameLogic::Initialized(
 	
 	LoadStage();
 	ItemInit();
-
 	EntityInit();
 }
 
@@ -46,34 +44,36 @@ void GameLogic::LoadStage()
 {
 	srand((unsigned int)time(NULL));
 	int stageNumber = rand() % 3 + 1;
-	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
+	string mapFileName = "Stage2.txt"; // + std::to_string(stageNumber) + ".txt";
 	std::ifstream mapFile(mapFileName);
 	if (mapFile.is_open())
 	{
 		// 초기화
 		std::string line;
 
-		int row = 0;
-		int col = 0;
+		int x = 0;
+		int y = 0;
+
+		std::vector<std::vector<Node>> grid;
 
 		while (std::getline(mapFile, line))
 		{
-			if (row == 0)
-				col = line.length(); // 첫 줄의 문자 수로 열 수 결정
-
-			row++;
-
-			std::vector<int> mapRow;
-
+			std::vector<Node> rowGrid;
 			for (char ch : line)
 			{
-				mapRow.push_back(ch - '0');
+				Node node = Node(ch - '0', x, y);
+				rowGrid.push_back(node);
+				GotoXY(0, 25);
+				cout << x << ", " << y;
 			}
+			grid.push_back(rowGrid);
 
-			_gameMap.InitializeMap(mapRow);
+			x++;
+			y++;
 		} // 맵 길이 구하면서 맵 초기화
 
-		_gameMap.SetMapRowCol(row, col);
+		Map.InitializeMap(grid);
+		Map.SetMapRowCol(y, x);
 		mapFile.close();
 		return;
 	}
@@ -83,38 +83,22 @@ void GameLogic::LoadStage()
 
 void GameLogic::EntityInit()
 {
-	_player = Player();
-	_player.Initialize(_gameMap.GetMapCol(), _gameMap.GetMapRow(), &_gameMap);
-
-
-	int enemyCnt = 0;
-	for (int i = 0; i < _gameMap.GetMapRow(); ++i)
-	{
-		for (int j = 0; j < _gameMap.GetMapCol(); ++j)
-		{
-			if ((_gameMap).isTile(j, i, Tile::ENEMY_SPAWN))
-			{
-				Enemy enemy = Enemy(_gameMap);
-				enemy.Initialize(POS{ j, i }, enemyCnt < _maxFollowingEnemyCnt);
-				_enemies.push_back(enemy);
-				enemyCnt++;
-			}
-		}
-	}
+	PlayerManager.SpawnPlayer(entities);
+	EnemyManager.SpawnEnemies(entities);
 }
 
 void GameLogic::ItemInit()
 {
 	int itemCount = 0;
 	srand((unsigned int)time(NULL));
-	while (itemCount < 5)
+	while (itemCount < Map.MaxItemCnt)
 	{
-		int y = rand() % _gameMap.GetMapRow();
-		int x = rand() % _gameMap.GetMapCol();
+		int y = rand() % Map.ROW;
+		int x = rand() % Map.COL;
 
-		if (_gameMap.isTile(x, y, Tile::COIN))
+		if (Map.isTile(x, y, Tile::COIN))
 		{
-			_gameMap.SetMapTile(x, y, Tile::ITEM);
+			Map.SetMapTile(x, y, Tile::ITEM);
 			itemCount++;
 		}
 	}
@@ -126,7 +110,7 @@ void GameLogic::Update()
 	//system("cls");
 	GotoXY(0, 0);
 	HandleInput();
-	EnemiesMove();
+	EntitiesMove();
 	Render();
 
 	FrameSync(6);
@@ -138,85 +122,74 @@ void GameLogic::Update()
 	// }
 }
 
-void GameLogic::EnemiesMove()
+void GameLogic::EntitiesMove()
 {
-	for (auto enemy : _enemies)
+	for (auto enemy : EnemyManager.Enemies)
 	{
 		enemy.Move();
-		DebugLog("( " + std::to_string(enemy._pos.tPos.x) + ", " + std::to_string(enemy._pos.tPos.y) + " )");
+		DebugLog("( " + std::to_string(enemy.pos.tPos.x) + ", " + std::to_string(enemy.pos.tPos.y) + " )");
+	}
+	for (auto entity : entities)
+	{
+		entity.Move(Map);
+		entity.pos.tNewPos.x = std::clamp(entity.pos.tNewPos.x, 0, Map.COL);
+		entity.pos.tNewPos.y = std::clamp(entity.pos.tNewPos.y, 0, Map.ROW);
+		entity.pos.tForward = entity.pos.tNewPos - entity.pos.tPos;
 	}
 }
 
 void GameLogic::HandleInput()
 {
-	_player._pos.tNewPos = _player._pos.tPos;
+	PlayerManager.player.pos.tNewPos = PlayerManager.player.pos.tPos;
 	Key eKey = KeyController();
 	switch (eKey)
 	{
 	case Key::UP:
-		--_player._pos.tNewPos.y;
+		--PlayerManager.player.pos.tNewPos.y;
 		break;
 	case Key::DOWN:
-		++_player._pos.tNewPos.y;
+		++PlayerManager.player.pos.tNewPos.y;
 		break;
 	case Key::LEFT:
-		--_player._pos.tNewPos.x;
+		--PlayerManager.player.pos.tNewPos.x;
 		break;
 	case Key::RIGHT:
-		++_player._pos.tNewPos.x;
+		++PlayerManager.player.pos.tNewPos.x;
 		break;
 	case Key::SPACE: // ��ų
 		//SpawnBomb(gameMap, pPlayer, vecBomb);
 		break;
 	}
-	// clamp�Լ��� c++17�� ����
-	_player._pos.tNewPos.x = std::clamp(_player._pos.tNewPos.x, 0, _gameMap.GetMapCol());
-	_player._pos.tNewPos.y = std::clamp(_player._pos.tNewPos.y, 0, _gameMap.GetMapRow());
-
-	_player._forward = _player._pos.tNewPos - _player._pos.tPos;
-
-	if (!_gameMap.isTile(_player._pos.tNewPos.x, _player._pos.tNewPos.y, Tile::WALL))
-		_player._pos.tPos = _player._pos.tNewPos;
-	// _player.HandleInput(_gameMap);
 }
 
 void GameLogic::Render()
 {
-	for (int i = 0; i < _gameMap.GetMapRow(); ++i)
+	for (int i = 0; i < Map.ROW; ++i)
 	{
-		for (int j = 0; j < _gameMap.GetMapCol(); ++j)
+		for (int j = 0; j < Map.COL; ++j)
 		{
-			for (auto enemy : _enemies)
+			for (auto entity : entities)
 			{
-				if (enemy._pos.tPos.x == j && enemy._pos.tPos.y == i)
+				// 적 그리기
+				if (entity.type == ENTITY_TYPE::Enemy)
 				{
-					enemy.Render("zz");
+					if (entity.pos.tPos.x == j && entity.pos.tPos.y == i)
+					{
+						entity.Render("EM");
+					}
 				}
+				// 플레이어 그리기
+				else if (entity.type == ENTITY_TYPE::Player)
+				{
+					if (entity.pos.tPos.x == j && entity.pos.tPos.y == i)
+					{
+						entity.Render("⊙");
+					}
+				}
+				
 			}
-			// 플레이어 그리기
-			if (_player._pos.tPos.x == j && _player._pos.tPos.y == i)
-				_player.Render("⊙");
-				// _player.Render(j, i, "⊙");
-			// 타일 그리기
-			else
-			{
-				if (_gameMap.isTile(j,i, Tile::WALL))
-					cout << "■";
-				if (_gameMap.isTile(j,i, Tile::BROKEN_WALL))
-					cout << "▩";
-				else if (_gameMap.isTile(j, i, Tile::ROAD))
-					cout << "  ";
-				else if (_gameMap.isTile(j, i, Tile::COIN))
-					cout << "·";
-				else if (_gameMap.isTile(j, i, Tile::PLAYER_START))
-					cout << "  ";
-				else if (_gameMap.isTile(j, i, Tile::ITEM))
-					cout << "★";
-				// else if (_gameMap.isTile(j, i, Tile::ENEMY))
-				// 	cout << "";
-				// else if (_gameMap.isTile(j, i, Tile::ENEMY_SPAWN))
-				// 	cout << "  ";
-			}
+			
+			Map.Render(j, i);
 		}
 		cout << endl;
 	}
@@ -227,7 +200,7 @@ void GameLogic::Render()
 void GameLogic::RenderUI()
 {
 	string skill;
-	switch (_player._skill)
+	switch (PlayerManager.player.skill)
 	{
 	case Skill::None:
 		skill = "None";
@@ -247,22 +220,23 @@ void GameLogic::RenderUI()
 	}
 	 COORD resolution = GetConsoleResolution();
 	 int x = resolution.X / 1.5;
+	 // x = Map.COL + 10;
 	 int y = resolution.Y / 10;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);
 	 cout << "현재 보유 스킬 : " << skill << endl;
-	 if (_player._state.isHaveSkill) {
+	 if (PlayerManager.player.state.isHaveSkill) {
 		 GotoXY(x, y++);
 		 cout << "-----------------------" << endl;
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
 		 GotoXY(x, y++);
-		 if(_player._state.whatSkill == Skill::DASH)
+		 if(PlayerManager.player.state.whatSkill == Skill::DASH)
 			cout << "-       DASH       -" << endl;
-		 else if(_player._state.whatSkill == Skill::KILL)
+		 else if(PlayerManager.player.state.whatSkill == Skill::KILL)
 			cout << "-       KILL       -" << endl;
-		 else if(_player._state.whatSkill == Skill::SIGHT)
+		 else if(PlayerManager.player.state.whatSkill == Skill::SIGHT)
 			cout << "-       SIGHT      -" << endl;
 		 else
 			cout << "-       NONE       -" << endl;
@@ -295,6 +269,7 @@ void GameLogic::RenderUI()
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
+
 	 logPos = POS{ x, y++ };
 }
 

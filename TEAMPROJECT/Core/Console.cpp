@@ -130,8 +130,3 @@ void SetConsoleFont(LPCWSTR fontName, COORD _size, UINT _weight)
 	// 폰트 정보 Set
 	SetCurrentConsoleFontEx(handle, false, &cf);
 }
-
-void COUT(string s)
-{
-	cout << s;
-}

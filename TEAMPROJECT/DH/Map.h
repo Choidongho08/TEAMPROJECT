@@ -3,51 +3,54 @@
 #include <vector>
 #include "Node.h"
 #include "Enums.h"
+#include "Pos.h"
 
 using std::vector;
 
 class Map {
-private:
+public:
+    vector<POS> EnemySpawnPos;
+    POS PlayerSpawnPos;
+    int MaxPlayerFollowingEnemyCnt;
+    int MaxItemCnt;
     int ROW;
     int COL;
-    vector<vector<int>> grid;
+
+private:
+    vector<vector<Node>> grid;
 
 public:
-    Map() : ROW(0), COL(0) {}
+    Map() : MaxItemCnt(0), grid(0), ROW(0), COL(0), PlayerSpawnPos(POS{0,0}), EnemySpawnPos(0), MaxPlayerFollowingEnemyCnt(0)
+    {}
 
-    void InitializeMap(vector<int> tile)
-    {
-        grid.push_back(tile);
-    }
+    void InitializeMap(const vector<vector<Node>>& _grid);
 
-    void SetMapTile(int x, int y, Tile tile)
+    void SetMapTile(int _x, int _y, Tile _tile)
     {
-        grid[y][x] = (int)tile;
+        grid[_y][_x].tile = (int)_tile;
     }
 
-    void SetMapRowCol(int row, int col)
+    void SetMapRowCol(int _row, int _col)
     {
-        ROW = row;
-        COL = col;
+        ROW = _row;
+        COL = _col;
     }
 
-    int GetMapRow()
+    const vector<vector<Node>> GetGrid()
     {
-        return ROW;
+        return grid;
     }
-    int GetMapCol()
-    {
-        return COL;
-    }
+
+    void Render(int x, int y);
 
     void setObstacle(int x, int y) 
     {
-        if (isValid(x, y)) grid[x][y] = 1;
+        if (isValid(x, y)) grid[x][y].tile = (int)Tile::WALL;
     }
 
     bool isTile(int x, int y, Tile tile)
     {
-        return grid[y][x] == (int)tile;
+        return grid[y][x].tile == (int)tile;
     }
 
     bool isValid(int x, int y) const
@@ -57,7 +60,7 @@ public:
 
     bool isWalkable(int x, int y) const 
     {
-        return isValid(x, y) && grid[y][x] == 0;
+        return isValid(x, y) && grid[y][x].tile != (int)Tile::WALL;
     }
 
     bool isDiagonalWalkable(int x1, int y1, int x2, int y2) const 

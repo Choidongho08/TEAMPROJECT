@@ -68,6 +68,21 @@
     <ClInclude Include="DH\AStar.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
+    <ClInclude Include="DH\EnemyManager.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Map.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Node.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\Pos.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\PlayerManager.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Console.cpp">
@@ -97,14 +112,26 @@
     <ClCompile Include="Core\TitleScene.cpp">
       <Filter>소스 파일\Core\CPP</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="DH\Enemy.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="DH\AStar.cpp">
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
+    <ClCompile Include="DH\Enemy.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Main.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\Map.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\EnemyManager.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\PlayerManager.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -1,12 +1,8 @@
 #include "Entity.h"
 #include "../Core/Console.h"
 
-Entity::Entity(ENTITYPOS entityPos, EntityState entityState)
-	: _pos(entityPos), _state(entityState), _forward(POS{-1,0})
-{
-}
-
-Entity::~Entity()
+Entity::Entity(ENTITYPOS entityPos, EntityState entityState, ENTITY_TYPE _type)
+	: pos(entityPos), state(entityState), dir(Direction::NONE), type(_type)
 {
 }
 
@@ -15,21 +11,35 @@ void Entity::Rotate(Direction direction)
 	switch (direction)
 	{
 	case Direction::RIGHT:
-		_pos.tNewPos = POS{ 0,1 } + _pos.tPos;
+		pos.tForward = POS{ 0,1 };
 		break;
 	case Direction::LEFT:
-		_pos.tNewPos = POS{ 0, -1 } + _pos.tPos;
+		pos.tForward = POS{ 0, -1 };
 		break;
 	case Direction::UP:
-		_pos.tNewPos = POS{ -1, 0 } + _pos.tPos;
+		pos.tForward = POS{ -1, 0 };
 		break;
 	case Direction::DOWN:
-		_pos.tNewPos = POS{ 1, 0 } + _pos.tPos;
+		pos.tForward = POS{ 1, 0 };
 		break;
+	case Direction::NONE:
+		pos.tForward = POS{ 0, 0 };
 	}
+}
+
+void Entity::RotationMove()
+{
+	pos.tNewPos = pos.tForward + pos.tPos;
+	pos.tPos = pos.tNewPos;
 }
 
 void Entity::Render(std::string s)
 {
-	COUT(s);
+	cout << s;
+}
+
+void Entity::Move(Map& _map)
+{
+	if (!_map.isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
+		pos.tPos = pos.tNewPos;
 }

@@ -2,19 +2,20 @@
 #include "../Core/Console.h"
 #include "Enemy.h"
 
-Enemy::Enemy(Map& m) :
-	_playerFindAStar(m),
-	Entity({ {0,0}, {0,0}, {0,0} }, { true })
+Enemy::Enemy(AStar _aStar) :
+	Entity({ {0,0}, {0,0}, {0,0} },
+	{ true },
+	ENTITY_TYPE::Enemy),
+	playerFindAStar(_aStar)
 {
 	_state = EnemyState{ true, false };
-	_gameMap = &m;
 }
 
-void Enemy::Initialize(POS startPos, bool isFollowing)
+void Enemy::Initialize(POS _startPos, bool _isFollowing)
 {
-	_pos.tStartPos = startPos;
-	_pos.tPos = startPos;
-	_state = EnemyState{ true, isFollowing };
+	pos.tStartPos = _startPos;
+	pos.tPos = _startPos;
+	_state = EnemyState{ true, _isFollowing };
 }
 
 void Enemy::Move()
@@ -24,23 +25,13 @@ void Enemy::Move()
 		AStarMove();
 		return;
 	}
-	// 일반 움직임
-	for (int i = 1; i<=4; ++i)
-	{
-		Direction randDir = (Direction)i;
-		Rotate(randDir);
+	// if()
+}
 
-		int x = _pos.tNewPos.x;
-		int y = _pos.tNewPos.y;
-
-		_pos.tNewPos.x = std::clamp(_pos.tNewPos.x, 0, _gameMap->GetMapCol());
-		_pos.tNewPos.y = std::clamp(_pos.tNewPos.y, 0, _gameMap->GetMapRow());
-
-		if (!_gameMap->isTile(x, y, Tile::WALL)) // 보고 있는 방향이 WALL이 아니면 무한루프 아웃
-			break;
-	}
-	_forward = _pos.tNewPos - _pos.tPos;
-	_pos.tPos = _pos.tNewPos;
+void Enemy::BasicMove()
+{
+	int x = pos.tNewPos.x;
+	int y = pos.tNewPos.y;
 }
 
 void Enemy::AStarMove()

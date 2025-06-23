@@ -31,4 +31,3 @@ void SetColor(COLOR _textcolor = COLOR::WHITE, COLOR _bgcolor = COLOR::BLACK);
 void FrameSync(unsigned int frame);
 
 void SetConsoleFont(LPCWSTR fontName, COORD _size, UINT _weight);
-void COUT(string s);

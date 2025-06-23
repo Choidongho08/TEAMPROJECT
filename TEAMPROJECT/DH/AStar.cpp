@@ -27,8 +27,8 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY, Map 
     // priority_queue(우선순위 큐)는 내부적으로 힙(heap) 정렬을 사용하여 노드들을 f값에 따라 자동 정렬합니다.
     priority_queue<Node*, vector<Node*>, CompareNode> openPQ;           // 탐색할 노드들을 담는 목록
     vector<Node*> openList;                                             // 시각화를 위한 열린 목록
-    vector<vector<bool>> closedList(map.GetMapRow(), vector<bool>(map.GetMapCol(), false));     // 이미 탐색한 노드들을 담는 목록
-    vector<vector<double>> gScore(map.GetMapRow(), vector<double>(map.GetMapRow(), INFINITY));
+    vector<vector<bool>> closedList(map.ROW, vector<bool>(map.COL, false));     // 이미 탐색한 노드들을 담는 목록
+    vector<vector<double>> gScore(map.ROW, vector<double>(map.COL, INFINITY));
 
     start->h = heuristic(startX, startY, goalX, goalY);                 // 시작 노드의 휴리스틱 비용
     start->f = start->h;                                                // f = g + h: 시작 노드의 총 예상 비용

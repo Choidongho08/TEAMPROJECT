@@ -2,30 +2,9 @@
 #include <vector>
 #include <string>
 
+#include "Pos.h"
 #include "Enums.h"
-
-typedef struct _pos
-{
-    int x;
-    int y;
-
-    bool operator == (const _pos& other) const
-    {
-        return (x == other.x && y == other.y);
-    }
-    _pos operator + (const _pos& other) const
-    {
-        return _pos(x + other.x, y + other.y);
-    }
-    _pos operator - (const _pos& other) const
-    {
-        return _pos(x - other.x, y - other.y);
-    }
-    _pos operator * (const int& num) const
-    {
-        return _pos(x * num, y * num);
-    }
-}POS, * PPOS;
+#include "Map.h"
 
 // 위치 관련 구조체
 typedef struct _TagEntityPos
@@ -33,6 +12,7 @@ typedef struct _TagEntityPos
     POS tPos;     // 현재 위치
     POS tNewPos;    // 다음 위치
     POS tStartPos; // 시작 위치
+    POS tForward;
 } ENTITYPOS, * PENTITYPOS;
 
 class EntityState
@@ -44,14 +24,16 @@ public:
 class Entity
 {
 public:
-    ENTITYPOS _pos;
-    EntityState _state;
-    POS _forward;
+    ENTITYPOS pos;
+    EntityState state;
+    Direction dir;
+    ENTITY_TYPE type;
 
-    Entity(ENTITYPOS entityPos, EntityState entityState);
-    ~Entity();
+    Entity(ENTITYPOS _entityPos, EntityState _entityState, ENTITY_TYPE _type);
 
-    void Rotate(Direction direction);
-    void Render(std::string s);
+    void Rotate(Direction _direction);
+    void RotationMove();
+    void Render(std::string _s);
+    void Move(Map& _map);
 };
 

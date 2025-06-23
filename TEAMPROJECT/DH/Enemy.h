@@ -12,19 +12,21 @@ class Enemy : public Entity
 {
 public:
 	EnemyState _state;
-	AStar _playerFindAStar;
+	AStar playerFindAStar;
 
 private:
-	Map* _gameMap;
 
 public:
-	Enemy(Map& m);
+	Enemy(AStar _aStar);
 
-	void Initialize (
-		POS startPos,
-		bool isFollowing
+	void Initialize(
+		POS _startPos,
+		bool _isFollowing
 	);
+
 	void Move();
+	void BasicMove();
 	void AStarMove();
+
 private:
 };

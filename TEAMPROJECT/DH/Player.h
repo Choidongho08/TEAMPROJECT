@@ -16,8 +16,8 @@ public:
 class Player : public Entity
 {
 public:
-    PlayerState _state;
-    Skill _skill;
+    PlayerState state;
+    Skill skill;
 
 private:
 
@@ -27,11 +27,9 @@ public:
 
     void Initialize(
         int mapHeight,
-        int mapWidth,
-        Map* gameMap
+        int mapWidth
     );
     void Update();
-    void HandleInput(Map& gameMap);
     void SetSkill(Skill skill);
     void UseSkill(std::vector<std::vector<char>>* pGameMap, Skill skillEnum, Enemy* pEnemy);
     
