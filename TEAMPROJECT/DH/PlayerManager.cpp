@@ -1,24 +1,17 @@
 #include "EnemyManager.h"
 #include "PlayerManager.h"
 #include "../Core/Console.h"
+#include "Debug.h"
 
 void PlayerManager::SpawnPlayer(vector<Entity>& entities)
 {
-    for (int i = 0; i < map.ROW; ++i)
-    {
-        for (int j = 0; j < map.COL; ++j)
-        {
-            if (map.isTile(j, i, Tile::PLAYER_START))
-            {
-                ENTITYPOS pos;
-                PlayerState state;
-                pos = { 0 };
-                pos.tStartPos = POS{ j, i };
-                pos.tPos = POS{ j, i };
-                state = { 0, false, (int)Skill::None };
-                player = Player{ state, pos };
-                return;
-            }
-        }
-    }
+    ENTITYPOS pos;
+    PlayerState state;
+    pos = { 0 };
+    pos.tStartPos = map.PlayerSpawnPos;
+    pos.tPos = pos.tStartPos;
+    state = { 0, false, (int)Skill::None };
+    player = Player{ state, pos };
+    Debug::Instance->Log(to_string(pos.tStartPos.x) + ", " + to_string(pos.tStartPos.y));
+    return;
 }

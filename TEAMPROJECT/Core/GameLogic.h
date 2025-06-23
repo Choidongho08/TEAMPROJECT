@@ -26,7 +26,6 @@ public:
 private:
     vector<AsciiObject>* pObjs;
     vector<Entity> entities;
-    POS logPos = { 0,0 };
     int maxDebugCnt = 4;
     int currDebugCnt = 0;
 
@@ -53,6 +52,4 @@ private:
     void RenderUI();
     void RenderInfo();
     void RenderEffect();
-
-    void DebugLog(std::string _str);
 };

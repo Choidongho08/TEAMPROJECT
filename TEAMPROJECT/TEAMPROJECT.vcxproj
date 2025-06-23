@@ -139,6 +139,7 @@
     <ClInclude Include="Core\Mci.h" />
     <ClInclude Include="Core\TitleScene.h" />
     <ClInclude Include="DH\AStar.h" />
+    <ClInclude Include="DH\Debug.h" />
     <ClInclude Include="DH\Enemy.h" />
     <ClInclude Include="DH\EnemyManager.h" />
     <ClInclude Include="DH\Entity.h" />
@@ -159,6 +160,7 @@
     <ClCompile Include="Core\Mci.cpp" />
     <ClCompile Include="Core\TitleScene.cpp" />
     <ClCompile Include="DH\AStar.cpp" />
+    <ClCompile Include="DH\Debug.cpp" />
     <ClCompile Include="DH\Enemy.cpp" />
     <ClCompile Include="DH\EnemyManager.cpp" />
     <ClCompile Include="DH\Entity.cpp" />

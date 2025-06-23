@@ -6,8 +6,9 @@
 #include "KeyController.h"
 #include <algorithm>
 #include <fstream>
-#include<random>
+#include <random>
 #include <format>
+#include "../DH/Debug.h"
 using std::format;
 
 GameLogic::GameLogic() : EnemyManager(Map), PlayerManager(Map)
@@ -21,6 +22,7 @@ void GameLogic::Initialized(
 	int maxFollowingEnemy
 )
 {
+	Debug debug;
 	maxFollowingEnemyCnt = maxFollowingEnemy;
 	pObjs = objs;
 
@@ -127,7 +129,6 @@ void GameLogic::EntitiesMove()
 	for (auto enemy : EnemyManager.Enemies)
 	{
 		enemy.Move();
-		DebugLog("( " + std::to_string(enemy.pos.tPos.x) + ", " + std::to_string(enemy.pos.tPos.y) + " )");
 	}
 	for (auto entity : entities)
 	{
@@ -269,8 +270,6 @@ void GameLogic::RenderUI()
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
-
-	 logPos = POS{ x, y++ };
 }
 
 void GameLogic::InfoScene()
@@ -326,15 +325,4 @@ void GameLogic::RenderEffect()
 	// 	bomb.vecEffect.clear();
 	// }
 	SetColor();
-}
-
-void GameLogic::DebugLog(std::string str)
-{
-	if (currDebugCnt >= maxDebugCnt)
-		currDebugCnt = 0;
-
-	GotoXY(logPos.x, logPos.y + currDebugCnt);
-	cout << str;
-	currDebugCnt++;
-	GotoXY(0, 0);
 }
