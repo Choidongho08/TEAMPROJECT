@@ -168,6 +168,9 @@ void GameLogic::Render()
 	{
 		for (int j = 0; j < Map.COL; ++j)
 		{
+			// 맵 렌더
+			Map.Render(j, i);
+
 			for (auto entity : entities)
 			{
 				// 적 그리기
@@ -187,8 +190,6 @@ void GameLogic::Render()
 					}
 				}
 			}
-			
-			Map.Render(j, i);
 		}
 		cout << endl;
 	}

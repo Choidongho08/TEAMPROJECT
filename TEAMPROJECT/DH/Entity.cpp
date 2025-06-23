@@ -35,6 +35,7 @@ void Entity::RotationMove()
 
 void Entity::Render(std::string s)
 {
+	GotoXY(pos.tPos.x * 2, pos.tPos.y);
 	cout << s;
 }
 
