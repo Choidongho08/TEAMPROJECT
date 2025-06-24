@@ -32,6 +32,8 @@ public:
     Entity(ENTITYPOS _entityPos, EntityState _entityState, ENTITY_TYPE _type);
 
     void Rotate(Direction _direction);
+    void Rotate90();
+    void Rotate180();
     void RotationMove();
     void Render(std::string _s);
     void Move(Map* _map);

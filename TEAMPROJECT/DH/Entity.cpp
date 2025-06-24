@@ -27,6 +27,54 @@ void Entity::Rotate(Direction direction)
 	}
 }
 
+void Entity::Rotate90()
+{
+	if (pos.tForward == POS{ 0, 0 })
+	{
+		pos.tForward == POS{ 0, 0 };
+	}
+	else if (pos.tForward == POS{ 1, 0 })
+	{
+		pos.tForward == POS{ 0, 1 };
+	}
+	else if (pos.tForward == POS{ 0, 1 })
+	{
+		pos.tForward == POS{ -1, 0 };
+	}
+	else if (pos.tForward == POS{ -1, 0 })
+	{
+		pos.tForward == POS{ 0, -1 };
+	}
+	else if (pos.tForward == POS{ 0, -1 })
+	{
+		pos.tForward == POS{ 1, 0 };
+	}
+}
+
+void Entity::Rotate180()
+{
+	if (pos.tForward == POS{ 0, 0 })
+	{
+		pos.tForward == POS{ 0, 0 };
+	}
+	else if (pos.tForward == POS{ 1, 0 })
+	{
+		pos.tForward == POS{ -1, 0 };
+	}
+	else if (pos.tForward == POS{ 0, 1 })
+	{
+		pos.tForward == POS{ 0, -1 };
+	}
+	else if (pos.tForward == POS{ -1, 0 })
+	{
+		pos.tForward == POS{ 1, 0 };
+	}
+	else if (pos.tForward == POS{ 0, -1 })
+	{
+		pos.tForward == POS{ 0, 1 };
+	}
+}
+
 void Entity::RotationMove()
 {
 	pos.tNewPos = pos.tForward + pos.tPos;

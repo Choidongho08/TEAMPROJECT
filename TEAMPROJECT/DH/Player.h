@@ -2,7 +2,6 @@
 #include <math.h>
 #include "../Core/KeyController.h"
 #include "Entity.h"
-#include "Enemy.h"
 #include "Map.h"
 
 class PlayerState : public EntityState
@@ -31,8 +30,9 @@ public:
     );
     void Update();
     void SetSkill(Skill skill);
-    void UseSkill(std::vector<std::vector<char>>* pGameMap, Skill skillEnum, Enemy* pEnemy);
+    void UseSkill(Map* _pGameMap, Skill _skillEnum);
+    void Move(Map* _map);
+    void CheckTile(Map* _map);
     
 private:
-    void Move();
 };

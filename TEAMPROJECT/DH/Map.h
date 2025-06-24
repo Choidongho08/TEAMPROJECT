@@ -43,7 +43,7 @@ public:
 
     void Render(int x, int y);
 
-    void setObstacle(int x, int y) 
+    void setObstacle(int x, int y)
     {
         if (isValid(x, y)) grid[x][y].tile = (int)Tile::WALL;
     }

@@ -64,8 +64,7 @@ void GameLogic::LoadStage()
 			std::vector<Node> rowGrid;
 			for (char ch : line)
 			{
-				Node node = Node(ch - '0', x, y);
-				// Debug::Instance->Log(to_string(x) + "," + to_string(y));
+				Node node = Node(ch - '0', x, y);	
 				rowGrid.push_back(node);
 				x++;
 			}
@@ -85,7 +84,7 @@ void GameLogic::LoadStage()
 void GameLogic::EntityInit()
 {
 	PlayerManager.SpawnPlayer(entities);
-	EnemyManager.SpawnEnemies(&entities);
+	EnemyManager.SpawnEnemies(&entities, &PlayerManager.player);
 }
 
 void GameLogic::ItemInit()
@@ -126,7 +125,7 @@ void GameLogic::EntitiesMove()
 {
 	for (auto enemy : EnemyManager.Enemies)
 	{
-		enemy.Move();
+		enemy.Move(&Map);
 	}
 	for (auto entity : entities)
 	{
@@ -135,6 +134,7 @@ void GameLogic::EntitiesMove()
 		entity->pos.tNewPos.y = std::clamp(entity->pos.tNewPos.y, 0, Map.ROW);
 		entity->pos.tForward = entity->pos.tNewPos - entity->pos.tPos;
 	}
+	PlayerManager.player.CheckTile(&Map);
 }
 
 void GameLogic::HandleInput()

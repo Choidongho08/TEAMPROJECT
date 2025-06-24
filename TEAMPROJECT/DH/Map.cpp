@@ -28,7 +28,7 @@ void Map::Render(int x, int y)
 	if (isTile(x, y, Tile::WALL))
 		std::cout << "бс";
 	else if (isTile(x, y, Tile::BROKEN_WALL))
-		std::cout << "BR";
+		std::cout << "бр";
 	else if (isTile(x, y, Tile::ROAD))
 		std::cout << "  ";
 	else if (isTile(x, y, Tile::COIN))

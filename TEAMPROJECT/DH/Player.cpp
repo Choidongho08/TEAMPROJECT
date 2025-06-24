@@ -27,10 +27,29 @@ void Player::Update()
 
 }
 
-void Player::Move()
+void Player::Move(Map* _map)
 {
     pos.tPos = pos.tNewPos;
     pos.tForward = pos.tNewPos - pos.tPos;
+
+    Entity::Move(_map);
+}
+
+void Player::CheckTile(Map* _map)
+{
+    if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
+    {
+        state.score++;
+        _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+    }
+    if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
+    {
+        state.isHaveSkill = true;
+        srand((unsigned int)time(nullptr));
+        int rVal = rand() % (int)Skill::END;
+        state.whatSkill = (Skill)rVal;
+        _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+    }
 }
 
 void Player::SetSkill(Skill skill)
@@ -38,35 +57,30 @@ void Player::SetSkill(Skill skill)
     skill = skill;
 }
 
-void Player::UseSkill(std::vector<std::vector<char>>* pGameMap, Skill skillEnum, Enemy* enemy)
+void Player::UseSkill(Map* _pGameMap, Skill _skillEnum)
 {
     if (!state.isHaveSkill) return;
 
-    if (skillEnum == Skill::KILL)
+    if (_skillEnum == Skill::KILL)
     {
-        if (pos.tForward == (*enemy).pos.tPos)
-        {
-            (*enemy)._state._isAlive = false;
-        }
         state.isHaveSkill = false;
     }
-    else if (skillEnum == Skill::SIGHT)
+    else if (_skillEnum == Skill::SIGHT)
     {
-        if (pos.tForward == (*enemy).pos.tPos)
-        {
-            (*enemy)._state._isAlive = false;
-        }
         state.isHaveSkill = false;
     }
-    else if (skillEnum == Skill::DASH)
+    else if (_skillEnum == Skill::DASH)
     {
         POS dashEndPos{ 0,0 };
         int num = 1;
         while (true)
         {
             dashEndPos = pos.tForward * num;
-            if ((*pGameMap)[dashEndPos.x][dashEndPos.y] == (char)Tile::WALL)
+            if (_pGameMap->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+            {
+                dashEndPos = dashEndPos - pos.tForward;
                 break;
+            }
 
             num++;
         }
