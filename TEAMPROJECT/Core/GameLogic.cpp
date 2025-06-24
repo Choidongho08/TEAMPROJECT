@@ -261,7 +261,7 @@ void GameLogic::RenderUI()
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
-	 cout << "     스코어 : 0        " << endl;
+	 cout << "     스코어 : " << PlayerManager.player.state.score << "        " << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
