@@ -13,18 +13,12 @@ using std::format;
 
 GameScene::GameScene() : EnemyManager(&Map), PlayerManager(&Map)
 {
-	pObjs = nullptr;
-	maxFollowingEnemyCnt = 2;
 }
 
-void GameScene::Initialized(
-	vector<AsciiObject>* objs,
-	int maxFollowingEnemy
-)
+void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 {
 	Debug debug;
-	maxFollowingEnemyCnt = maxFollowingEnemy;
-	pObjs = objs;
+	asciiObjects = _asciiObjects;
 
 	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
 
@@ -36,7 +30,7 @@ void GameScene::Initialized(
 	// 콘솔창 관련 초기화
 	SetConsoleSettings(1200, 600, false, L"HackMan");
 	SetCursorVisual(true, 50);
-	
+
 	LoadStage();
 	ItemInit();
 	EntityInit();

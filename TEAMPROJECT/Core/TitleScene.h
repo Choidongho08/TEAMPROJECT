@@ -7,7 +7,6 @@
 class TitleScene : public Scene
 {
 public:
-	vector<AsciiObject>* _pObjs;
 	COLOR textColor;
 	COLOR bgColor;
 
@@ -15,7 +14,7 @@ public:
 
 	void Render();
 	void Update() override;
-	void Initialized(vector<AsciiObject>* objs);
+	void SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects) override;
 
 	Menu GetCurMenu();
 	void EnterAnimation();

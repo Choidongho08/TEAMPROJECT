@@ -92,6 +92,12 @@
     <ClInclude Include="DH\InfoScene.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
+    <ClInclude Include="DH\DeadScene.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
+    <ClInclude Include="DH\WinScene.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Console.cpp">
@@ -146,6 +152,12 @@
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
     <ClCompile Include="DH\InfoScene.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\DeadScene.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\WinScene.cpp">
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
   </ItemGroup>

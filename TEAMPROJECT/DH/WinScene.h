@@ -1,13 +1,13 @@
 #pragma once
 #include "Scene.h"
 
-class DeadScene : public Scene
+class WinScene : public Scene
 {
 public:
 private:
 public:
-	DeadScene();
-	~DeadScene();
+	WinScene();
+	~WinScene();
 
 	void SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects) override;
 	void Update() override;

@@ -15,7 +15,7 @@ public:
 	~InfoScene();
 
 	void Update() override;
-	void SceneInit(SCENE type) override;
+	void SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects) override;
 	void Render(bool isTrue);
 private:
 };

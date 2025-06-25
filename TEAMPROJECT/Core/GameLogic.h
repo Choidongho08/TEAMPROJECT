@@ -26,19 +26,14 @@ public:
   
 
 private:
-    vector<AsciiObject>* pObjs;
     vector<Entity*> entities;
     int maxDebugCnt = 4;
     int currDebugCnt = 0;
 
-    int maxFollowingEnemyCnt;
 public:
     GameScene();
 
-    void Initialized(
-        vector<AsciiObject>* _objs,
-        int _maxFollowingEnemy
-    );
+    void SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects) override;
     void Update() override;
 private:
     void LoadStage();

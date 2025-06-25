@@ -8,22 +8,21 @@
 
 TitleScene::TitleScene()
 {
-	_pObjs = nullptr;
 	textColor = COLOR::WHITE;
 	bgColor = COLOR::BLACK;
 }
 
-void TitleScene::Initialized(vector<AsciiObject>* objs)
+void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
 	COORD resolution = GetConsoleResolution();
 	int x = resolution.X / 2.5;
-    int y = resolution.Y / 3 * 2;
+	int y = resolution.Y / 3 * 2;
 	GotoXY(x - 4, y);
 	cout << "  [";
 	GotoXY(x + 10, y);
 	cout << "]  ← 스페이스바로 선택";
 
-	_pObjs = objs;
+	asciiObjects = _asciiObjects;
 	textColor = COLOR::WHITE;
 	bgColor = COLOR::BLACK;
 }

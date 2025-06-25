@@ -1,16 +1,18 @@
 #pragma once
 #include "Enums.h"
+#include "../Core/AsciiObject.h"
 
 class Scene
 {
 public:
 	SCENE Type;
 
-private:
+protected:
+	std::vector<AsciiObject>* asciiObjects;
 
 public:
 	Scene();
-	virtual void SceneInit(SCENE _type);
+	virtual void SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects);
 	virtual void Update();
 
 private:

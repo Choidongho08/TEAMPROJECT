@@ -3,6 +3,7 @@
 #include "TitleScene.h"
 #include "../DH/InfoScene.h"
 #include "../DH/DeadScene.h"
+#include "../DH/WinScene.h"
 #include "AsciiObject.h"
 #include "Mci.h"
 
@@ -15,6 +16,7 @@ private:
 	TitleScene _titleScene;
 	GameScene _gameScene;
 	InfoScene _infoScene;
+	WinScene _winScene;
 	DeadScene _deadScene;
 	SCENE _curScene;
 	vector<AsciiObject> _asciiObjects;

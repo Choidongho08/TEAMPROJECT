@@ -39,9 +39,9 @@ void InfoScene::Update()
 	GotoXY(0, 0);
 }
 
-void InfoScene::SceneInit(SCENE type)
+void InfoScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
-	Scene::SceneInit(type);
+	Scene::SceneInit(_type, _asciiObjects);
 	system("cls");
 	Render(true);
 }
