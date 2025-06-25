@@ -86,6 +86,9 @@
     <ClInclude Include="DH\Debug.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
+    <ClInclude Include="DH\Scene.h">
+      <Filter>소스 파일\DH</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Console.cpp">
@@ -134,6 +137,9 @@
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
     <ClCompile Include="DH\Debug.cpp">
+      <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="DH\Scene.cpp">
       <Filter>소스 파일\DH</Filter>
     </ClCompile>
   </ItemGroup>

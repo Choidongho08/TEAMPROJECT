@@ -149,6 +149,7 @@
     <ClInclude Include="DH\Player.h" />
     <ClInclude Include="DH\PlayerManager.h" />
     <ClInclude Include="DH\Pos.h" />
+    <ClInclude Include="DH\Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\AsciiObject.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="DH\Map.cpp" />
     <ClCompile Include="DH\Player.cpp" />
     <ClCompile Include="DH\PlayerManager.cpp" />
+    <ClCompile Include="DH\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

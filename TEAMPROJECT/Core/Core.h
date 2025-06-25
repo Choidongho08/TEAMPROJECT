@@ -11,8 +11,8 @@ public:
 
 private:
 	TitleScene _titleScene;
-	GameLogic _gameLogic;
-	Scene _curScene;
+	GameScene _gameScene;
+	SCENE _curScene;
 	vector<AsciiObject> _asciiObjects;
 
 public:
@@ -20,8 +20,8 @@ public:
 	~Core() { delete Instance; }
 
 	void Run();
-	void ChangeScene(Scene newScene);
-	Scene GetCurrentScene();
+	void ChangeScene(SCENE newScene);
+	SCENE GetCurrentScene();
 
 private:
 	void Update();

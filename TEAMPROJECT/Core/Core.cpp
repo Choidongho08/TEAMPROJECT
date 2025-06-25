@@ -28,7 +28,7 @@ Core::Core()
 	//		gameMap[i] = new char[MAP_WIDTH];
 	// }
 
-	ChangeScene(Scene::TITLE);
+	ChangeScene(SCENE::TITLE);
 
 	// return CORE{ titleScene, gameLogic, curScene, AsciiObjects };
 }
@@ -46,47 +46,47 @@ void Core::Run()
 	}
 }
 
-void Core::ChangeScene(Scene newScene)
+void Core::ChangeScene(SCENE newScene)
  {
 	_curScene = newScene;
 
 	switch (newScene)
 	{
-	case Scene::TITLE:
+	case SCENE::TITLE:
 		_titleScene.Initialized(&_asciiObjects);
 		break;
-	case Scene::GAME:
-		_gameLogic.Initialized(&_asciiObjects, 2);
+	case SCENE::GAME:
+		_gameScene.Initialized(&_asciiObjects, 2);
 		break;
-	case Scene::INFO:
-		_gameLogic.InfoSceneInit();
+	case SCENE::INFO:
+		_gameScene.InfoSceneInit();
 		break;
-	case Scene::DEAD:
-		_gameLogic.DeadSceneInit();
+	case SCENE::DEAD:
+		_gameScene.DeadSceneInit();
 		break;
 	}
 }
 
-Scene Core::GetCurrentScene()
+SCENE Core::GetCurrentScene()
 {
 	return _curScene;
 }
 
 void Core::Update()
 {
-	while (_curScene != Scene::QUIT)
+	while (_curScene != SCENE::QUIT)
 	{
 		switch (_curScene)
 		{
-		case Scene::TITLE:
+		case SCENE::TITLE:
 			_titleScene.Update();
 			break;
-		case Scene::GAME:
-			_gameLogic.Update();
+		case SCENE::GAME:
+			_gameScene.Update();
 			break;
-		case Scene::INFO:
-			_gameLogic.InfoScene();
-		case Scene::DEAD:
+		case SCENE::INFO:
+			_gameScene.InfoScene();
+		case SCENE::DEAD:
 			break;
 		}
 	}

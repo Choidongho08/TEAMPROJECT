@@ -10,7 +10,7 @@ enum class Menu
 	START, INFO, QUIT, FAIL
 };
 
-enum class Scene
+enum class SCENE
 {
 	TITLE, GAME, INFO, QUIT, DEAD, END
 };

@@ -11,13 +11,13 @@
 #include "../DH/Debug.h"
 using std::format;
 
-GameLogic::GameLogic() : EnemyManager(&Map), PlayerManager(&Map)
+GameScene::GameScene() : EnemyManager(&Map), PlayerManager(&Map)
 {
 	pObjs = nullptr;
 	maxFollowingEnemyCnt = 2;
 }
 
-void GameLogic::Initialized(
+void GameScene::Initialized(
 	vector<AsciiObject>* objs,
 	int maxFollowingEnemy
 )
@@ -42,7 +42,7 @@ void GameLogic::Initialized(
 	EntityInit();
 }
 
-void GameLogic::LoadStage()
+void GameScene::LoadStage()
 {
 	srand((unsigned int)time(NULL));
 	int stageNumber = rand() % 3 + 1;
@@ -81,13 +81,13 @@ void GameLogic::LoadStage()
 		cout << "맵 파일 초기화 실패" << endl;
 }
 
-void GameLogic::EntityInit()
+void GameScene::EntityInit()
 {
 	PlayerManager.SpawnPlayer(entities);
 	EnemyManager.SpawnEnemies(&entities, &PlayerManager.player);
 }
 
-void GameLogic::ItemInit()
+void GameScene::ItemInit()
 {
 	int itemCount = 0;
 	srand((unsigned int)time(NULL));
@@ -104,7 +104,7 @@ void GameLogic::ItemInit()
 	}
 }
 
-void GameLogic::Update()
+void GameScene::Update()
 {
 	//system("cls");
 	GotoXY(0, 0);
@@ -121,7 +121,7 @@ void GameLogic::Update()
 	// }
 }
 
-void GameLogic::EntitiesMove()
+void GameScene::EntitiesMove()
 {
 	Player* player = &PlayerManager.player;
 	player->Move(&Map);
@@ -141,12 +141,12 @@ void GameLogic::EntitiesMove()
 		if (enemy.pos.tPos == player->pos.tPos)
 		{
 			PlayerManager.PlayerDead();
-			Core::Instance->ChangeScene(Scene::DEAD);
+			Core::Instance->ChangeScene(SCENE::DEAD);
 		}
 	}
 }
 
-void GameLogic::HandleInput()
+void GameScene::HandleInput()
 {
 	PlayerManager.player.pos.tNewPos = PlayerManager.player.pos.tPos;
 	Key eKey = KeyController();
@@ -170,7 +170,7 @@ void GameLogic::HandleInput()
 	}
 }
 
-void GameLogic::Render()
+void GameScene::Render()
 {
 	for (int i = 0; i < Map.ROW; ++i)
 	{
@@ -205,7 +205,7 @@ void GameLogic::Render()
 	RenderUI();
 }
 
-void GameLogic::RenderUI()
+void GameScene::RenderUI()
 {
 	string skill;
 	switch (PlayerManager.player.skill)
@@ -277,7 +277,7 @@ void GameLogic::RenderUI()
 	 cout << "-----------------------" << endl;
 }
 
-void GameLogic::InfoScene()
+void GameScene::InfoScene()
 {
 	Key key = KeyController();
 
@@ -286,7 +286,7 @@ void GameLogic::InfoScene()
 
 	if (key == Key::ESC)
 	{
-		Core::Instance->ChangeScene(Scene::TITLE);
+		Core::Instance->ChangeScene(SCENE::TITLE);
 		system("cls");
 	}
 	else if (isQNow && !wasQPressed)
@@ -306,17 +306,17 @@ void GameLogic::InfoScene()
 	GotoXY(0, 0);
 }
 
-void GameLogic::InfoSceneInit()
+void GameScene::InfoSceneInit()
 {
 	system("cls");
 	RenderInfo(true);
 }
 
-void GameLogic::DeadSceneInit()
+void GameScene::DeadSceneInit()
 {
 }
 
-void GameLogic::RenderInfo(bool isTrue)
+void GameScene::RenderInfo(bool isTrue)
 {
 	 COORD resolution = GetConsoleResolution();
 	 int x = resolution.X / 3;
@@ -363,7 +363,7 @@ void GameLogic::RenderInfo(bool isTrue)
 	 }
 }
 
-void GameLogic::RenderEffect()
+void GameScene::RenderEffect()
 {
 	SetColor(COLOR::RED);
 	// for (auto& bomb : vecBomb)

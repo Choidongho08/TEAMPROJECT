@@ -71,7 +71,7 @@ void TitleScene::Update()
 	// 	obj.ObjectRender(textColor, bgColor);
 	// }
 	
-	if (Core::Instance->GetCurrentScene() != Scene::TITLE)
+	if (Core::Instance->GetCurrentScene() != SCENE::TITLE)
 		return;
 
 	Render();
@@ -82,13 +82,13 @@ void TitleScene::Update()
 	{
 	case Menu::START:
 		EnterAnimation();
-		Core::Instance->ChangeScene(Scene::GAME);
+		Core::Instance->ChangeScene(SCENE::GAME);
 		break;
 	case Menu::INFO:
-		Core::Instance->ChangeScene(Scene::INFO);
+		Core::Instance->ChangeScene(SCENE::INFO);
 		break;
 	case Menu::QUIT:
-		Core::Instance->ChangeScene(Scene::QUIT);
+		Core::Instance->ChangeScene(SCENE::QUIT);
 		break;
 	}
 	// for (auto obj : *(_pObjs))
