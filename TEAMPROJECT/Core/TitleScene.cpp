@@ -136,7 +136,10 @@ Menu TitleScene::GetCurMenu()
 		break;
 	case Key::SPACE:
 		if (originY == y) return Menu::START;
-		else if (originY + 2 == y) return Menu::INFO;
+		else if (originY + 2 == y) {
+			y -= 2;
+			return Menu::INFO;
+		}
 		else if (originY + 4 == y) return Menu::QUIT;
 		break;
 	}
