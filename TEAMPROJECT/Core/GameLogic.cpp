@@ -277,10 +277,6 @@ void GameScene::RenderUI()
 	 cout << "-----------------------" << endl;
 }
 
-void GameScene::DeadSceneInit()
-{
-}
-
 void GameScene::RenderEffect()
 {
 	SetColor(COLOR::RED);

@@ -40,7 +40,6 @@ public:
         int _maxFollowingEnemy
     );
     void Update() override;
-    void DeadSceneInit();
 private:
     void LoadStage();
     void EntityInit();

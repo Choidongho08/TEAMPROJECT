@@ -68,7 +68,7 @@ void Core::ChangeScene(SCENE newScene)
 	case SCENE::END:
 		break;
 	case SCENE::DEAD:
-		_gameScene.DeadSceneInit();
+		_deadScene.SceneInit(newScene);
 		break;
 	}
 }
@@ -100,6 +100,7 @@ void Core::Update()
 		case SCENE::END:
 			break;
 		case SCENE::DEAD:
+			_deadScene.Update();
 			break;
 		}
 	}
