@@ -144,6 +144,7 @@
     <ClInclude Include="DH\EnemyManager.h" />
     <ClInclude Include="DH\Entity.h" />
     <ClInclude Include="DH\Enums.h" />
+    <ClInclude Include="DH\InfoScene.h" />
     <ClInclude Include="DH\Map.h" />
     <ClInclude Include="DH\Node.h" />
     <ClInclude Include="DH\Player.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="DH\Enemy.cpp" />
     <ClCompile Include="DH\EnemyManager.cpp" />
     <ClCompile Include="DH\Entity.cpp" />
+    <ClCompile Include="DH\InfoScene.cpp" />
     <ClCompile Include="DH\Map.cpp" />
     <ClCompile Include="DH\Player.cpp" />
     <ClCompile Include="DH\PlayerManager.cpp" />

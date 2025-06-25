@@ -23,8 +23,7 @@ public:
     Map Map;
     EnemyManager EnemyManager;
     PlayerManager PlayerManager;
-    bool wasQPressed = false;
-    bool wasEPressed = false;
+  
 
 private:
     vector<AsciiObject>* pObjs;
@@ -41,8 +40,6 @@ public:
         int _maxFollowingEnemy
     );
     void Update() override;
-    void InfoScene();
-	void InfoSceneInit();
     void DeadSceneInit();
 private:
     void LoadStage();
@@ -54,6 +51,5 @@ private:
 
     void Render();
     void RenderUI();
-    void RenderInfo(bool isTrue);
     void RenderEffect();
 };

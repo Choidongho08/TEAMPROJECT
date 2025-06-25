@@ -1,6 +1,7 @@
 #pragma once
 #include "GameLogic.h"
 #include "TitleScene.h"
+#include "../DH/InfoScene.h"
 #include "AsciiObject.h"
 #include "Mci.h"
 
@@ -12,6 +13,7 @@ public:
 private:
 	TitleScene _titleScene;
 	GameScene _gameScene;
+	InfoScene _infoScene;
 	SCENE _curScene;
 	vector<AsciiObject> _asciiObjects;
 
