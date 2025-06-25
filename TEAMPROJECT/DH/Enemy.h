@@ -17,13 +17,19 @@ public:
 	AStar playerFindAStar;
 
 private:
+	int id;
 
 public:
 	Enemy(AStar _aStar);
 
+	bool operator==(const Enemy& other) const {
+		return this->id == other.id;
+	}
+
 	void Initialize(
 		POS _startPos,
-		bool _isFollowing
+		bool _isFollowing,
+		int _enemyCnt
 	);
 
 	void Move(Map* _map);

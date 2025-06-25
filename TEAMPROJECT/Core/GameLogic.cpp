@@ -11,13 +11,13 @@
 #include "../DH/Debug.h"
 using std::format;
 
-GameLogic::GameLogic() : EnemyManager(&Map), PlayerManager(&Map)
+GameScene::GameScene() : EnemyManager(&Map), PlayerManager(&Map)
 {
 	pObjs = nullptr;
 	maxFollowingEnemyCnt = 2;
 }
 
-void GameLogic::Initialized(
+void GameScene::Initialized(
 	vector<AsciiObject>* objs,
 	int maxFollowingEnemy
 )
@@ -42,7 +42,7 @@ void GameLogic::Initialized(
 	EntityInit();
 }
 
-void GameLogic::LoadStage()
+void GameScene::LoadStage()
 {
 	srand((unsigned int)time(NULL));
 	int stageNumber = rand() % 3 + 1;
@@ -81,13 +81,13 @@ void GameLogic::LoadStage()
 		cout << "맵 파일 초기화 실패" << endl;
 }
 
-void GameLogic::EntityInit()
+void GameScene::EntityInit()
 {
 	PlayerManager.SpawnPlayer(entities);
 	EnemyManager.SpawnEnemies(&entities, &PlayerManager.player);
 }
 
-void GameLogic::ItemInit()
+void GameScene::ItemInit()
 {
 	int itemCount = 0;
 	srand((unsigned int)time(NULL));
@@ -104,7 +104,7 @@ void GameLogic::ItemInit()
 	}
 }
 
-void GameLogic::Update()
+void GameScene::Update()
 {
 	//system("cls");
 	GotoXY(0, 0);
@@ -121,23 +121,32 @@ void GameLogic::Update()
 	// }
 }
 
-void GameLogic::EntitiesMove()
+void GameScene::EntitiesMove()
 {
+	Player* player = &PlayerManager.player;
+	player->Move(&Map);
+	player->pos.tNewPos.x = std::clamp(player->pos.tNewPos.x, 0, Map.COL);
+	player->pos.tNewPos.y = std::clamp(player->pos.tNewPos.y, 0, Map.ROW);
+	PlayerManager.player.CheckTile(&Map);
+
 	for (auto enemy : EnemyManager.Enemies)
 	{
-		enemy.Move(&Map);
+		if (enemy.state.isAlive)
+		{
+			enemy.Move(&Map);
+			enemy.pos.tNewPos.x = std::clamp(enemy.pos.tNewPos.x, 0, Map.COL);
+			enemy.pos.tNewPos.y = std::clamp(enemy.pos.tNewPos.y, 0, Map.ROW);
+			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
+		}
+		if (enemy.pos.tPos == player->pos.tPos)
+		{
+			PlayerManager.PlayerDead();
+			Core::Instance->ChangeScene(SCENE::DEAD);
+		}
 	}
-	for (auto entity : entities)
-	{
-		entity->Move(&Map);
-		entity->pos.tNewPos.x = std::clamp(entity->pos.tNewPos.x, 0, Map.COL);
-		entity->pos.tNewPos.y = std::clamp(entity->pos.tNewPos.y, 0, Map.ROW);
-		entity->pos.tForward = entity->pos.tNewPos - entity->pos.tPos;
-	}
-	PlayerManager.player.CheckTile(&Map);
 }
 
-void GameLogic::HandleInput()
+void GameScene::HandleInput()
 {
 	PlayerManager.player.pos.tNewPos = PlayerManager.player.pos.tPos;
 	Key eKey = KeyController();
@@ -161,7 +170,7 @@ void GameLogic::HandleInput()
 	}
 }
 
-void GameLogic::Render()
+void GameScene::Render()
 {
 	for (int i = 0; i < Map.ROW; ++i)
 	{
@@ -196,7 +205,7 @@ void GameLogic::Render()
 	RenderUI();
 }
 
-void GameLogic::RenderUI()
+void GameScene::RenderUI()
 {
 	string skill;
 	switch (PlayerManager.player.skill)
@@ -268,89 +277,11 @@ void GameLogic::RenderUI()
 	 cout << "-----------------------" << endl;
 }
 
-void GameLogic::InfoScene()
+void GameScene::DeadSceneInit()
 {
-	Key key = KeyController();
-
-	bool isQNow = (key == Key::Q);
-	bool isENow = (key == Key::E);
-
-	if (key == Key::ESC)
-	{
-		Core::Instance->ChangeScene(Scene::TITLE);
-		system("cls");
-	}
-	else if (isQNow && !wasQPressed)
-	{
-		system("cls");
-		RenderInfo(true);
-	}
-	else if (isENow && !wasEPressed)
-	{
-		system("cls");
-		RenderInfo(false);
-	}
-
-	wasQPressed = isQNow;
-	wasEPressed = isENow;
-
-	GotoXY(0, 0);
 }
 
-void GameLogic::InfoSceneInit()
-{
-	system("cls");
-	RenderInfo(true);
-}
-
-void GameLogic::RenderInfo(bool isTrue)
-{
-	 COORD resolution = GetConsoleResolution();
-	 int x = resolution.X / 3;
-	 int y = resolution.Y / 3;
-	 if (isTrue) {
-		 GotoXY(x, y++);
-		 cout << "=======================  ▶";
-		 GotoXY(x, y++);
-		 cout << "[    조작      방법   ]";
-		 GotoXY(x, y++);
-		 cout << "-----------------------";
-		 GotoXY(x, y);
-		 cout << " 조작키	: ↑ → ← ↓";
-		 GotoXY(x, y + 2);
-		 cout << " 스킬	: 스페이스바     ";
-		 GotoXY(x, y + 4);
-		 cout << " 다음 내용 보기 :  E   ";
-		 GotoXY(x, y + 5);
-		 cout << "=======================";
-	 }
-	 else {
-		 GotoXY(x - 4, y++);
-		 cout << "◀  ==========================";
-		 GotoXY(x, y++);
-		 cout << " [    게임      방법   ]";
-		 GotoXY(x, y++);
-		 cout << "--------------------------";
-		 GotoXY(x, y);
-		 cout << "1. 적을 피해서 코인을 먹자";
-		 GotoXY(x, y + 2);
-		 cout << "2. 맵 곳곳에 아이템이 있다";
-		 GotoXY(x, y + 4);
-		 cout << "3. 아이템을 먹으면 스킬 획득";
-		 GotoXY(x, y + 6);
-		 cout << " - KILL  : 근처 적 제거";
-		 GotoXY(x, y + 8);
-		 cout << " - DASH  : 앞으로 대쉬";
-		 GotoXY(x, y + 10);
-		 cout << " - SIGHT : 시야 넓어짐 ";
-		 GotoXY(x, y + 12);
-		 cout << "   이전 내용 보기 : Q    ";
-		 GotoXY(x, y + 13);
-		 cout << "==========================";
-	 }
-}
-
-void GameLogic::RenderEffect()
+void GameScene::RenderEffect()
 {
 	SetColor(COLOR::RED);
 	// for (auto& bomb : vecBomb)

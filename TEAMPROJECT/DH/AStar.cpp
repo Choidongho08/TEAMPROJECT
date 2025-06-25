@@ -48,8 +48,10 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY, Map 
         openPQ.pop();
 
         // Open List에서 현재 노드 제거
-        openList.erase(remove_if(openList.begin(), openList.end(),
-            [current](Node* n) { return n->x == current->x && n->y == current->y; }),
+        openList.erase(remove_if(openList.begin(), openList.end(), [current](Node* n) 
+            {
+                return n->x == current->x && n->y == current->y;
+            }),
             openList.end());
 
         steps++;
@@ -72,7 +74,7 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY, Map 
 
         // 2.4 인접 노드 탐색
         // - 현재 노드의 모든 인접 노드들을 평가
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 4; i++) {
             int newX = current->x + dx[i];
             int newY = current->y + dy[i];
 

@@ -1,9 +1,10 @@
 #pragma once
 #include "../DH/Enums.h";
+#include "../DH/Scene.h";
 #include "AsciiObject.h";
 #include <Windows.h>;
 
-class TitleScene
+class TitleScene : public Scene
 {
 public:
 	vector<AsciiObject>* _pObjs;
@@ -13,7 +14,7 @@ public:
 	TitleScene();
 
 	void Render();
-	void Update();
+	void Update() override;
 	void Initialized(vector<AsciiObject>* objs);
 
 	Menu GetCurMenu();

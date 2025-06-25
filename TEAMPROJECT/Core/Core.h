@@ -1,6 +1,7 @@
 #pragma once
 #include "GameLogic.h"
 #include "TitleScene.h"
+#include "../DH/InfoScene.h"
 #include "AsciiObject.h"
 #include "Mci.h"
 
@@ -11,8 +12,9 @@ public:
 
 private:
 	TitleScene _titleScene;
-	GameLogic _gameLogic;
-	Scene _curScene;
+	GameScene _gameScene;
+	InfoScene _infoScene;
+	SCENE _curScene;
 	vector<AsciiObject> _asciiObjects;
 
 public:
@@ -20,8 +22,8 @@ public:
 	~Core() { delete Instance; }
 
 	void Run();
-	void ChangeScene(Scene newScene);
-	Scene GetCurrentScene();
+	void ChangeScene(SCENE newScene);
+	SCENE GetCurrentScene();
 
 private:
 	void Update();

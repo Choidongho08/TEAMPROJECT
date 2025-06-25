@@ -12,9 +12,14 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 			if (col.tile == (int)Tile::PLAYER_START)
 				PlayerSpawnPos = col.pos;
 			if (col.tile == (int)Tile::ENEMY_SPAWN)
+			{
 				EnemySpawnPos.push_back(col.pos);
+				MaxPlayerFollowingEnemyCnt++;
+			}
 			if (col.tile == (int)Tile::ITEM)
 				MaxItemCnt++;
+			if (col.tile == (int)Tile::COIN)
+				MapCoinCnt++;
 		}
 	}
 	Debug::Instance->Pos(__FUNCTION__, __LINE__);

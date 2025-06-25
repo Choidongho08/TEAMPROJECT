@@ -8,6 +8,7 @@
 #include "../DH/Map.h"
 #include "../DH/EnemyManager.h"
 #include "../DH/PlayerManager.h"
+#include "../DH/Scene.h"
 #include <vector>
 
 using std::vector;
@@ -16,14 +17,13 @@ using std::vector;
 //#define MAP_WIDTH 20
 // »ó¼ö(const)
 
-class GameLogic
+class GameScene : public Scene
 {
 public:
     Map Map;
     EnemyManager EnemyManager;
     PlayerManager PlayerManager;
-    bool wasQPressed = false;
-    bool wasEPressed = false;
+  
 
 private:
     vector<AsciiObject>* pObjs;
@@ -33,15 +33,14 @@ private:
 
     int maxFollowingEnemyCnt;
 public:
-    GameLogic();
+    GameScene();
 
     void Initialized(
         vector<AsciiObject>* _objs,
         int _maxFollowingEnemy
     );
-    void Update();
-    void InfoScene();
-	void InfoSceneInit();
+    void Update() override;
+    void DeadSceneInit();
 private:
     void LoadStage();
     void EntityInit();
@@ -52,6 +51,5 @@ private:
 
     void Render();
     void RenderUI();
-    void RenderInfo(bool isTrue);
     void RenderEffect();
 };
