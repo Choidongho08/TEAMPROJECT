@@ -19,7 +19,6 @@ public:
 
 	Menu GetCurMenu();
 	void EnterAnimation();
-	void FlashAnimation(COORD resolution, int cnt, int delayTime);
-	void CrossAnimation(COORD resolution, int delayTime);
+	void FrameBorderTraversalAnimation(COORD resolution, int delayTime);
 };
 
