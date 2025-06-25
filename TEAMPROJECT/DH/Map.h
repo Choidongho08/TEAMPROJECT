@@ -11,6 +11,7 @@ class Map {
 public:
     vector<POS> EnemySpawnPos;
     POS PlayerSpawnPos;
+    int MapCoinCnt;
     int MaxPlayerFollowingEnemyCnt;
     int MaxItemCnt;
     int ROW;
@@ -20,7 +21,7 @@ private:
     vector<vector<Node>> grid;
 
 public:
-    Map() : MaxItemCnt(0), grid(0), ROW(0), COL(0), PlayerSpawnPos(POS{0,0}), EnemySpawnPos(0), MaxPlayerFollowingEnemyCnt(0)
+    Map() : MapCoinCnt(0), MaxItemCnt(0), grid(0), ROW(0), COL(0), PlayerSpawnPos(POS{0,0}), EnemySpawnPos(0), MaxPlayerFollowingEnemyCnt(0)
     {}
 
     void InitializeMap(const vector<vector<Node>>& _grid);

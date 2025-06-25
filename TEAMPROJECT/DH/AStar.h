@@ -9,8 +9,8 @@
 using namespace std;
 
 // 8방향 이동을 위한 방향 배열 (순서 변경: 직선 이동을 먼저 검사)
-const int dx[] = { 0, 0, -1, 1, -1, -1, 1, 1 };  // 상하좌우를 먼저, 그 다음 대각선
-const int dy[] = { -1, 1, 0, 0, -1, 1, -1, 1 };
+const int dx[] = { 0, 0, -1, 1 };  // 상하좌우를 먼저, 그 다음 대각선
+const int dy[] = { -1, 1, 0, 0 };
 
 class AStar {
 private:

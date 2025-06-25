@@ -47,7 +47,7 @@ void Core::Run()
 }
 
 void Core::ChangeScene(Scene newScene)
-{
+ {
 	_curScene = newScene;
 
 	switch (newScene)
@@ -60,6 +60,9 @@ void Core::ChangeScene(Scene newScene)
 		break;
 	case Scene::INFO:
 		_gameLogic.InfoSceneInit();
+		break;
+	case Scene::DEAD:
+		_gameLogic.DeadSceneInit();
 		break;
 	}
 }
@@ -83,6 +86,7 @@ void Core::Update()
 			break;
 		case Scene::INFO:
 			_gameLogic.InfoScene();
+		case Scene::DEAD:
 			break;
 		}
 	}

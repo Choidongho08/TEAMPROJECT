@@ -18,7 +18,7 @@ typedef struct _TagEntityPos
 class EntityState
 {
 public:
-    bool _isAlive;
+    bool isAlive;
 };
 
 class Entity

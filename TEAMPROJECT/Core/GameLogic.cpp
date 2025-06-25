@@ -123,18 +123,27 @@ void GameLogic::Update()
 
 void GameLogic::EntitiesMove()
 {
+	Player* player = &PlayerManager.player;
+	player->Move(&Map);
+	player->pos.tNewPos.x = std::clamp(player->pos.tNewPos.x, 0, Map.COL);
+	player->pos.tNewPos.y = std::clamp(player->pos.tNewPos.y, 0, Map.ROW);
+	PlayerManager.player.CheckTile(&Map);
+
 	for (auto enemy : EnemyManager.Enemies)
 	{
-		enemy.Move(&Map);
+		if (enemy.state.isAlive)
+		{
+			enemy.Move(&Map);
+			enemy.pos.tNewPos.x = std::clamp(enemy.pos.tNewPos.x, 0, Map.COL);
+			enemy.pos.tNewPos.y = std::clamp(enemy.pos.tNewPos.y, 0, Map.ROW);
+			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
+		}
+		if (enemy.pos.tPos == player->pos.tPos)
+		{
+			PlayerManager.PlayerDead();
+			Core::Instance->ChangeScene(Scene::DEAD);
+		}
 	}
-	for (auto entity : entities)
-	{
-		entity->Move(&Map);
-		entity->pos.tNewPos.x = std::clamp(entity->pos.tNewPos.x, 0, Map.COL);
-		entity->pos.tNewPos.y = std::clamp(entity->pos.tNewPos.y, 0, Map.ROW);
-		entity->pos.tForward = entity->pos.tNewPos - entity->pos.tPos;
-	}
-	PlayerManager.player.CheckTile(&Map);
 }
 
 void GameLogic::HandleInput()
@@ -301,6 +310,10 @@ void GameLogic::InfoSceneInit()
 {
 	system("cls");
 	RenderInfo(true);
+}
+
+void GameLogic::DeadSceneInit()
+{
 }
 
 void GameLogic::RenderInfo(bool isTrue)

@@ -17,3 +17,10 @@ void PlayerManager::SpawnPlayer(vector<Entity*>& entities)
     Debug::Instance->Log(to_string(map->PlayerSpawnPos.x) + ", " + to_string(map->PlayerSpawnPos.y));
     return;
 }
+
+void PlayerManager::PlayerDead()
+{
+    player.state.isAlive = false;
+}
+
+

@@ -16,6 +16,7 @@ public:
 	EnemyManager(Map* _map) : aStar(*_map), map(_map) {}
 
 	void SpawnEnemies(vector<Entity*>* _entities, Player* player);
+	void DeadEnemy(const Enemy& enemy);
 private:
 };
 

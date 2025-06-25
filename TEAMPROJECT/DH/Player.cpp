@@ -29,10 +29,9 @@ void Player::Update()
 
 void Player::Move(Map* _map)
 {
-    pos.tPos = pos.tNewPos;
-    pos.tForward = pos.tNewPos - pos.tPos;
-
     Entity::Move(_map);
+
+    pos.tForward = pos.tNewPos - pos.tPos;
 }
 
 void Player::CheckTile(Map* _map)

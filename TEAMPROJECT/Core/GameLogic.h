@@ -42,6 +42,7 @@ public:
     void Update();
     void InfoScene();
 	void InfoSceneInit();
+    void DeadSceneInit();
 private:
     void LoadStage();
     void EntityInit();
