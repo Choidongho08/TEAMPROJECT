@@ -18,6 +18,6 @@ public:
 
 	Menu GetCurMenu();
 	void EnterAnimation();
-	void FrameBorderTraversal(COORD resolution, int delayTime);
+	void FrameBorderTraversalAnimation(COORD resolution, int delayTime);
 };
 
