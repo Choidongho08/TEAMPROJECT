@@ -21,7 +21,7 @@ void TitleScene::Initialized(vector<AsciiObject>* objs)
 	GotoXY(x - 4, y);
 	cout << "  [";
 	GotoXY(x + 10, y);
-	cout << "]";
+	cout << "]  ← 스페이스바로 선택";
 
 	_pObjs = objs;
 	textColor = COLOR::WHITE;
@@ -112,11 +112,11 @@ Menu TitleScene::GetCurMenu()
 			GotoXY(x - 5, y);
 			cout << "    ";
 			GotoXY(x + 10, y);
-			cout << "  ";
+			cout << "                       ";
 			GotoXY(x - 4, ----y);
 			cout << "  [";
 			GotoXY(x + 10, y);
-			cout << "]";
+			cout << "]  ← 스페이스바로 선택";
 			Sleep(100);
 		}
 		break;
@@ -126,11 +126,11 @@ Menu TitleScene::GetCurMenu()
 			GotoXY(x - 5, y);
 			cout << "    ";
 			GotoXY(x + 10, y);
-			cout << "  ";
+			cout << "                       ";
 			GotoXY(x - 4, ++++y);
 			cout << "  [";
 			GotoXY(x + 10, y);
-			cout << "]";
+			cout << "]  ← 스페이스바로 선택";
 			Sleep(100);
 		}
 		break;
@@ -148,59 +148,47 @@ void TitleScene::EnterAnimation()
 	COORD resolution = GetConsoleResolution();
 	int delayTime = 20;
 	int flashCnt = 5;
-	FlashAnimation(resolution, flashCnt, delayTime);
-	CrossAnimation(resolution, delayTime);
+	FrameBorderTraversalAnimation(resolution, delayTime);
 	system("cls");
 }
 
-void TitleScene::FlashAnimation(COORD resolution, int cnt, int delayTime)
-{
-	for (int t = 0; t < cnt; ++t)
-	{
-		SetColor(COLOR::WHITE, COLOR::WHITE);
-		system("cls");
-		Sleep(delayTime);
-		SetColor();
-		system("cls");
-		//	SetColor(COLOR::WHITE, COLOR::WHITE);
-		//	for (int i = 0; i < resolution.Y; ++i)
-		//	{
-		//		for (int j = 0; j < resolution.X / 2; ++j)
-		//		{
-		//			cout << "  ";
-		//		}
-		//		cout << endl;
-		//	}
-		//	Sleep(delayTime);
-		//	Gotoxy(0, 0);
-		//	SetColor();
-		//	for (int i = 0; i < resolution.Y; ++i)
-		//	{
-		//		for (int j = 0; j < resolution.X / 2; ++j)
-		//		{
-		//			cout << "  ";
-		//		}
-		//		cout << endl;
-		//	}
-	}
-}
-
-void TitleScene::CrossAnimation(COORD resolution, int delayTime)
+void TitleScene::FrameBorderTraversalAnimation(COORD resolution, int delayTime)
 {
 	SetColor(COLOR::WHITE, COLOR::WHITE);
-	for (int i = 0; i < resolution.X / 2; ++i)
+	int left = 0, top = 0;
+	int right = resolution.X;
+	int bottom = resolution.Y;
+
+	while (left < right && top < bottom)
 	{
-		for (int j = 0; j < resolution.Y; j += 2)
-		{
-			GotoXY(i * 2, j);
-			cout << "  ";
-		}
-		for (int j = 1; j < resolution.Y; j += 2)
-		{
-			GotoXY(resolution.X - 2 - i * 2, j);
+		for (int x = left; x <= right; x += 2) {
+			GotoXY(x, top);
 			cout << "  ";
 		}
 		Sleep(delayTime);
+
+		for (int y = top; y <= bottom; ++y) {
+			GotoXY(right, y);
+			cout << "  ";
+		}
+		Sleep(delayTime);
+
+		for (int x = right; x >= left; x -= 2) {
+			GotoXY(x, bottom);
+			cout << "  ";
+		}
+		Sleep(delayTime);
+
+		for (int y = bottom; y > top; --y) {
+			GotoXY(left, y);
+			cout << "  ";
+		}
+		Sleep(delayTime);
+
+		left += 2;
+		top++;
+		right -= 2;
+		bottom--;
 	}
 	SetColor();
 }
