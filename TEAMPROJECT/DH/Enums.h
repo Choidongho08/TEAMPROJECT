@@ -12,7 +12,7 @@ enum class Menu
 
 enum class SCENE
 {
-	TITLE, GAME, INFO, QUIT, DEAD, END
+	TITLE, GAME, INFO, QUIT, DEAD, WIN, END
 };
 
 enum class Tile

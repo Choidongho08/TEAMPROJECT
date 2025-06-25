@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "../Core/Core.h"
 
 Player::Player() : Entity({{0,0}, {0,0}, {0,0}}, {true}, ENTITY_TYPE::Player)
 {
@@ -40,6 +41,10 @@ void Player::CheckTile(Map* _map)
     {
         state.score++;
         _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+        if (_map->MapCoinCnt == state.score)
+        {
+            Core::Instance->ChangeScene(SCENE::WIN);
+        }
     }
     if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
     {
