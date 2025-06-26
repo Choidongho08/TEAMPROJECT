@@ -19,8 +19,8 @@ void InfoScene::Update()
 
 	if (key == Key::ESC)
 	{
-		Core::Instance->ChangeScene(SCENE::TITLE);
 		system("cls");
+		Core::Instance->ChangeScene(SCENE::TITLE);
 	}
 	else if (isQNow && !wasQPressed)
 	{
@@ -69,11 +69,11 @@ void InfoScene::Render(bool isTrue)
 	}
 	else {
 		GotoXY(x - 4, y++);
-		cout << "◀  ==========================";
+		cout << "◀  ============================";
 		GotoXY(x, y++);
-		cout << " [    게임      방법   ]";
+		cout << "[      게임       방법     ]";
 		GotoXY(x, y++);
-		cout << "--------------------------";
+		cout << "----------------------------";
 		GotoXY(x, y);
 		cout << "1. 적을 피해서 코인을 먹자";
 		GotoXY(x, y + 2);
@@ -89,6 +89,6 @@ void InfoScene::Render(bool isTrue)
 		GotoXY(x, y + 12);
 		cout << "   이전 내용 보기 : Q    ";
 		GotoXY(x, y + 13);
-		cout << "==========================";
+		cout << "============================";
 	}
 }
