@@ -32,19 +32,15 @@ void Player::Update()
 
 }
 
-void Player::Move(Map* _map)
-{
-    Entity::Move(_map);
-
-    pos.tForward = pos.tNewPos - pos.tPos;
-}
-
 void Player::CheckTile(Map* _map)
 {
     if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
     {
         state.score++;
         _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+
+        SetSight(max(3, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 2));
+
         if (_map->MapCoinCnt == state.score)
         {
             Core::Instance->ChangeScene(SCENE::WIN);
@@ -73,19 +69,19 @@ void Player::SetSkill(Skill skill)
     skill = skill;
 }
 
-void Player::UseSkill(Map* _pMap, Skill _skillEnum)
+void Player::UseSkill(Map* _pMap)
 {
     if (!state.isHaveSkill) return;
 
-    if (_skillEnum == Skill::KILL)
+    if (state.whatSkill == Skill::KILL)
     {
         state.isHaveSkill = false;
     }
-    else if (_skillEnum == Skill::SIGHT)
+    else if (state.whatSkill == Skill::SIGHT)
     {
         state.isHaveSkill = false;
     }
-    else if (_skillEnum == Skill::DASH)
+    else if (state.whatSkill == Skill::DASH)
     {
         POS dashEndPos{ 0,0 };
         int num = 1;
@@ -97,9 +93,9 @@ void Player::UseSkill(Map* _pMap, Skill _skillEnum)
                 dashEndPos = dashEndPos - pos.tForward;
                 break;
             }
-
             num++;
         }
         pos.tNewPos = dashEndPos;
+        state.isHaveSkill = false;
     }
 }
