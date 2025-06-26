@@ -222,10 +222,8 @@ void GameScene::RenderUI()
 		skill = "알 수 없음";
 		break;
 	}
-	 COORD resolution = GetConsoleResolution();
-	 int x = resolution.X / 1.5;
-	 // x = Map.COL + 10;
-	 int y = resolution.Y / 10;
+	int x = Map.COL - (23 / 2);
+	 int y = Map.ROW + 2;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);
