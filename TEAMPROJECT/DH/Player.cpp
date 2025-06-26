@@ -61,7 +61,7 @@ void Player::SetSkill(Skill skill)
     skill = skill;
 }
 
-void Player::UseSkill(Map* _pGameMap, Skill _skillEnum)
+void Player::UseSkill(Map* _pMap, Skill _skillEnum)
 {
     if (!state.isHaveSkill) return;
 
@@ -80,7 +80,7 @@ void Player::UseSkill(Map* _pGameMap, Skill _skillEnum)
         while (true)
         {
             dashEndPos = pos.tForward * num;
-            if (_pGameMap->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+            if (_pMap->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
             {
                 dashEndPos = dashEndPos - pos.tForward;
                 break;

@@ -1,8 +1,10 @@
 #include "Map.h"
 #include "Debug.h"
+#include "../Core/Console.h"
 
 void Map::InitializeMap(const vector<vector<Node>>& _grid)
 {
+	MaxItemCnt = Random(3, 3);
 	grid = _grid;
 
 	for (const vector<Node>& row : _grid)
