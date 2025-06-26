@@ -19,8 +19,8 @@ void InfoScene::Update()
 
 	if (key == Key::ESC)
 	{
-		Core::Instance->ChangeScene(SCENE::TITLE);
 		system("cls");
+		Core::Instance->ChangeScene(SCENE::TITLE);
 	}
 	else if (isQNow && !wasQPressed)
 	{
