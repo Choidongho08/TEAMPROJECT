@@ -161,7 +161,7 @@ void TitleScene::FrameBorderTraversalAnimation(COORD resolution, int delayTime)
 	int right = resolution.X;
 	int bottom = resolution.Y;
 
-	while (left < right && top < bottom)
+	while (left < right && top <= bottom)
 	{
 		for (int x = left; x <= right; x += 2) {
 			GotoXY(x, top);
