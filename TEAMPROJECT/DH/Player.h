@@ -8,6 +8,7 @@ class PlayerState : public EntityState
 {
 public:
     int score;
+    int maxSight;
     bool isHaveSkill;
     Skill whatSkill;
 };
@@ -19,20 +20,23 @@ public:
     Skill skill;
 
 private:
+    int mapHeight;
+    int mapWidth;
 
 public:
     Player();
     Player(PlayerState playerState, ENTITYPOS playerPos);
 
     void Initialize(
-        int mapHeight,
-        int mapWidth
+        int _mapHeight,
+        int _mapWidth
     );
     void Update();
     void SetSkill(Skill skill);
     void UseSkill(Map* _pGameMap, Skill _skillEnum);
     void Move(Map* _map);
     void CheckTile(Map* _map);
+    void SetSight();
     
 private:
 };

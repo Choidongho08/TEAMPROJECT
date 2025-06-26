@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "Debug.h"
 #include "../Core/Console.h"
+#include <cmath>
 
 void Map::InitializeMap(const vector<vector<Node>>& _grid)
 {
@@ -29,21 +30,35 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 	Debug::Instance->Log(PlayerSpawnPos.y);
 }
 
-void Map::Render(int x, int y)
+void Map::Render(const int& x, const int& y, const int& distance)
 {
-	// 타일 그리기
-	if (isTile(x, y, Tile::WALL))
-		std::cout << "■";
-	else if (isTile(x, y, Tile::BROKEN_WALL))
-		std::cout << "□";
-	else if (isTile(x, y, Tile::ROAD))
-		std::cout << "  ";
-	else if (isTile(x, y, Tile::COIN))
-		std::cout << "·";
-	else if (isTile(x, y, Tile::PLAYER_START))
-		std::cout << "  ";
-	else if (isTile(x, y, Tile::ENEMY_SPAWN))
-		std::cout << "  ";
-	else if (isTile(x, y, Tile::ITEM))
-		std::cout << "★";
+	for (int i = 0; i < ROW; ++i)
+	{
+		for (int j = 0; j < COL; ++j)
+		{
+			int dx = j - x;
+			int dy = i - y;
+			if (dx * dx + dy * dy <= distance * distance)
+			{
+				if (isTile(j, i, Tile::WALL))
+					std::cout << "■";
+				else if (isTile(j, i, Tile::BROKEN_WALL))
+					std::cout << "□";
+				else if (isTile(j, i, Tile::ROAD))
+					std::cout << "  ";
+				else if (isTile(j, i, Tile::COIN))
+					std::cout << "·";
+				else if (isTile(j, i, Tile::PLAYER_START))
+					std::cout << "  ";
+				else if (isTile(j, i, Tile::ENEMY_SPAWN))
+					std::cout << "  ";
+				else if (isTile(j, i, Tile::ITEM))
+					std::cout << "★";
+				
+			}
+			else
+				std::cout << "  ";
+		}
+		std::cout << endl;
+	}
 }

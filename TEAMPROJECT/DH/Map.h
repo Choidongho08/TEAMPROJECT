@@ -42,7 +42,7 @@ public:
         return grid;
     }
 
-    void Render(int x, int y);
+    void Render(const int& x, const int& y, const int& distance);
 
     void setObstacle(int x, int y)
     {

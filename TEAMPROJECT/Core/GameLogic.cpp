@@ -166,13 +166,14 @@ void GameScene::HandleInput()
 
 void GameScene::Render()
 {
+	// 맵 렌더
+	Map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
+	
 	for (int i = 0; i < Map.ROW; ++i)
 	{
 		for (int j = 0; j < Map.COL; ++j)
 		{
-			// 맵 렌더
-			Map.Render(j, i);
-
+			
 			for (auto entity : entities)
 			{
 				// 적 그리기

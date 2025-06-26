@@ -17,10 +17,15 @@ Player::Player(PlayerState _state, ENTITYPOS _pos) : Entity(_pos, _state, ENTITY
 }
 
 void Player::Initialize(
-    int _mapWidth,
-    int _mapHeight
+    int _mapHeight,
+    int _mapWidth
 )
 {
+    mapHeight = _mapHeight;
+    mapWidth = _mapWidth;
+    // state.maxSight = mapHeight * mapWidth / 10;
+    state.maxSight = 10;
+    SetSight();
 }
 
 void Player::Update()
@@ -48,12 +53,23 @@ void Player::CheckTile(Map* _map)
     }
     if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
     {
+        if (state.isHaveSkill)
+            return;
+
         state.isHaveSkill = true;
         srand((unsigned int)time(nullptr));
         int rVal = rand() % (int)Skill::END;
         state.whatSkill = (Skill)rVal;
         _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
     }
+}
+
+void Player::SetSight()
+{  
+    //if (state.score < 50)
+    //{
+    //    state.maxSight = 
+    //}
 }
 
 void Player::SetSkill(Skill skill)
