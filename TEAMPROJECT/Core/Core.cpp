@@ -48,8 +48,6 @@ void Core::Run()
 
 void Core::ChangeScene(SCENE newScene)
  {
-	_curScene = newScene;
-
 	switch (newScene)
 	{
 	case SCENE::TITLE:
@@ -72,6 +70,8 @@ void Core::ChangeScene(SCENE newScene)
 		_deadScene.SceneInit(newScene, &_asciiObjects);
 		break;
 	}
+
+	_curScene = newScene;
 }
 
 SCENE Core::GetCurrentScene()

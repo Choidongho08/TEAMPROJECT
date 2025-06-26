@@ -17,10 +17,14 @@ Player::Player(PlayerState _state, ENTITYPOS _pos) : Entity(_pos, _state, ENTITY
 }
 
 void Player::Initialize(
-    int _mapWidth,
-    int _mapHeight
+    int _mapHeight,
+    int _mapWidth
 )
 {
+    mapHeight = _mapHeight;
+    mapWidth = _mapWidth;
+    // state.maxSight = mapHeight * mapWidth / 10;
+    state.maxSight = 100;
 }
 
 void Player::Update()
@@ -48,6 +52,9 @@ void Player::CheckTile(Map* _map)
     }
     if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
     {
+        if (state.isHaveSkill)
+            return;
+
         state.isHaveSkill = true;
         srand((unsigned int)time(nullptr));
         int rVal = rand() % (int)Skill::END;
@@ -56,12 +63,17 @@ void Player::CheckTile(Map* _map)
     }
 }
 
+void Player::SetSight(int sight)
+{
+    state.maxSight = sight;
+}
+
 void Player::SetSkill(Skill skill)
 {
     skill = skill;
 }
 
-void Player::UseSkill(Map* _pGameMap, Skill _skillEnum)
+void Player::UseSkill(Map* _pMap, Skill _skillEnum)
 {
     if (!state.isHaveSkill) return;
 
@@ -80,7 +92,7 @@ void Player::UseSkill(Map* _pGameMap, Skill _skillEnum)
         while (true)
         {
             dashEndPos = pos.tForward * num;
-            if (_pGameMap->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+            if (_pMap->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
             {
                 dashEndPos = dashEndPos - pos.tForward;
                 break;

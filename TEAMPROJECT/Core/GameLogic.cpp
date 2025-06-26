@@ -40,7 +40,7 @@ void GameScene::LoadStage()
 {
 	srand((unsigned int)time(NULL));
 	int stageNumber = rand() % 3 + 1;
-	string mapFileName = "Stage2.txt"; // + std::to_string(stageNumber) + ".txt";
+	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
 	std::ifstream mapFile(mapFileName);
 	if (mapFile.is_open())
 	{
@@ -103,6 +103,7 @@ void GameScene::Update()
 	//system("cls");
 	GotoXY(0, 0);
 	HandleInput();
+	PlayerManager.SetSight(&Map);
  	EntitiesMove();
 	Render();
 	
@@ -166,13 +167,14 @@ void GameScene::HandleInput()
 
 void GameScene::Render()
 {
+	// 맵 렌더
+	Map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
+	
 	for (int i = 0; i < Map.ROW; ++i)
 	{
 		for (int j = 0; j < Map.COL; ++j)
 		{
-			// 맵 렌더
-			Map.Render(j, i);
-
+			
 			for (auto entity : entities)
 			{
 				// 적 그리기
