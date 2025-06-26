@@ -103,6 +103,7 @@ void GameScene::Update()
 	//system("cls");
 	GotoXY(0, 0);
 	HandleInput();
+	PlayerManager.SetSight(&Map);
  	EntitiesMove();
 	Render();
 	

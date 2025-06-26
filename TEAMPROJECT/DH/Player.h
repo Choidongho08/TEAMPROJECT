@@ -36,7 +36,7 @@ public:
     void UseSkill(Map* _pGameMap, Skill _skillEnum);
     void Move(Map* _map);
     void CheckTile(Map* _map);
-    void SetSight();
+    void SetSight(int sight);
     
 private:
 };

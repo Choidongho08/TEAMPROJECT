@@ -24,8 +24,7 @@ void Player::Initialize(
     mapHeight = _mapHeight;
     mapWidth = _mapWidth;
     // state.maxSight = mapHeight * mapWidth / 10;
-    state.maxSight = 10;
-    SetSight();
+    state.maxSight = 100;
 }
 
 void Player::Update()
@@ -64,12 +63,9 @@ void Player::CheckTile(Map* _map)
     }
 }
 
-void Player::SetSight()
-{  
-    //if (state.score < 50)
-    //{
-    //    state.maxSight = 
-    //}
+void Player::SetSight(int sight)
+{
+    state.maxSight = sight;
 }
 
 void Player::SetSkill(Skill skill)

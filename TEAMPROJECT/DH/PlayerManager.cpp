@@ -24,4 +24,10 @@ void PlayerManager::PlayerDead()
     player.state.isAlive = false;
 }
 
+void PlayerManager::SetSight(Map* _map)
+{
+    player.SetSight(100 * (_map->MapCoinCnt - player.state.score) / _map->MapCoinCnt / 2);
+    Debug::Instance->Log(to_string(100 * (_map->MapCoinCnt - player.state.score) / _map->MapCoinCnt));
+}
+
 
