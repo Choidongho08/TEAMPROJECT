@@ -98,6 +98,9 @@
     <ClInclude Include="DH\WinScene.h">
       <Filter>소스 파일\DH</Filter>
     </ClInclude>
+    <ClInclude Include="JH\HEADER\ResultScene.h">
+      <Filter>소스 파일\JH\HEADER</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Console.cpp">
@@ -159,6 +162,9 @@
     </ClCompile>
     <ClCompile Include="DH\WinScene.cpp">
       <Filter>소스 파일\DH</Filter>
+    </ClCompile>
+    <ClCompile Include="JH\CPP\ResultScene.cpp">
+      <Filter>소스 파일\JH\CPP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

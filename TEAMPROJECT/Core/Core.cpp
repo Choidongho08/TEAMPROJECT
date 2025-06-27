@@ -69,6 +69,7 @@ void Core::ChangeScene(SCENE newScene)
 		_winScene.SceneInit(newScene, &_asciiObjects);
 		break;
 	case SCENE::END:
+		_resultScene.SceneInit(newScene, &_asciiObjects);
 		break;
 	case SCENE::DEAD:
 		_deadScene.SceneInit(newScene, &_asciiObjects);
@@ -104,6 +105,7 @@ void Core::Update()
 			_winScene.Update();
 			break;
 		case SCENE::END:
+			_resultScene.Update();
 			break;
 		case SCENE::DEAD:
 			_deadScene.Update();

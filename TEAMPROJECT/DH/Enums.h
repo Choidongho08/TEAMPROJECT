@@ -7,7 +7,7 @@ enum class Key
 
 enum class Menu
 {
-	START, INFO, QUIT, FAIL
+	START, INFO, QUIT, FAIL, TITLE
 };
 
 enum class SCENE

@@ -153,6 +153,7 @@
     <ClInclude Include="DH\Pos.h" />
     <ClInclude Include="DH\Scene.h" />
     <ClInclude Include="DH\WinScene.h" />
+    <ClInclude Include="JH\HEADER\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\AsciiObject.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="DH\PlayerManager.cpp" />
     <ClCompile Include="DH\Scene.cpp" />
     <ClCompile Include="DH\WinScene.cpp" />
+    <ClCompile Include="JH\CPP\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
