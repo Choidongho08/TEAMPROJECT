@@ -1,4 +1,4 @@
-﻿#include "GameLogic.h"
+#include "GameLogic.h"
 #include "Core.h"
 #include "Console.h"
 #include "Mci.h"
@@ -8,6 +8,7 @@
 #include <fstream>
 #include <random>
 #include <format>
+#include "../DH/Debug.h"
 using std::format;
 
 GameScene::GameScene() : EnemyManager(&Map), PlayerManager(&Map)
@@ -16,6 +17,7 @@ GameScene::GameScene() : EnemyManager(&Map), PlayerManager(&Map)
 
 void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 {
+	Debug debug;
 	asciiObjects = _asciiObjects;
 
 	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
@@ -121,8 +123,6 @@ void GameScene::EntitiesMove()
 		if (enemy.state.isAlive)
 		{
 			enemy.Move(&Map);
-			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, Map.COL);
-			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, Map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
 		}
 		if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
@@ -141,59 +141,22 @@ void GameScene::HandleInput()
 	{
 	case Key::UP:
 		--PlayerManager.player.pos.tNewPos.y;
-		PlayerManager.player.pos.tForward = { 0, -1 };
 		break;
 	case Key::DOWN:
 		++PlayerManager.player.pos.tNewPos.y;
-		PlayerManager.player.pos.tForward = { 0, 1 };
 		break;
 	case Key::LEFT:
 		--PlayerManager.player.pos.tNewPos.x;
-		PlayerManager.player.pos.tForward = { -1, 0 };
 		break;
 	case Key::RIGHT:
 		++PlayerManager.player.pos.tNewPos.x;
-		PlayerManager.player.pos.tForward = { 1, 0 };
 		break;
 	case Key::SPACE:
-		if(PlayerManager.player.UseSkill())
-		{
-			while (PlayerManager.player.state.isUsingSkill)
-			{
-				if (PlayerManager.player.state.usingSkill == Skill::DASH)
-				{
-					POS dashEndPos{ 0,0 };
-					int num = 1;
-					while (true)
-					{
-						dashEndPos = (PlayerManager.player.pos.tForward * num) + PlayerManager.player.pos.tPos;
-						if (Map.isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
-						{
-							dashEndPos = dashEndPos - PlayerManager.player.pos.tForward;
-							PlayerManager.player.state.isUsingSkill = false;
-							break;
-						}
-						num++;
-						PlayerManager.player.pos.tNewPos = dashEndPos;
-						Sleep(10);
-					}
-				}
-				else if (PlayerManager.player.state.usingSkill == Skill::KILL)
-				{
-					PlayerManager.player.state.isUsingSkill = false;
-				}
-				else if (PlayerManager.player.state.usingSkill == Skill::SIGHT)
-				{
-					PlayerManager.player.state.isUsingSkill = false;
-				}
-			}
-		}
+		PlayerManager.player.UseSkill(&Map);
 		break;
 	}
 	PlayerManager.player.Move(&Map);
 	PlayerManager.player.CheckTile(&Map);
-	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, Map.COL);
-	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, Map.ROW);
 }
 
 void GameScene::Render()
@@ -253,8 +216,10 @@ void GameScene::RenderUI()
 		skill = "알 수 없음";
 		break;
 	}
-	int x = Map.COL - (23 / 2);
-	 int y = Map.ROW + 2;
+	 COORD resolution = GetConsoleResolution();
+	 int x = resolution.X / 1.5;
+	 // x = Map.COL + 10;
+	 int y = resolution.Y / 10;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);

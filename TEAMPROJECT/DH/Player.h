@@ -11,6 +11,8 @@ public:
     int maxSight;
     bool isHaveSkill;
     Skill whatSkill;
+    bool isUsingSkill;
+    Skill usingSkill;
 };
 
 class Player : public Entity
@@ -33,7 +35,7 @@ public:
     );
     void Update();
     void SetSkill(Skill skill);
-    void UseSkill(Map* _pGameMap);
+    bool UseSkill();
     void CheckTile(Map* _map);
     void SetSight(int sight);
     

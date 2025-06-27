@@ -1,5 +1,4 @@
 #include "Map.h"
-#include "Debug.h"
 #include "../Core/Console.h"
 #include <cmath>
 
@@ -25,9 +24,6 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 				MapCoinCnt++;
 		}
 	}
-	Debug::Instance->Pos(__FUNCTION__, __LINE__);
-	Debug::Instance->Log(PlayerSpawnPos.x);
-	Debug::Instance->Log(PlayerSpawnPos.y);
 }
 
 void Map::Render(const int& x, const int& y, const int& distance)

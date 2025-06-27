@@ -1,7 +1,6 @@
 #include "EnemyManager.h"
 #include "PlayerManager.h"
 #include "../Core/Console.h"
-#include "Debug.h"
 
 void PlayerManager::SpawnPlayer(vector<Entity*>& entities)
 {
@@ -10,12 +9,10 @@ void PlayerManager::SpawnPlayer(vector<Entity*>& entities)
     pos = { 0 };
     pos.tStartPos = map->PlayerSpawnPos;
     pos.tPos = pos.tStartPos;
-    state = { 0, false, (int)Skill::None };
+    state = { false, 0, 0, false, Skill::None, false, Skill::None };
     player = Player{ state, pos };
     player.Initialize(map->ROW, map->COL);
     entities.push_back(&player);
-    Debug::Instance->Pos(__FUNCTION__, __LINE__);
-    Debug::Instance->Log(to_string(map->PlayerSpawnPos.x) + ", " + to_string(map->PlayerSpawnPos.y));
     return;
 }
 
@@ -26,7 +23,6 @@ void PlayerManager::PlayerDead()
 
 void PlayerManager::SetSight(Map* _map)
 {
-    Debug::Instance->Log(to_string(100 * (_map->MapCoinCnt - player.state.score) / _map->MapCoinCnt));
 }
 
 

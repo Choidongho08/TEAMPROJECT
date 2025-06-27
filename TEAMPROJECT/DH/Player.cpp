@@ -1,9 +1,11 @@
 #include "Player.h"
 #include "../Core/Core.h"
 
-Player::Player() : Entity({{0,0}, {0,0}, {0,0}}, {true}, ENTITY_TYPE::Player)
+Player::Player() : Entity(ENTITYPOS( {0,0}, {0,0}, { 0,0 }, { 0,0 } ),
+    EntityState(false),
+    ENTITY_TYPE::Player)
 {
-    state = { 0, false, (int)Skill::None };
+    state = { false, 0, 0, false, Skill::None, false, Skill::None };
     pos = { 0 };
     skill = Skill::None;
 }
@@ -69,33 +71,30 @@ void Player::SetSkill(Skill skill)
     skill = skill;
 }
 
-void Player::UseSkill(Map* _pMap)
+bool Player::UseSkill()
 {
-    if (!state.isHaveSkill) return;
+    if (!state.isHaveSkill) return false;
 
     if (state.whatSkill == Skill::KILL)
     {
+        state.usingSkill = Skill::KILL;
         state.isHaveSkill = false;
+        state.isUsingSkill = true;
+        return true;
     }
     else if (state.whatSkill == Skill::SIGHT)
     {
+        state.usingSkill = Skill::SIGHT;
         state.isHaveSkill = false;
+        state.isUsingSkill = true;
+        return true;
     }
     else if (state.whatSkill == Skill::DASH)
     {
-        POS dashEndPos{ 0,0 };
-        int num = 1;
-        while (true)
-        {
-            dashEndPos = pos.tForward * num;
-            if (_pMap->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
-            {
-                dashEndPos = dashEndPos - pos.tForward;
-                break;
-            }
-            num++;
-        }
-        pos.tNewPos = dashEndPos;
+        state.usingSkill = Skill::DASH;
         state.isHaveSkill = false;
+        state.isUsingSkill = true;
+        return true;
     }
+    return false;
 }

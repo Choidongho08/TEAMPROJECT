@@ -91,7 +91,6 @@ void Entity::Move(Map* _map)
 {
 	if (!_map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
 	{
-		pos.tForward = pos.tNewPos - pos.tPos;
 		pos.tPos = pos.tNewPos;
 	}
 }
