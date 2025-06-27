@@ -23,7 +23,7 @@ void Player::Initialize(
     mapHeight = _mapHeight;
     mapWidth = _mapWidth;
     // state.maxSight = mapHeight * mapWidth / 10;
-    state.maxSight = 100;
+    state.curSight = 100;
 }
 
 void Player::Update()
@@ -40,6 +40,10 @@ void Player::Update()
                 dashEndPos = dashEndPos - pos.tForward;
                 state.isUsingSkill = false;
                 dashCnt = 1;
+
+                skillStartTime = 0;
+                skillMaxTime = 0;
+                state.usingSkill = Skill::None;
             }
             pos.tNewPos = dashEndPos;
             dashCnt++;
@@ -48,6 +52,9 @@ void Player::Update()
         case Skill::KILL:
         {
             state.isUsingSkill = false;
+            skillStartTime = 0;
+            skillMaxTime = 0;
+            state.usingSkill = Skill::None;
             break;
         }
         case Skill::SIGHT:
@@ -57,13 +64,13 @@ void Player::Update()
             {
                 state.isUsingSkill = false;
                 SetSight(max(3, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
+                skillStartTime = 0;
+                skillMaxTime = 0;
+                state.usingSkill = Skill::None;
             }
             break;
         }
         }
-
-        skillStartTime = 0;
-        skillMaxTime = 0;
     }
 }
 
@@ -87,24 +94,21 @@ void Player::CheckTile()
         if (state.isHaveSkill)
             return;
 
-        state.isHaveSkill = true;
         srand((unsigned int)time(nullptr));
         int rVal = rand() % (int)Skill::END;
-        state.haveSkill = (Skill)rVal;
+        SetSkill((Skill)rVal);
         map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
     }
 }
 
 void Player::SetSight(int sight)
 {
-    GotoXY(0, 0);
-    cout << "maxSight : " << sight;
-    state.maxSight = sight;
+    state.curSight = sight;
 }
 
-void Player::SetSightTime(float time)
+void Player::SetSkillTime(float time)
 {
-    skillMaxTime = time; // 왜인지 모르겠지만 1초 더 지나야 끝나서 1초 줄여줌
+    skillMaxTime = time;
 }
 
 void Player::KillEnemy(const POS& killPos)
@@ -115,6 +119,7 @@ void Player::KillEnemy(const POS& killPos)
 
 void Player::SetSkill(Skill skill)
 {
+    state.isHaveSkill = true;
     state.haveSkill = skill;
 }
 
@@ -124,6 +129,8 @@ void Player::UseSkill()
     else
     {
         skillStartTime = clock() / CLOCKS_PER_SEC;
+        GotoXY(0, 0);
+        cout << "UseSkill";
         state.isHaveSkill = false;
         state.isUsingSkill = true;
         switch (state.haveSkill)
@@ -140,8 +147,8 @@ void Player::UseSkill()
         {
             state.haveSkill = Skill::None;
             state.usingSkill = Skill::SIGHT;
-            const int& sight = state.maxSight;
-            SetSightTime(5);
+            const int& sight = state.curSight;
+            SetSkillTime(3);
             SetSight(sight * 2);
             break;
         }

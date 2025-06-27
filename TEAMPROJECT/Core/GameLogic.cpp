@@ -184,7 +184,7 @@ void GameScene::Render()
 	int offsetX = (resolution.X - map.COL * 2) / 2;
 	int offsetY = 0;
 	// 맵 렌더
-	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
+	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.curSight);
 	
 	for (int i = 0; i < map.ROW; ++i)
 	{

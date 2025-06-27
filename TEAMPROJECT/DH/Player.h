@@ -9,7 +9,7 @@ class PlayerState : public EntityState
 {
 public:
     int score;
-    int maxSight;
+    int curSight;
     bool isHaveSkill;
     Skill haveSkill;
     bool isUsingSkill;
@@ -51,7 +51,7 @@ public:
     void UseSkill();
     void CheckTile();
     void SetSight(int sight);
-    void SetSightTime(float time);
+    void SetSkillTime(float time);
     void KillEnemy(const POS& killPos);
     
 private:
