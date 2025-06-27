@@ -60,7 +60,6 @@ void Enemy::Move()
 //		Entity::Move();
 //		return;
 	//}
-	//Entity::Move();
 }
 
 void Enemy::BasicMove()
@@ -69,6 +68,7 @@ void Enemy::BasicMove()
 
 void Enemy::Update()
 {
+	Entity::Move();
 }
 
 void Enemy::AStarMove()

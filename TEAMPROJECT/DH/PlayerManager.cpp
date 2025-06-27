@@ -9,7 +9,7 @@ void PlayerManager::SpawnPlayer(vector<Entity*>& entities)
     pos = { 0 };
     pos.tStartPos = map->PlayerSpawnPos;
     pos.tPos = pos.tStartPos;
-    state = { true, 0, 0, false, Skill::None, false, Skill::None };
+    state = { true, 0, 0, false, SKILL::None, false, SKILL::None };
     Player newPlayer = Player{ state, pos, map };
     player = newPlayer;
     player.Initialize(map->ROW, map->COL);

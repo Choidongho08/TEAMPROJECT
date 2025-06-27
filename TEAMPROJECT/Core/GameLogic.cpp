@@ -122,7 +122,7 @@ void GameScene::EntitiesMove()
 	{
 		if (enemy.state.isAlive)
 		{
-			// enemy.Move();
+			enemy.Move();
 			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
 			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
@@ -172,10 +172,8 @@ void GameScene::HandleInput()
 		PlayerManager.player.UseSkill();
 		break;
 	}
-	PlayerManager.player.Move();
-	PlayerManager.player.CheckTile();
-	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, map.COL);
-	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, map.ROW);
+	PlayerManager.player.pos.tNewPos.x = std::clamp(PlayerManager.player.pos.tNewPos.x, 0, map.COL);
+	PlayerManager.player.pos.tNewPos.y = std::clamp(PlayerManager.player.pos.tNewPos.y, 0, map.ROW);
 }
 
 void GameScene::Render()
@@ -231,16 +229,16 @@ void GameScene::RenderUI()
 	string skill;
 	switch (PlayerManager.player.state.haveSkill)
 	{
-	case Skill::None:
+	case SKILL::None:
 		skill = "NONE ";
 		break;
-	case Skill::KILL:
+	case SKILL::KILL:
 		skill = "KILL ";
 		break;
-	case Skill::SIGHT:
+	case SKILL::SIGHT:
 		skill = "SIGHT";
 		break;
-	case Skill::DASH:
+	case SKILL::DASH:
 		skill = "DASH ";
 		break;
 	default:
@@ -260,11 +258,11 @@ void GameScene::RenderUI()
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
 		 GotoXY(x, y++);
-		 if(PlayerManager.player.state.haveSkill == Skill::DASH)
+		 if(PlayerManager.player.state.haveSkill == SKILL::DASH)
 			cout << "-       ▶▶▶        -" << endl;
-		 else if(PlayerManager.player.state.haveSkill == Skill::KILL)
+		 else if(PlayerManager.player.state.haveSkill == SKILL::KILL)
 			wcout << "-       -- X --       -" << endl;
-		 else if(PlayerManager.player.state.haveSkill == Skill::SIGHT)
+		 else if(PlayerManager.player.state.haveSkill == SKILL::SIGHT)
 			cout << "-      << ○ >>       -" << endl;
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;

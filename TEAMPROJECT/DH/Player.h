@@ -11,9 +11,9 @@ public:
     int score;
     int curSight;
     bool isHaveSkill;
-    Skill haveSkill;
+    SKILL haveSkill;
     bool isUsingSkill;
-    Skill usingSkill;
+    SKILL usingSkill;
 };
 
 class Player : public Entity
@@ -31,7 +31,6 @@ private:
     
     // 대쉬 스킬 변수
     POS dashEndPos;
-    int dashCnt;
 
 public:
     // 킬 스킬 변수
@@ -47,7 +46,7 @@ public:
         int _mapWidth
     );
     void Update();
-    void SetSkill(Skill skill);
+    void SetSkill(SKILL skill);
     void UseSkill();
     void CheckTile();
     void SetSight(int sight);

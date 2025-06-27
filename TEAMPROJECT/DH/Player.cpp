@@ -12,7 +12,6 @@ Player::Player(PlayerState _state, ENTITYPOS _pos, Map* _map) : Entity(_pos, _st
     state = _state;
     pos = _pos;
     pos.tForward = { 0,0 };
-    dashCnt = 1;
 }
 
 void Player::Initialize(
@@ -32,32 +31,36 @@ void Player::Update()
     {
         switch (state.usingSkill)
         {
-        case Skill::DASH:
+        case SKILL::DASH:
         {
-            dashEndPos = (pos.tForward * dashCnt) + pos.tPos;
-            if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+            while (true)
             {
-                dashEndPos = dashEndPos - pos.tForward;
-                state.isUsingSkill = false;
-                dashCnt = 1;
+                dashEndPos = pos.tForward + pos.tPos;
+                if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+                {
+                    dashEndPos = dashEndPos - pos.tForward;
+                    state.isUsingSkill = false;
 
-                skillStartTime = 0;
-                skillMaxTime = 0;
-                state.usingSkill = Skill::None;
+                    skillStartTime = 0;
+                    skillMaxTime = 0;
+                    state.usingSkill = SKILL::None;
+                    break;
+                }
+                pos.tNewPos = dashEndPos;
+                pos.tPos = pos.tNewPos;
+                CheckTile();
             }
-            pos.tNewPos = dashEndPos;
-            dashCnt++;
             break;
         }
-        case Skill::KILL:
+        case SKILL::KILL:
         {
             state.isUsingSkill = false;
             skillStartTime = 0;
             skillMaxTime = 0;
-            state.usingSkill = Skill::None;
+            state.usingSkill = SKILL::None;
             break;
         }
-        case Skill::SIGHT:
+        case SKILL::SIGHT:
         {
             double curTime = clock() / CLOCKS_PER_SEC;
             if (skillMaxTime <= curTime - skillStartTime)
@@ -66,12 +69,14 @@ void Player::Update()
                 SetSight(max(3, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
                 skillStartTime = 0;
                 skillMaxTime = 0;
-                state.usingSkill = Skill::None;
+                state.usingSkill = SKILL::None;
             }
             break;
         }
         }
     }
+    Move();
+    CheckTile();
 }
 
 void Player::CheckTile()
@@ -81,7 +86,7 @@ void Player::CheckTile()
         state.score++;
         map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
-        if (!(state.isUsingSkill && state.usingSkill == Skill::SIGHT))
+        if (!(state.isUsingSkill && state.usingSkill == SKILL::SIGHT))
             SetSight(max(2, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
 
         if (map->MapCoinCnt == state.score)
@@ -95,8 +100,8 @@ void Player::CheckTile()
             return;
 
         srand((unsigned int)time(nullptr));
-        int rVal = rand() % (int)Skill::END;
-        SetSkill((Skill)rVal);
+        int rVal = rand() % (int)SKILL::END;
+        SetSkill((SKILL)rVal);
         map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
     }
 }
@@ -117,7 +122,7 @@ void Player::KillEnemy(const POS& killPos)
         OnKillEnemy(killPos);
 }
 
-void Player::SetSkill(Skill skill)
+void Player::SetSkill(SKILL skill)
 {
     state.isHaveSkill = true;
     state.haveSkill = skill;
@@ -135,33 +140,33 @@ void Player::UseSkill()
         state.isUsingSkill = true;
         switch (state.haveSkill)
         {
-        case Skill::KILL:
+        case SKILL::KILL:
         {
-            state.haveSkill = Skill::None;
-            state.usingSkill = Skill::KILL;
+            state.haveSkill = SKILL::None;
+            state.usingSkill = SKILL::KILL;
             POS killPos = pos.tPos + pos.tForward;
             KillEnemy(killPos);
             break;
         }
-        case Skill::SIGHT:
+        case SKILL::SIGHT:
         {
-            state.haveSkill = Skill::None;
-            state.usingSkill = Skill::SIGHT;
+            state.haveSkill = SKILL::None;
+            state.usingSkill = SKILL::SIGHT;
             const int& sight = state.curSight;
             SetSkillTime(3);
             SetSight(sight * 2);
             break;
         }
-        case Skill::DASH:
+        case SKILL::DASH:
         {
-            state.haveSkill = Skill::None;
-            state.usingSkill = Skill::DASH;
+            state.haveSkill = SKILL::None;
+            state.usingSkill = SKILL::DASH;
             dashEndPos = POS{ 0,0 };
             int num = 1;
             break;
         }
         default:
-            state.haveSkill = Skill::None;
+            state.haveSkill = SKILL::None;
             state.isUsingSkill = false;
             false;
         }
