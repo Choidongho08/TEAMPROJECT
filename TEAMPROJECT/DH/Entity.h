@@ -36,7 +36,7 @@ public:
     void Rotate180();
     void RotationMove();
     void Render(std::string _s);
-    void Move(Map* _map);
+    void Move();
 
 protected:
     Map* map = nullptr;

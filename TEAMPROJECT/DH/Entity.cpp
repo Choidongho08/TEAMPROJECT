@@ -87,9 +87,9 @@ void Entity::Render(std::string s)
 	cout << s;
 }
 
-void Entity::Move(Map* _map)
+void Entity::Move()
 {
-	if (!_map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
+	if (!map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
 	{
 		pos.tPos = pos.tNewPos;
 	}

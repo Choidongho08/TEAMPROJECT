@@ -22,7 +22,7 @@ void Enemy::Initialize(EnemyState _state, POS _startPos, int _enemyCnt)
 	id = _enemyCnt;
 }
 
-void Enemy::Move(Map* _map)
+void Enemy::Move()
 {
 	// if (_state.isFollowing)
 	// {
@@ -30,37 +30,37 @@ void Enemy::Move(Map* _map)
 // 		return;
 	// }
 	POS newPos = pos.tPos + (pos.tForward == POS{ 0,0 } ? POS{ 1,0 } : pos.tForward); // 기존에 움직인 방향으로 갔을 때
-	if (!_map->isTile(newPos.x, newPos.y, Tile::WALL) && newPos != pos.tPos)
+	if (!map->isTile(newPos.x, newPos.y, Tile::WALL) && newPos != pos.tPos)
 	{
 		pos.tNewPos = newPos;
-		Entity::Move(_map);
+		Entity::Move();
 		return;
 	}
 	Rotate90();
 	newPos = pos.tPos + pos.tForward;
-	if (!_map->isTile(newPos.x, newPos.y, Tile::WALL))
+	if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
 	{
 		pos.tNewPos = newPos;
-		Entity::Move(_map);
+		Entity::Move();
 		return;
 	}
 	Rotate90();
 	newPos = pos.tPos + pos.tForward;
-	if (!_map->isTile(newPos.x, newPos.y, Tile::WALL))
+	if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
 	{
 		pos.tNewPos = newPos;
-		Entity::Move(_map);
+		Entity::Move();
 		return;
 	}
 	Rotate90();
 	newPos = pos.tPos + pos.tForward;
-	if (!_map->isTile(newPos.x, newPos.y, Tile::WALL))
+	if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
 	{
 		pos.tNewPos = newPos;
-		Entity::Move(_map);
+		Entity::Move();
 		return;
 	}
-	Entity::Move(_map);
+	Entity::Move();
 }
 
 void Enemy::BasicMove()
@@ -71,9 +71,9 @@ void Enemy::Update()
 {
 }
 
-void Enemy::AStarMove(Map* _map)
+void Enemy::AStarMove()
 {
 	// AStar로 플레이어를 향해 가는 움직임
-	vector<Node*> path = playerFindAStar.findPath(pos.tPos.x, pos.tPos.y, PPlayer->pos.tPos.x, PPlayer->pos.tPos.y, *_map);
+	vector<Node*> path = playerFindAStar.findPath(pos.tPos.x, pos.tPos.y, PPlayer->pos.tPos.x, PPlayer->pos.tPos.y, *map);
 	pos.tNewPos = path[0]->pos;
 }

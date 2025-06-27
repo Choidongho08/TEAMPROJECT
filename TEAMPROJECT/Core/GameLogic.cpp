@@ -106,7 +106,7 @@ void GameScene::Update()
 	EntityUpdate();
 	Render();
 	
-	FrameSync(6);
+	FrameSync(7);
 
 	// if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
 	// {
@@ -121,7 +121,7 @@ void GameScene::EntitiesMove()
 	{
 		if (enemy.state.isAlive)
 		{
-			enemy.Move(&map);
+			enemy.Move();
 			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
 			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
@@ -170,7 +170,7 @@ void GameScene::HandleInput()
 		PlayerManager.player.UseSkill();
 		break;
 	}
-	PlayerManager.player.Move(&map);
+	PlayerManager.player.Move();
 	PlayerManager.player.CheckTile(&map);
 	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, map.COL);
 	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, map.ROW);
@@ -227,19 +227,19 @@ void GameScene::Render()
 void GameScene::RenderUI()
 {
 	string skill;
-	switch (PlayerManager.player.skill)
+	switch (PlayerManager.player.state.haveSkill)
 	{
 	case Skill::None:
-		skill = "None";
+		skill = "NONE ";
 		break;
 	case Skill::KILL:
-		skill = "KILL";
+		skill = "KILL ";
 		break;
 	case Skill::SIGHT:
 		skill = "SIGHT";
 		break;
 	case Skill::DASH:
-		skill = "DASH";
+		skill = "DASH ";
 		break;
 	default:
 		skill = "알 수 없음";
@@ -288,7 +288,7 @@ void GameScene::RenderUI()
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
-	 cout << "     스코어 :  " << PlayerManager.player.state.score << " / " << map.MapCoinCnt << endl;
+	 cout << "     스코어 :  " << PlayerManager.player.state.score << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);

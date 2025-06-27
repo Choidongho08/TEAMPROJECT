@@ -46,7 +46,7 @@ void Core::Run()
 		Update();
 		Render();
 		// FrameSync
-		FrameSync(20);
+		FrameSync(60);
 	}
 }
 

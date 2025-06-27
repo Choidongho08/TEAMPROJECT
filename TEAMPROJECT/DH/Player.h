@@ -20,7 +20,6 @@ class Player : public Entity
 {
 public:
     PlayerState state;
-    Skill skill;
 
 private:
     int mapHeight;

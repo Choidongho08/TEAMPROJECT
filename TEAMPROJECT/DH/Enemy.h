@@ -32,10 +32,10 @@ public:
 		int _enemyCnt
 	);
 
-	void Move(Map* _map);
+	void Move();
 	void BasicMove();
 	void Update();
-	void AStarMove(Map* _map);
+	void AStarMove();
 
 private:
 };

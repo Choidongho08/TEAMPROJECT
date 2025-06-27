@@ -12,7 +12,6 @@ Player::Player(PlayerState _state, ENTITYPOS _pos, Map* _map) : Entity(_pos, _st
     state = _state;
     pos = _pos;
     pos.tForward = { 0,0 };
-    skill = Skill::None;
     dashCnt = 1;
 }
 
@@ -41,10 +40,9 @@ void Player::Update(const Map& _map)
                 dashEndPos = dashEndPos - pos.tForward;
                 state.isUsingSkill = false;
                 dashCnt = 1;
-                break;
             }
-            dashCnt++;
             pos.tNewPos = dashEndPos;
+            dashCnt++;
             break;
         }
         case Skill::KILL:
@@ -119,11 +117,13 @@ void Player::UseSkill()
         {
         case Skill::KILL:
         {
+            state.haveSkill = Skill::None;
             state.usingSkill = Skill::KILL;
             break;
         }
         case Skill::SIGHT:
         {
+            state.haveSkill = Skill::None;
             state.usingSkill = Skill::SIGHT;
             const int& sight = state.maxSight;
             SetSightTime(3);
@@ -132,12 +132,14 @@ void Player::UseSkill()
         }
         case Skill::DASH:
         {
+            state.haveSkill = Skill::None;
             state.usingSkill = Skill::DASH;
             dashEndPos = POS{ 0,0 };
             int num = 1;
             break;
         }
         default:
+            state.haveSkill = Skill::None;
             state.isUsingSkill = false;
             false;
         }
