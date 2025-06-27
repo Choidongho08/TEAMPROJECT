@@ -109,7 +109,7 @@ Menu TitleScene::GetCurMenu()
 	switch (eKey)
 	{
 	case Key::UP:
-		PlaySoundID(SOUNDID::UPDOWN, true);
+		PlaySoundID(SOUNDID::UPDOWN);
 		if (y > originY)
 		{
 			GotoXY(x - 5, y);
@@ -124,7 +124,7 @@ Menu TitleScene::GetCurMenu()
 		}
 		break;
 	case Key::DOWN:
-		PlaySoundID(SOUNDID::UPDOWN, true);
+		PlaySoundID(SOUNDID::UPDOWN);
 		if (y < originY + 4)
 		{
 			GotoXY(x - 5, y);
@@ -139,7 +139,7 @@ Menu TitleScene::GetCurMenu()
 		}
 		break;
 	case Key::SPACE:
-		PlaySoundID(SOUNDID::CLICK, true);
+		PlaySoundID(SOUNDID::CLICK);
 
 		if (originY == y) return Menu::START;
 		else if (originY + 2 == y) {
@@ -163,7 +163,7 @@ void TitleScene::EnterAnimation()
 
 void TitleScene::FrameBorderTraversalAnimation(COORD resolution, int delayTime)
 {
-	PlaySoundID(SOUNDID::GAMESTART, true);
+	PlaySoundID(SOUNDID::GAMESTART);
 
 	SetColor(COLOR::WHITE, COLOR::WHITE);
 	int left = 0, top = 0;
