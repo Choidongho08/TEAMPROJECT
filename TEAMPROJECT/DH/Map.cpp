@@ -57,8 +57,9 @@ void Map::Render(const int& x, const int& y, const int& distance)
 					continue; // 플레이어 위치 생략
 				else if (isTile(j, i, Tile::ENEMY_SPAWN))
 					continue; // 적 위치 생략
-
 			}
+			else
+				std::cout << "  ";
 		}
 	}
 }

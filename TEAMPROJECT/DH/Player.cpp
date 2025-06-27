@@ -92,6 +92,8 @@ void Player::CheckTile(Map* _map)
 
 void Player::SetSight(int sight)
 {
+    GotoXY(0, 0);
+    cout << "maxSight : " << sight;
     state.maxSight = sight;
 }
 
