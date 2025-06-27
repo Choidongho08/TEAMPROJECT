@@ -26,6 +26,8 @@ void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 	textColor = COLOR::WHITE;
 	bgColor = COLOR::BLACK;
 
+	Render();
+
 	PlaySoundID(SOUNDID::TITLE, true);
 }
 
@@ -75,7 +77,6 @@ void TitleScene::Update()
 	if (Core::Instance->GetCurrentScene() != SCENE::TITLE)
 		return;
 
-	Render();
 	Sleep(30);
 
 	Menu eMenu = GetCurMenu();
@@ -108,6 +109,7 @@ Menu TitleScene::GetCurMenu()
 	switch (eKey)
 	{
 	case Key::UP:
+		PlaySoundID(SOUNDID::UPDOWN, true);
 		if (y > originY)
 		{
 			GotoXY(x - 5, y);
@@ -122,6 +124,7 @@ Menu TitleScene::GetCurMenu()
 		}
 		break;
 	case Key::DOWN:
+		PlaySoundID(SOUNDID::UPDOWN, true);
 		if (y < originY + 4)
 		{
 			GotoXY(x - 5, y);

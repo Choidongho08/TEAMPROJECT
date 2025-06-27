@@ -16,7 +16,8 @@ static std::vector<SoundEntry> SoundTable =
 	{ L"Sounds\\Sight.wav", 500, 0 },
 	{ L"Sounds\\Dash.wav", 500, 0 },
 	{ L"Sounds\\GameStart.wav", 500, 0 },
-	{ L"Sounds\\PlayerDie.wav", 500, 0 }
+	{ L"Sounds\\PlayerDie.wav", 500, 0 },
+	{ L"Sounds\\UpDown.wav", 500, 0 }
 };
 
 bool OpenMciDevice(LPCWSTR deviceType, LPCWSTR name, UINT& deviceId)
