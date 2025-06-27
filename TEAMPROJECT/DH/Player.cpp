@@ -70,7 +70,7 @@ void Player::CheckTile(Map* _map)
         state.score++;
         _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
-        SetSight(max(2, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 10));
+        SetSight(max(2, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 3));
 
         if (_map->MapCoinCnt == state.score)
         {
