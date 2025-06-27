@@ -168,49 +168,7 @@ void GameScene::HandleInput()
 		PlayerManager.player.pos.tForward = { 1, 0 };
 		break;
 	case Key::SPACE:
-		if(PlayerManager.player.UseSkill())
-		{
-			while (PlayerManager.player.state.isUsingSkill)
-			{
-				if (PlayerManager.player.state.usingSkill == Skill::DASH)
-				{
-					POS dashEndPos{ 0,0 };
-					int num = 1;
-					while (true)
-					{
-						dashEndPos = (PlayerManager.player.pos.tForward * num) + PlayerManager.player.pos.tPos;
-						if (map.isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
-						{
-							dashEndPos = dashEndPos - PlayerManager.player.pos.tForward;
-							PlayerManager.player.state.isUsingSkill = false;
-							break;
-						}
-						num++;
-						PlayerManager.player.pos.tNewPos = dashEndPos;
-					}
-				}
-				else if (PlayerManager.player.state.usingSkill == Skill::KILL)
-				{
-					POS targetPos = PlayerManager.player.pos.tForward + PlayerManager.player.pos.tPos;
-					for (const Enemy& enemy : EnemyManager.Enemies)
-					{
-						if (enemy.pos.tPos == targetPos)
-						{
-							EnemyManager.DeadEnemy(enemy);
-							break;
-						}
-					}
-					PlayerManager.player.state.isUsingSkill = false;
-				}
-				else if (PlayerManager.player.state.usingSkill == Skill::SIGHT)
-				{
-					const int& sight = PlayerManager.player.state.maxSight;
-					PlayerManager.player.SetSightTime(3);
-					PlayerManager.player.SetSight(sight * 2);
-					break;
-				}
-			}
-		}
+		PlayerManager.player.UseSkill();
 		break;
 	}
 	PlayerManager.player.Move(&map);
@@ -293,11 +251,11 @@ void GameScene::RenderUI()
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
 		 GotoXY(x, y++);
-		 if(PlayerManager.player.state.whatSkill == Skill::DASH)
+		 if(PlayerManager.player.state.haveSkill == Skill::DASH)
 			cout << "-       ▶▶▶        -" << endl;
-		 else if(PlayerManager.player.state.whatSkill == Skill::KILL)
+		 else if(PlayerManager.player.state.haveSkill == Skill::KILL)
 			wcout << "-       -- X --       -" << endl;
-		 else if(PlayerManager.player.state.whatSkill == Skill::SIGHT)
+		 else if(PlayerManager.player.state.haveSkill == Skill::SIGHT)
 			cout << "-      << ○ >>       -" << endl;
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;

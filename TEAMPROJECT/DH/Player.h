@@ -11,7 +11,7 @@ public:
     int score;
     int maxSight;
     bool isHaveSkill;
-    Skill whatSkill;
+    Skill haveSkill;
     bool isUsingSkill;
     Skill usingSkill;
 };
@@ -38,7 +38,7 @@ public:
     );
     void Update(const Map& _map);
     void SetSkill(Skill skill);
-    bool UseSkill();
+    void UseSkill();
     void CheckTile(Map* _map);
     void SetSight(int sight);
     void SetSightTime(float time);

@@ -66,7 +66,7 @@ void Player::CheckTile(Map* _map)
         state.score++;
         _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
-        SetSight(max(3, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 2));
+        SetSight(max(2, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 2));
 
         if (_map->MapCoinCnt == state.score)
         {
@@ -81,52 +81,57 @@ void Player::CheckTile(Map* _map)
         state.isHaveSkill = true;
         srand((unsigned int)time(nullptr));
         int rVal = rand() % (int)Skill::END;
-        state.whatSkill = (Skill)rVal;
+        state.haveSkill = (Skill)rVal;
         _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
     }
 }
 
 void Player::SetSight(int sight)
 {
-    if (!(state.usingSkill == Skill::SIGHT && state.isUsingSkill))
-        return;
-
     state.maxSight = sight;
 }
 
 void Player::SetSightTime(float time)
 {
-    skillMaxTime = time * 10;
+    skillMaxTime = time;
 }
 
 void Player::SetSkill(Skill skill)
 {
-    state.whatSkill = skill;
+    state.haveSkill = skill;
 }
 
-bool Player::UseSkill()
+void Player::UseSkill()
 {
-    if (!state.isHaveSkill) return false;
+    if (!state.isHaveSkill) return;
     else
     {
         skillStartTime = clock() / CLOCKS_PER_SEC;
         state.isHaveSkill = false;
         state.isUsingSkill = true;
-        if (state.whatSkill == Skill::KILL)
+        switch (state.haveSkill)
+        {
+        case Skill::KILL:
         {
             state.usingSkill = Skill::KILL;
-            return true;
+            break;
         }
-        else if (state.whatSkill == Skill::SIGHT)
+        case Skill::SIGHT:
         {
             state.usingSkill = Skill::SIGHT;
-            return true;
+            const int& sight = state.maxSight;
+            SetSightTime(3);
+            SetSight(sight * 2);
+            break;
         }
-        else if (state.whatSkill == Skill::DASH)
+        case Skill::DASH:
         {
             state.usingSkill = Skill::DASH;
-            return true;
+            break;
+        }
+        default:
+            state.isUsingSkill = false;
+            false;
         }
     }
-    return false;
 }
