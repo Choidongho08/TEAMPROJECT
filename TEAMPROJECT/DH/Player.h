@@ -24,10 +24,19 @@ public:
 private:
     int mapHeight;
     int mapWidth;
+
+    // 공통 스킬 변수
     double skillStartTime;
     double skillMaxTime;
+    
+    // 대쉬 스킬 변수
     POS dashEndPos;
     int dashCnt;
+
+public:
+    // 킬 스킬 변수
+    std::function<void(POS)> OnKillEnemy;
+private:
 
 public:
     Player();
@@ -37,12 +46,13 @@ public:
         int _mapHeight,
         int _mapWidth
     );
-    void Update(const Map& _map);
+    void Update();
     void SetSkill(Skill skill);
     void UseSkill();
-    void CheckTile(Map* _map);
+    void CheckTile();
     void SetSight(int sight);
     void SetSightTime(float time);
+    void KillEnemy(const POS& killPos);
     
 private:
 };

@@ -26,7 +26,7 @@ void Player::Initialize(
     state.maxSight = 100;
 }
 
-void Player::Update(const Map& _map)
+void Player::Update()
 {
     if (state.isUsingSkill)
     {
@@ -47,37 +47,42 @@ void Player::Update(const Map& _map)
         }
         case Skill::KILL:
         {
+            state.isUsingSkill = false;
             break;
         }
         case Skill::SIGHT:
         {
             double curTime = clock() / CLOCKS_PER_SEC;
-            if (skillMaxTime < curTime - skillStartTime)
+            if (skillMaxTime <= curTime - skillStartTime)
             {
                 state.isUsingSkill = false;
-                SetSight(max(3, 100 * (_map.MapCoinCnt - state.score) / _map.MapCoinCnt / 3));
+                SetSight(max(3, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
             }
             break;
         }
         }
+
+        skillStartTime = 0;
+        skillMaxTime = 0;
     }
 }
 
-void Player::CheckTile(Map* _map)
+void Player::CheckTile()
 {
-    if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
+    if (map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
     {
         state.score++;
-        _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+        map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
-        SetSight(max(2, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 3));
+        if (!(state.isUsingSkill && state.usingSkill == Skill::SIGHT))
+            SetSight(max(2, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
 
-        if (_map->MapCoinCnt == state.score)
+        if (map->MapCoinCnt == state.score)
         {
             Core::Instance->ChangeScene(SCENE::WIN);
         }
     }
-    if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
+    if (map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
     {
         if (state.isHaveSkill)
             return;
@@ -86,7 +91,7 @@ void Player::CheckTile(Map* _map)
         srand((unsigned int)time(nullptr));
         int rVal = rand() % (int)Skill::END;
         state.haveSkill = (Skill)rVal;
-        _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+        map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
     }
 }
 
@@ -99,7 +104,13 @@ void Player::SetSight(int sight)
 
 void Player::SetSightTime(float time)
 {
-    skillMaxTime = time;
+    skillMaxTime = time; // 왜인지 모르겠지만 1초 더 지나야 끝나서 1초 줄여줌
+}
+
+void Player::KillEnemy(const POS& killPos)
+{
+    if (OnKillEnemy)
+        OnKillEnemy(killPos);
 }
 
 void Player::SetSkill(Skill skill)
@@ -121,6 +132,8 @@ void Player::UseSkill()
         {
             state.haveSkill = Skill::None;
             state.usingSkill = Skill::KILL;
+            POS killPos = pos.tPos + pos.tForward;
+            KillEnemy(killPos);
             break;
         }
         case Skill::SIGHT:
@@ -128,7 +141,7 @@ void Player::UseSkill()
             state.haveSkill = Skill::None;
             state.usingSkill = Skill::SIGHT;
             const int& sight = state.maxSight;
-            SetSightTime(3);
+            SetSightTime(5);
             SetSight(sight * 2);
             break;
         }

@@ -17,6 +17,7 @@ public:
 
 	void SpawnEnemies(vector<Entity*>* _entities, Player* player);
 	void DeadEnemy(const Enemy& enemy);
+	void DeadEnemy2(POS deadPos);
 private:
 };
 

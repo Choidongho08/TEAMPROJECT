@@ -21,7 +21,6 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 {
 	asciiObjects = _asciiObjects;
 
-
 	// 사운드 초기화
 
 	PlaySoundID(SOUNDID::GAME, true);
@@ -33,6 +32,8 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	LoadStage();
 	ItemInit();
 	EntityInit();
+
+	PlayerManager.player.OnKillEnemy = std::bind(&EnemyManager::DeadEnemy2, &EnemyManager, std::placeholders::_1);
 }
 
 void GameScene::LoadStage()
@@ -121,22 +122,23 @@ void GameScene::EntitiesMove()
 	{
 		if (enemy.state.isAlive)
 		{
-			enemy.Move();
+			// enemy.Move();
 			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
 			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
-		}
-		if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
-		{
-			PlayerManager.PlayerDead();
-			Core::Instance->ChangeScene(SCENE::DEAD);
+
+			if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
+			{
+				PlayerManager.PlayerDead();
+				Core::Instance->ChangeScene(SCENE::DEAD);
+			}
 		}
 	}
 }
 
 void GameScene::EntityUpdate()
 {
-	PlayerManager.player.Update(map);
+	PlayerManager.player.Update();
 
 	for (auto enemy : EnemyManager.Enemies)
 	{
@@ -171,7 +173,7 @@ void GameScene::HandleInput()
 		break;
 	}
 	PlayerManager.player.Move();
-	PlayerManager.player.CheckTile(&map);
+	PlayerManager.player.CheckTile();
 	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, map.COL);
 	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, map.ROW);
 }
