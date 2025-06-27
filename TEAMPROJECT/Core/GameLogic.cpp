@@ -21,14 +21,13 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 {
 	asciiObjects = _asciiObjects;
 
-	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
 
 	// 사운드 초기화
 
 	PlaySoundID(SOUNDID::GAME, true);
 
 	// 콘솔창 관련 초기화
-	SetConsoleSettings(1200, 600, false, L"HackMan");
+	
 	SetCursorVisual(true, 50);
 
 	LoadStage();
@@ -221,6 +220,9 @@ void GameScene::HandleInput()
 
 void GameScene::Render()
 {
+	COORD resolution = GetConsoleResolution();
+	int offsetX = (resolution.X - map.COL * 2) / 2;
+	int offsetY = 0;
 	// 맵 렌더
 	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
 	
@@ -238,7 +240,9 @@ void GameScene::Render()
 					{
 						if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
 						{
-							entity->Render("EM");
+							GotoXY(offsetX + j * 2, offsetY + i);
+							cout << "EM";
+							//entity->Render("EM");
 						}
 					}
 					// 플레이어 그리기
@@ -246,7 +250,9 @@ void GameScene::Render()
 					{
 						if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
 						{
-							entity->Render("⊙");
+							GotoXY(offsetX + j * 2, offsetY + i);
+							cout << "⊙";
+							//entity->Render("⊙");
 						}
 					}
 				}
@@ -281,8 +287,9 @@ void GameScene::RenderUI()
 		skill = "알 수 없음";
 		break;
 	}
-	int x = map.COL - (23 / 2);
-	 int y = map.ROW + 2;
+	COORD resolution = GetConsoleResolution();
+	int x = (resolution.X - 23) / 2;
+	int y = map.ROW + 2;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);

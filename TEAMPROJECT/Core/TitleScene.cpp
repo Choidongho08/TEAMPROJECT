@@ -14,9 +14,12 @@ TitleScene::TitleScene()
 
 void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
+	SetConsoleFont(L"NSimSun", { 25, 25 }, FW_BOLD);
+
+	SetConsoleSettings(1200, 600, true, L"HackMan");
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 2.5;
-	int y = resolution.Y / 3 * 2;
+	int x = (resolution.X - 5) / 2;
+    int y = (resolution.Y - 11) / 2 + 9;
 	GotoXY(x - 4, y);
 	cout << "  [";
 	GotoXY(x + 10, y);
@@ -34,8 +37,9 @@ void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 void TitleScene::Render()
 {
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 11;
-	int y = resolution.Y / 7;
+	int x = (resolution.X - 90) / 2;
+	int y = (resolution.Y - 11) / 3.5;
+
 	int coutmode = _setmode(_fileno(stdout), _O_U16TEXT);
 
 	GotoXY(x, ++y); wcout<<L" ▄         ▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄    ▄       ▄▄       ▄▄  ▄▄▄▄▄▄▄▄▄▄▄  ▄▄        ▄ " << endl;
@@ -54,13 +58,13 @@ void TitleScene::Render()
 
 
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
-	x = resolution.X / 2.5;
-	y = resolution.Y / 3 * 2;
-	GotoXY(x, y);
+	x = (resolution.X - 5) / 2;
+	y = y + 5;
+	GotoXY(x, y); 
 	cout << "게임 시작";
-	GotoXY(x, y + 2);
+	GotoXY(x, y + 2);  
 	cout << "게임 정보";
-	GotoXY(x, y + 4);
+	GotoXY(x, y + 4) ; 
 	cout << "게임 종료";
 
 }
@@ -87,7 +91,7 @@ void TitleScene::Update()
 		Core::Instance->ChangeScene(SCENE::GAME);
 		break;
 	case Menu::INFO:
-		Core::Instance->ChangeScene(SCENE::INFO);
+		Core::Instance->ChangeScene(SCENE::END);
 		break;
 	case Menu::QUIT:
 		Core::Instance->ChangeScene(SCENE::QUIT);
@@ -102,8 +106,8 @@ void TitleScene::Update()
 Menu TitleScene::GetCurMenu()
 {
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 2.5;
-	static int y = resolution.Y / 3 * 2;
+	int x = (resolution.X - 5) / 2;
+	static int y = (resolution.Y - 11) / 2 + 9;
 	static int originY = y;
 	Key eKey = KeyController();
 	switch (eKey)

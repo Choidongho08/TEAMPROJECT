@@ -26,6 +26,10 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 
 void Map::Render(const int& x, const int& y, const int& distance)
 {
+	COORD resolution = GetConsoleResolution(); // 콘솔 크기 가져오기
+	int offsetX = (resolution.X - COL * 2) / 2; // 문자 너비 2칸
+	int offsetY = 0;
+
 	for (int i = 0; i < ROW; ++i)
 	{
 		for (int j = 0; j < COL; ++j)
@@ -34,6 +38,7 @@ void Map::Render(const int& x, const int& y, const int& distance)
 			int dy = i - y;
 			if (dx * dx + dy * dy <= distance * distance)
 			{
+				GotoXY(offsetX + j * 2, offsetY + i); // ← 중앙 정렬 위치로 출력
 				if (isTile(j, i, Tile::WALL))
 					std::cout << "■";
 				else if (isTile(j, i, Tile::BROKEN_WALL))
@@ -48,11 +53,13 @@ void Map::Render(const int& x, const int& y, const int& distance)
 					std::cout << "  ";
 				else if (isTile(j, i, Tile::ITEM))
 					std::cout << "★";
-				
+				else if (isTile(j, i, Tile::PLAYER_START))
+					continue; // 플레이어 위치 생략
+				else if (isTile(j, i, Tile::ENEMY_SPAWN))
+					continue; // 적 위치 생략
+
 			}
-			else
-				std::cout << "  ";
 		}
-		std::cout << endl;
 	}
 }
+
