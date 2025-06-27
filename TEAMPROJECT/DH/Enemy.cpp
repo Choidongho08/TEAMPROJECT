@@ -28,7 +28,7 @@ void Enemy::Move(Map* _map)
 // 		AStarMove(_map);
 // 		return;
 	// }
-	POS newPos = pos.tPos + pos.tForward; // 기존에 움직인 방향으로 갔을 때
+	POS newPos = pos.tPos + (pos.tForward == POS{ 0,0 } ? POS{ 1,0 } : pos.tForward); // 기존에 움직인 방향으로 갔을 때
 	if (!_map->isTile(newPos.x, newPos.y, Tile::WALL) && newPos != pos.tPos)
 	{
 		pos.tNewPos = newPos;

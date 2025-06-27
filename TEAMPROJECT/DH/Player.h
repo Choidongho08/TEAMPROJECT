@@ -33,8 +33,7 @@ public:
     );
     void Update();
     void SetSkill(Skill skill);
-    void UseSkill(Map* _pGameMap, Skill _skillEnum);
-    void Move(Map* _map);
+    void UseSkill(Map* _pGameMap);
     void CheckTile(Map* _map);
     void SetSight(int sight);
     

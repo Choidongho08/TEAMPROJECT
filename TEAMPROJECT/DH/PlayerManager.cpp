@@ -26,7 +26,6 @@ void PlayerManager::PlayerDead()
 
 void PlayerManager::SetSight(Map* _map)
 {
-    player.SetSight(max(3, 100 * (_map->MapCoinCnt - player.state.score) / _map->MapCoinCnt / 2));
     Debug::Instance->Log(to_string(100 * (_map->MapCoinCnt - player.state.score) / _map->MapCoinCnt));
 }
 

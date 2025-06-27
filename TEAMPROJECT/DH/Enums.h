@@ -27,7 +27,7 @@ enum class Direction
 
 enum class Skill
 {
-	None, KILL, SIGHT, DASH, END
+	None = -1, KILL, SIGHT, DASH, END
 };
 
 enum class ENTITY_TYPE
