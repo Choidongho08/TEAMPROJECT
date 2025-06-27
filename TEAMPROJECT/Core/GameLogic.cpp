@@ -23,9 +23,8 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	SetConsoleFont(L"NSimSun", { 20, 20 }, FW_BOLD);
 
 	// 사운드 초기화
-	// if (!InitAllSounds()) return;
 
-	PlaySoundID(SOUNDID::TITLE, true);
+	PlaySoundID(SOUNDID::GAME, true);
 
 	// 콘솔창 관련 초기화
 	SetConsoleSettings(1200, 600, false, L"HackMan");

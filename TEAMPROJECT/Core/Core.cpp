@@ -28,14 +28,18 @@ Core::Core()
 	//		gameMap[i] = new char[MAP_WIDTH];
 	// }
 
-	ChangeScene(SCENE::TITLE);
 
 	// return CORE{ titleScene, gameLogic, curScene, AsciiObjects };
 }
 
 void Core::Run()
 {
+
 	ReleaseAllSounds();
+
+	if (!InitAllSounds()) return;
+
+	ChangeScene(SCENE::TITLE);
 
 	while (true)
 	{

@@ -26,5 +26,7 @@ struct SoundEntry
 bool InitAllSounds();
 // 재생
 void PlaySoundID(SOUNDID _id, bool _repeat = false);
+// 재생 중지
+void StopSound(SOUNDID _id);
 // 릴리즈 
 void ReleaseAllSounds();
