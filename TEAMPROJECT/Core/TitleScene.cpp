@@ -25,6 +25,10 @@ void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 	asciiObjects = _asciiObjects;
 	textColor = COLOR::WHITE;
 	bgColor = COLOR::BLACK;
+
+	Render();
+
+	PlaySoundID(SOUNDID::TITLE, true);
 }
 
 void TitleScene::Render()
@@ -73,7 +77,6 @@ void TitleScene::Update()
 	if (Core::Instance->GetCurrentScene() != SCENE::TITLE)
 		return;
 
-	Render();
 	Sleep(30);
 
 	Menu eMenu = GetCurMenu();
@@ -106,6 +109,7 @@ Menu TitleScene::GetCurMenu()
 	switch (eKey)
 	{
 	case Key::UP:
+		PlaySoundID(SOUNDID::UPDOWN);
 		if (y > originY)
 		{
 			GotoXY(x - 5, y);
@@ -120,6 +124,7 @@ Menu TitleScene::GetCurMenu()
 		}
 		break;
 	case Key::DOWN:
+		PlaySoundID(SOUNDID::UPDOWN);
 		if (y < originY + 4)
 		{
 			GotoXY(x - 5, y);
@@ -134,6 +139,8 @@ Menu TitleScene::GetCurMenu()
 		}
 		break;
 	case Key::SPACE:
+		PlaySoundID(SOUNDID::CLICK);
+
 		if (originY == y) return Menu::START;
 		else if (originY + 2 == y) {
 			y -= 2;
@@ -156,12 +163,14 @@ void TitleScene::EnterAnimation()
 
 void TitleScene::FrameBorderTraversalAnimation(COORD resolution, int delayTime)
 {
+	PlaySoundID(SOUNDID::GAMESTART);
+
 	SetColor(COLOR::WHITE, COLOR::WHITE);
 	int left = 0, top = 0;
 	int right = resolution.X;
 	int bottom = resolution.Y;
 
-	while (left < right && top <= bottom)
+	while (left <= right && top <= bottom)
 	{
 		for (int x = left; x <= right; x += 2) {
 			GotoXY(x, top);
@@ -193,4 +202,5 @@ void TitleScene::FrameBorderTraversalAnimation(COORD resolution, int delayTime)
 		bottom--;
 	}
 	SetColor();
+	StopSound(SOUNDID::TITLE);
 }

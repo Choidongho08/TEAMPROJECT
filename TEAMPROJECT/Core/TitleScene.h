@@ -3,6 +3,7 @@
 #include "../DH/Scene.h";
 #include "AsciiObject.h";
 #include <Windows.h>;
+#include <mmsystem.h>
 
 class TitleScene : public Scene
 {

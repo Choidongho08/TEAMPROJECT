@@ -8,8 +8,16 @@
 
 static std::vector<SoundEntry> SoundTable =
 {
-    { L"Sound\\happyRock.mp3", 500, 0 },
-    { L"Sound\\explosion.wav", 1000, 0 }
+    { L"Sounds\\TitleBGM.wav", 1000, 0 },
+	{ L"Sounds\\GameBGM.wav", 1000, 0 },
+	{ L"Sounds\\PickUpCoin.wav", 500, 0 },
+	{ L"Sounds\\clickUI.wav", 500, 0 },
+	{ L"Sounds\\kill.wav", 500, 0 },
+	{ L"Sounds\\Sight.wav", 500, 0 },
+	{ L"Sounds\\Dash.wav", 500, 0 },
+	{ L"Sounds\\GameStart.wav", 500, 0 },
+	{ L"Sounds\\PlayerDie.wav", 500, 0 },
+	{ L"Sounds\\UpDown.wav", 500, 0 }
 };
 
 bool OpenMciDevice(LPCWSTR deviceType, LPCWSTR name, UINT& deviceId)
@@ -87,6 +95,15 @@ void PlaySoundID(SOUNDID _id, bool _repeat)
         return;
     // 정상 재생
     PlayMciDevice(devId, _repeat);
+}
+
+void StopSound(SOUNDID _id)
+{
+    UINT devId = SoundTable[(int)_id].deviceId;
+    if (devId == 0) return;
+
+    MCI_GENERIC_PARMS param = {};
+    mciSendCommand(devId, MCI_STOP, MCI_WAIT, (DWORD_PTR)&param);
 }
 
 void ReleaseAllSounds()

@@ -12,7 +12,7 @@ void CloseMciDevice(UINT& deviceId);
 void PlayMciDevice(UINT deviceId, bool repeat = false);
 enum class SOUNDID
 {
-    BGM, EXPLOSION, END
+    TITLE, GAME, COIN, CLICK, KILL, SIGHT, DASH, GAMESTART, PLAYERDIE, UPDOWN
 };
 
 struct SoundEntry
@@ -26,5 +26,7 @@ struct SoundEntry
 bool InitAllSounds();
 // 재생
 void PlaySoundID(SOUNDID _id, bool _repeat = false);
+// 재생 중지
+void StopSound(SOUNDID _id);
 // 릴리즈 
 void ReleaseAllSounds();

@@ -4,6 +4,7 @@
 #include "../DH/InfoScene.h"
 #include "../DH/DeadScene.h"
 #include "../DH/WinScene.h"
+#include "../JH/HEADER/ResultScene.h"
 #include "AsciiObject.h"
 #include "Mci.h"
 
@@ -13,12 +14,14 @@ public:
 	static Core* Instance;
 
 private:
+	ResultScene _resultScene;
 	TitleScene _titleScene;
 	GameScene _gameScene;
 	InfoScene _infoScene;
 	WinScene _winScene;
 	DeadScene _deadScene;
 	SCENE _curScene;
+
 	vector<AsciiObject> _asciiObjects;
 
 public:

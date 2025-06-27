@@ -28,14 +28,18 @@ Core::Core()
 	//		gameMap[i] = new char[MAP_WIDTH];
 	// }
 
-	ChangeScene(SCENE::TITLE);
 
 	// return CORE{ titleScene, gameLogic, curScene, AsciiObjects };
 }
 
 void Core::Run()
 {
+
 	ReleaseAllSounds();
+
+	if (!InitAllSounds()) return;
+
+	ChangeScene(SCENE::TITLE);
 
 	while (true)
 	{
@@ -65,6 +69,7 @@ void Core::ChangeScene(SCENE newScene)
 		_winScene.SceneInit(newScene, &_asciiObjects);
 		break;
 	case SCENE::END:
+		_resultScene.SceneInit(newScene, &_asciiObjects);
 		break;
 	case SCENE::DEAD:
 		_deadScene.SceneInit(newScene, &_asciiObjects);
@@ -100,6 +105,7 @@ void Core::Update()
 			_winScene.Update();
 			break;
 		case SCENE::END:
+			_resultScene.Update();
 			break;
 		case SCENE::DEAD:
 			_deadScene.Update();
