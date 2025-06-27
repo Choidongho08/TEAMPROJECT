@@ -3,16 +3,7 @@
 #include "Player.h"
 #include "../Core/Core.h"
 
-Player::Player() : Entity(ENTITYPOS( {0,0}, {0,0}, { 0,0 }, { 0,0 } ),
-    EntityState(false),
-    ENTITY_TYPE::Player)
-{
-    state = { false, 0, 0, false, Skill::None, false, Skill::None };
-    pos = { 0 };
-    skill = Skill::None;
-}
-
-Player::Player(PlayerState _state, ENTITYPOS _pos) : Entity(_pos, _state, ENTITY_TYPE::Player)
+Player::Player(PlayerState _state, ENTITYPOS _pos, Map* _map) : Entity(_pos, _state, ENTITY_TYPE::Player, _map)
 {
     state = _state;
     pos = _pos;
@@ -127,6 +118,20 @@ void Player::UseSkill()
         case Skill::DASH:
         {
             state.usingSkill = Skill::DASH;
+            POS dashEndPos{ 0,0 };
+            int num = 1;
+            while (true)
+            {
+                dashEndPos = (pos.tForward * num) + pos.tPos;
+                if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+                {
+                    dashEndPos = dashEndPos - pos.tForward;
+                    state.isUsingSkill = false;
+                    break;
+                }
+                num++;
+                pos.tNewPos = dashEndPos;
+            }
             break;
         }
         default:

@@ -1,8 +1,8 @@
 #include "Entity.h"
 #include "../Core/Console.h"
 
-Entity::Entity(ENTITYPOS entityPos, EntityState entityState, ENTITY_TYPE _type)
-	: pos(entityPos), state(entityState), dir(Direction::NONE), type(_type)
+Entity::Entity(ENTITYPOS entityPos, EntityState entityState, ENTITY_TYPE _type, Map* _map)
+	: pos(entityPos), state(entityState), dir(Direction::NONE), type(_type), map(_map)
 {
 }
 

@@ -10,7 +10,7 @@ void PlayerManager::SpawnPlayer(vector<Entity*>& entities)
     pos.tStartPos = map->PlayerSpawnPos;
     pos.tPos = pos.tStartPos;
     state = { true, 0, 0, false, Skill::None, false, Skill::None };
-    player = Player{ state, pos };
+    player = Player{ state, pos, map };
     player.Initialize(map->ROW, map->COL);
     entities.push_back(&player);
     return;

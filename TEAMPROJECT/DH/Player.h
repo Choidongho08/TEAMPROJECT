@@ -27,10 +27,10 @@ private:
     int mapWidth;
     double skillStartTime;
     double skillMaxTime;
+    POS dashEndPos;
 
 public:
-    Player();
-    Player(PlayerState playerState, ENTITYPOS playerPos);
+    Player(PlayerState playerState, ENTITYPOS playerPos, Map* _map);
 
     void Initialize(
         int _mapHeight,

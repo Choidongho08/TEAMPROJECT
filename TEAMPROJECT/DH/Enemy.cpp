@@ -2,12 +2,13 @@
 #include "../Core/Console.h"
 #include "Enemy.h"
 
-Enemy::Enemy(AStar _aStar) :
+Enemy::Enemy(Map* _map) :
 	id(0),
 	Entity({ {0,0}, {0,0}, {0,0}, {0,1} },
 	{ true },
-	ENTITY_TYPE::Enemy),
-	playerFindAStar(_aStar)
+	ENTITY_TYPE::Enemy,
+	_map),
+	playerFindAStar(*_map)
 {
 	PPlayer = nullptr;
 	state = EnemyState{ true, false };
