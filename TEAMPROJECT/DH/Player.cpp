@@ -1,3 +1,5 @@
+#include <thread>
+#include <chrono>
 #include "Player.h"
 #include "../Core/Core.h"
 
@@ -29,9 +31,32 @@ void Player::Initialize(
     state.maxSight = 100;
 }
 
-void Player::Update()
+void Player::Update(const Map& _map)
 {
-
+    if (state.isUsingSkill)
+    {
+        switch (state.usingSkill)
+        {
+        case Skill::DASH:
+        {
+            break;
+        }
+        case Skill::KILL:
+        {
+            break;
+        }
+        case Skill::SIGHT:
+        {
+            double curTime = clock() / CLOCKS_PER_SEC;
+            if (skillMaxTime < curTime - skillStartTime)
+            {
+                state.isUsingSkill = false;
+                SetSight(max(3, 100 * (_map.MapCoinCnt - state.score) / _map.MapCoinCnt / 2));
+            }
+            break;
+        }
+        }
+    }
 }
 
 void Player::CheckTile(Map* _map)
@@ -63,38 +88,45 @@ void Player::CheckTile(Map* _map)
 
 void Player::SetSight(int sight)
 {
+    if (!(state.usingSkill == Skill::SIGHT && state.isUsingSkill))
+        return;
+
     state.maxSight = sight;
+}
+
+void Player::SetSightTime(float time)
+{
+    skillMaxTime = time * 10;
 }
 
 void Player::SetSkill(Skill skill)
 {
-    skill = skill;
+    state.whatSkill = skill;
 }
 
 bool Player::UseSkill()
 {
     if (!state.isHaveSkill) return false;
-
-    if (state.whatSkill == Skill::KILL)
+    else
     {
-        state.usingSkill = Skill::KILL;
+        skillStartTime = clock() / CLOCKS_PER_SEC;
         state.isHaveSkill = false;
         state.isUsingSkill = true;
-        return true;
-    }
-    else if (state.whatSkill == Skill::SIGHT)
-    {
-        state.usingSkill = Skill::SIGHT;
-        state.isHaveSkill = false;
-        state.isUsingSkill = true;
-        return true;
-    }
-    else if (state.whatSkill == Skill::DASH)
-    {
-        state.usingSkill = Skill::DASH;
-        state.isHaveSkill = false;
-        state.isUsingSkill = true;
-        return true;
+        if (state.whatSkill == Skill::KILL)
+        {
+            state.usingSkill = Skill::KILL;
+            return true;
+        }
+        else if (state.whatSkill == Skill::SIGHT)
+        {
+            state.usingSkill = Skill::SIGHT;
+            return true;
+        }
+        else if (state.whatSkill == Skill::DASH)
+        {
+            state.usingSkill = Skill::DASH;
+            return true;
+        }
     }
     return false;
 }

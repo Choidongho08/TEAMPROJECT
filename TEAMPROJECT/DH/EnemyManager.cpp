@@ -6,7 +6,7 @@ void EnemyManager::SpawnEnemies(vector<Entity*>* _entities, Player* player)
 	for (POS pos : map->EnemySpawnPos)
 	{
 		Enemy newEnemy(*map);
-		newEnemy.Initialize(pos, enemyCnt < map->MaxPlayerFollowingEnemyCnt, enemyCnt);
+		newEnemy.Initialize(EnemyState{ true, enemyCnt < map->MaxPlayerFollowingEnemyCnt }, pos, enemyCnt);
 		newEnemy.PPlayer = player;
 		Enemies.push_back(newEnemy);
 		enemyCnt++;

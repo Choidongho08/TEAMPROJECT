@@ -8,9 +8,12 @@
 #include <fstream>
 #include <random>
 #include <format>
+#include <future>
+#include <thread>
+
 using std::format;
 
-GameScene::GameScene() : EnemyManager(&Map), PlayerManager(&Map)
+GameScene::GameScene() : EnemyManager(&map), PlayerManager(&map)
 {
 }
 
@@ -64,8 +67,8 @@ void GameScene::LoadStage()
 			y++;
 		} // 맵 길이 구하면서 맵 초기화
 
-		Map.InitializeMap(grid);
-		Map.SetMapRowCol(y, x);
+		map.InitializeMap(grid);
+		map.SetMapRowCol(y, x);
 		mapFile.close();
 		return;
 	}
@@ -83,14 +86,14 @@ void GameScene::ItemInit()
 {
 	int itemCount = 0;
 	srand((unsigned int)time(NULL));
-	while (itemCount < Map.MaxItemCnt)
+	while (itemCount < map.MaxItemCnt)
 	{
-		int y = rand() % Map.ROW;
-		int x = rand() % Map.COL;
+		int y = rand() % map.ROW;
+		int x = rand() % map.COL;
 
-		if (Map.isTile(x, y, Tile::COIN))
+		if (map.isTile(x, y, Tile::COIN))
 		{
-			Map.SetMapTile(x, y, Tile::ITEM);
+			map.SetMapTile(x, y, Tile::ITEM);
 			itemCount++;
 		}
 	}
@@ -101,8 +104,8 @@ void GameScene::Update()
 	//system("cls");
 	GotoXY(0, 0);
 	HandleInput();
-	PlayerManager.SetSight(&Map);
- 	// EntitiesMove();
+	EntitiesMove();
+	EntityUpdate();
 	Render();
 	
 	FrameSync(6);
@@ -120,9 +123,9 @@ void GameScene::EntitiesMove()
 	{
 		if (enemy.state.isAlive)
 		{
-			enemy.Move(&Map);
-			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, Map.COL);
-			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, Map.ROW);
+			enemy.Move(&map);
+			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
+			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
 		}
 		if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
@@ -130,6 +133,16 @@ void GameScene::EntitiesMove()
 			PlayerManager.PlayerDead();
 			Core::Instance->ChangeScene(SCENE::DEAD);
 		}
+	}
+}
+
+void GameScene::EntityUpdate()
+{
+	PlayerManager.player.Update(map);
+
+	for (auto enemy : EnemyManager.Enemies)
+	{
+		enemy.Update();
 	}
 }
 
@@ -167,7 +180,7 @@ void GameScene::HandleInput()
 					while (true)
 					{
 						dashEndPos = (PlayerManager.player.pos.tForward * num) + PlayerManager.player.pos.tPos;
-						if (Map.isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+						if (map.isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
 						{
 							dashEndPos = dashEndPos - PlayerManager.player.pos.tForward;
 							PlayerManager.player.state.isUsingSkill = false;
@@ -175,55 +188,71 @@ void GameScene::HandleInput()
 						}
 						num++;
 						PlayerManager.player.pos.tNewPos = dashEndPos;
-						Sleep(10);
 					}
 				}
 				else if (PlayerManager.player.state.usingSkill == Skill::KILL)
 				{
+					POS targetPos = PlayerManager.player.pos.tForward + PlayerManager.player.pos.tPos;
+					for (const Enemy& enemy : EnemyManager.Enemies)
+					{
+						if (enemy.pos.tPos == targetPos)
+						{
+							EnemyManager.DeadEnemy(enemy);
+							break;
+						}
+					}
 					PlayerManager.player.state.isUsingSkill = false;
 				}
 				else if (PlayerManager.player.state.usingSkill == Skill::SIGHT)
 				{
-					PlayerManager.player.state.isUsingSkill = false;
+					const int& sight = PlayerManager.player.state.maxSight;
+					PlayerManager.player.SetSightTime(3);
+					PlayerManager.player.SetSight(sight * 2);
+					break;
 				}
 			}
 		}
 		break;
 	}
-	PlayerManager.player.Move(&Map);
-	PlayerManager.player.CheckTile(&Map);
-	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, Map.COL);
-	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, Map.ROW);
+	PlayerManager.player.Move(&map);
+	PlayerManager.player.CheckTile(&map);
+	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, map.COL);
+	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, map.ROW);
 }
 
 void GameScene::Render()
 {
 	// 맵 렌더
-	Map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
+	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
 	
-	for (int i = 0; i < Map.ROW; ++i)
+	for (int i = 0; i < map.ROW; ++i)
 	{
-		for (int j = 0; j < Map.COL; ++j)
+		for (int j = 0; j < map.COL; ++j)
 		{
 			
 			for (auto entity : entities)
 			{
-				// 적 그리기
-				if (entity->type == ENTITY_TYPE::Enemy)
+				if (entity->state.isAlive)
 				{
-					if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
+					// 적 그리기
+					if (entity->type == ENTITY_TYPE::Enemy)
 					{
-						entity->Render("EM");
+						if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
+						{
+							entity->Render("EM");
+						}
+					}
+					// 플레이어 그리기
+					else if (entity->type == ENTITY_TYPE::Player)
+					{
+						if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
+						{
+							entity->Render("⊙");
+						}
 					}
 				}
-				// 플레이어 그리기
-				else if (entity->type == ENTITY_TYPE::Player)
-				{
-					if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
-					{
-						entity->Render("⊙");
-					}
-				}
+				else
+					entity->Render("  ");
 			}
 		}
 		cout << endl;
@@ -253,8 +282,8 @@ void GameScene::RenderUI()
 		skill = "알 수 없음";
 		break;
 	}
-	int x = Map.COL - (23 / 2);
-	 int y = Map.ROW + 2;
+	int x = map.COL - (23 / 2);
+	 int y = map.ROW + 2;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);
@@ -295,7 +324,7 @@ void GameScene::RenderUI()
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
-	 cout << "     스코어 :  " << PlayerManager.player.state.score << endl;
+	 cout << "     스코어 :  " << PlayerManager.player.state.score << " / " << map.MapCoinCnt << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);

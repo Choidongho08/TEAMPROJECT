@@ -4,7 +4,7 @@
 
 void Map::InitializeMap(const vector<vector<Node>>& _grid)
 {
-	MaxItemCnt = Random(3, 3);
+	MaxItemCnt = Random(5, 5);
 	grid = _grid;
 
 	for (const vector<Node>& row : _grid)
@@ -18,8 +18,6 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 				EnemySpawnPos.push_back(col.pos);
 				MaxPlayerFollowingEnemyCnt++;
 			}
-			if (col.tile == (int)Tile::ITEM)
-				MaxItemCnt++;
 			if (col.tile == (int)Tile::COIN)
 				MapCoinCnt++;
 		}

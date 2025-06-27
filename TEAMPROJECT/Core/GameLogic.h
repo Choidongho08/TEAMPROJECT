@@ -20,7 +20,7 @@ using std::vector;
 class GameScene : public Scene
 {
 public:
-    Map Map;
+    Map map;
     EnemyManager EnemyManager;
     PlayerManager PlayerManager;
   
@@ -41,6 +41,7 @@ private:
 	void ItemInit();
     
     void EntitiesMove();
+    void EntityUpdate();
     void HandleInput();
 
     void Render();

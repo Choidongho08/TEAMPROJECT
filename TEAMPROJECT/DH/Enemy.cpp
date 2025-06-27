@@ -10,15 +10,15 @@ Enemy::Enemy(AStar _aStar) :
 	playerFindAStar(_aStar)
 {
 	PPlayer = nullptr;
-	_state = EnemyState{ true, false };
+	state = EnemyState{ true, false };
 }
 
-void Enemy::Initialize(POS _startPos, bool _isFollowing, int _enemyCnt)
+void Enemy::Initialize(EnemyState _state, POS _startPos, int _enemyCnt)
 {
+	state = _state;
 	pos.tStartPos = _startPos;
 	pos.tPos = _startPos;
 	id = _enemyCnt;
-	_state = EnemyState{ true, _isFollowing };
 }
 
 void Enemy::Move(Map* _map)
@@ -63,6 +63,10 @@ void Enemy::Move(Map* _map)
 }
 
 void Enemy::BasicMove()
+{
+}
+
+void Enemy::Update()
 {
 }
 

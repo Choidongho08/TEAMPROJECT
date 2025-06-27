@@ -14,7 +14,6 @@ public:
 	PlayerManager(Map* _map) : map(_map) {}
 	void SpawnPlayer(vector<Entity*>& entities);
 	void PlayerDead();
-	void SetSight(Map* _map);
 
 private:
 };
