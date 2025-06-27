@@ -25,7 +25,7 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	// 사운드 초기화
 	// if (!InitAllSounds()) return;
 
-	PlaySoundID(SOUNDID::BGM, true);
+	PlaySoundID(SOUNDID::TITLE, true);
 
 	// 콘솔창 관련 초기화
 	SetConsoleSettings(1200, 600, false, L"HackMan");
