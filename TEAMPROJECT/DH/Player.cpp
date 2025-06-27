@@ -3,12 +3,17 @@
 #include "Player.h"
 #include "../Core/Core.h"
 
+Player::Player() : Entity(ENTITYPOS{{0,0}, {0,0}}, EntityState{false}, ENTITY_TYPE{ENTITY_TYPE::Player}, new Map())
+{
+}
+
 Player::Player(PlayerState _state, ENTITYPOS _pos, Map* _map) : Entity(_pos, _state, ENTITY_TYPE::Player, _map)
 {
     state = _state;
     pos = _pos;
     pos.tForward = { 0,0 };
     skill = Skill::None;
+    dashCnt = 1;
 }
 
 void Player::Initialize(
@@ -30,6 +35,16 @@ void Player::Update(const Map& _map)
         {
         case Skill::DASH:
         {
+            dashEndPos = (pos.tForward * dashCnt) + pos.tPos;
+            if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+            {
+                dashEndPos = dashEndPos - pos.tForward;
+                state.isUsingSkill = false;
+                dashCnt = 1;
+                break;
+            }
+            dashCnt++;
+            pos.tNewPos = dashEndPos;
             break;
         }
         case Skill::KILL:
@@ -118,20 +133,8 @@ void Player::UseSkill()
         case Skill::DASH:
         {
             state.usingSkill = Skill::DASH;
-            POS dashEndPos{ 0,0 };
+            dashEndPos = POS{ 0,0 };
             int num = 1;
-            while (true)
-            {
-                dashEndPos = (pos.tForward * num) + pos.tPos;
-                if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
-                {
-                    dashEndPos = dashEndPos - pos.tForward;
-                    state.isUsingSkill = false;
-                    break;
-                }
-                num++;
-                pos.tNewPos = dashEndPos;
-            }
             break;
         }
         default:

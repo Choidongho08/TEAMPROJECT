@@ -28,8 +28,10 @@ private:
     double skillStartTime;
     double skillMaxTime;
     POS dashEndPos;
+    int dashCnt;
 
 public:
+    Player();
     Player(PlayerState playerState, ENTITYPOS playerPos, Map* _map);
 
     void Initialize(
