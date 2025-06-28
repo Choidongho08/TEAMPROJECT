@@ -141,9 +141,14 @@ void GameScene::Render()
 					{
 						if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
 						{
-							GotoXY(offsetX + j * 2, offsetY + i);
-							cout << "EM";
-							//entity->Render("EM");
+							int dx = j - PlayerManager.player.pos.tPos.x;
+							int dy = i - PlayerManager.player.pos.tPos.y;
+							if (dx * dx + dy * dy <= PlayerManager.player.state.curSight * PlayerManager.player.state.curSight)
+							{
+								GotoXY(offsetX + j * 2, offsetY + i);
+								cout << "EM";
+								//entity->Render("EM");
+							}
 						}
 					}
 					// 플레이어 그리기

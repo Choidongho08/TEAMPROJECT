@@ -66,7 +66,7 @@ void Player::Update()
             if (skillMaxTime <= curTime - skillStartTime)
             {
                 state.isUsingSkill = false;
-                SetSight(max(3, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
+                SetSight(max(3, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 4));
                 skillStartTime = 0;
                 skillMaxTime = 0;
                 state.usingSkill = SKILL::None;
@@ -87,7 +87,7 @@ void Player::CheckTile()
         map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
         if (!(state.isUsingSkill && state.usingSkill == SKILL::SIGHT))
-            SetSight(max(2, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
+            SetSight(max(2, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 4));
 
         if (map->MapCoinCnt == state.score)
         {
