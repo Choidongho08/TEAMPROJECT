@@ -13,7 +13,7 @@ class Enemy : public Entity
 {
 public:
 	EnemyState state;
-	Player* PPlayer;
+	Player* pPlayer;
 	AStar playerFindAStar;
 
 private:

@@ -16,6 +16,7 @@ public:
     int MaxItemCnt;
     int ROW;
     int COL;
+    int Stage = 0;
 
 private:
     vector<vector<Node>> grid;
@@ -62,11 +63,6 @@ public:
     bool isWalkable(int x, int y) const 
     {
         return isValid(x, y) && grid[y][x].tile != (int)Tile::WALL;
-    }
-
-    bool isDiagonalWalkable(int x1, int y1, int x2, int y2) const 
-    {
-        return isWalkable(x1, y2) && isWalkable(x2, y1);
     }
 };
 

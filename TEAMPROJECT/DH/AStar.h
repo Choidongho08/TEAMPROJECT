@@ -19,7 +19,7 @@ private:
     vector<Node*> reconstructPath(Node* node);
 public:
     AStar(Map& m) : map(m) {}
-    vector<Node*> findPath(int startX, int startY, int goalX, int goalY, Map map);
+    vector<Node*> findPath(int startX, int startY, int goalX, int goalY);
 };
 
 /*
