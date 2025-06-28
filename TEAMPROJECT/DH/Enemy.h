@@ -20,7 +20,7 @@ private:
 	int id;
 
 public:
-	Enemy(AStar _aStar);
+	Enemy(Map* _map);
 
 	bool operator==(const Enemy& other) const {
 		return this->id == other.id;
@@ -32,10 +32,10 @@ public:
 		int _enemyCnt
 	);
 
-	void Move(Map* _map);
+	void Move();
 	void BasicMove();
 	void Update();
-	void AStarMove(Map* _map);
+	void AStarMove();
 
 private:
 };

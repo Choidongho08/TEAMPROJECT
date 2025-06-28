@@ -3,21 +3,15 @@
 #include "Player.h"
 #include "../Core/Core.h"
 
-Player::Player() : Entity(ENTITYPOS( {0,0}, {0,0}, { 0,0 }, { 0,0 } ),
-    EntityState(false),
-    ENTITY_TYPE::Player)
+Player::Player() : Entity(ENTITYPOS{{0,0}, {0,0}}, EntityState{false}, ENTITY_TYPE{ENTITY_TYPE::Player}, new Map())
 {
-    state = { false, 0, 0, false, Skill::None, false, Skill::None };
-    pos = { 0 };
-    skill = Skill::None;
 }
 
-Player::Player(PlayerState _state, ENTITYPOS _pos) : Entity(_pos, _state, ENTITY_TYPE::Player)
+Player::Player(PlayerState _state, ENTITYPOS _pos, Map* _map) : Entity(_pos, _state, ENTITY_TYPE::Player, _map)
 {
     state = _state;
     pos = _pos;
     pos.tForward = { 0,0 };
-    skill = Skill::None;
 }
 
 void Player::Initialize(
@@ -28,105 +22,153 @@ void Player::Initialize(
     mapHeight = _mapHeight;
     mapWidth = _mapWidth;
     // state.maxSight = mapHeight * mapWidth / 10;
-    state.maxSight = 100;
+    state.curSight = 100;
 }
 
-void Player::Update(const Map& _map)
+void Player::Update()
 {
     if (state.isUsingSkill)
     {
         switch (state.usingSkill)
         {
-        case Skill::DASH:
+        case SKILL::DASH:
         {
+            while (true)
+            {
+                dashEndPos = pos.tForward + pos.tPos;
+                if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+                {
+                    dashEndPos = dashEndPos - pos.tForward;
+                    state.isUsingSkill = false;
+
+                    skillStartTime = 0;
+                    skillMaxTime = 0;
+                    state.usingSkill = SKILL::None;
+                    break;
+                }
+                pos.tNewPos = dashEndPos;
+                pos.tPos = pos.tNewPos;
+                CheckTile();
+            }
             break;
         }
-        case Skill::KILL:
+        case SKILL::KILL:
         {
+            state.isUsingSkill = false;
+            skillStartTime = 0;
+            skillMaxTime = 0;
+            state.usingSkill = SKILL::None;
             break;
         }
-        case Skill::SIGHT:
+        case SKILL::SIGHT:
         {
             double curTime = clock() / CLOCKS_PER_SEC;
-            if (skillMaxTime < curTime - skillStartTime)
+            if (skillMaxTime <= curTime - skillStartTime)
             {
                 state.isUsingSkill = false;
-                SetSight(max(3, 100 * (_map.MapCoinCnt - state.score) / _map.MapCoinCnt / 2));
+                SetSight(max(3, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
+                skillStartTime = 0;
+                skillMaxTime = 0;
+                state.usingSkill = SKILL::None;
             }
             break;
         }
         }
     }
+    Move();
+    CheckTile();
 }
 
-void Player::CheckTile(Map* _map)
+void Player::CheckTile()
 {
-    if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
+    if (map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
     {
         state.score++;
-        _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+        map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
-        SetSight(max(3, 100 * (_map->MapCoinCnt - state.score) / _map->MapCoinCnt / 2));
+        if (!(state.isUsingSkill && state.usingSkill == SKILL::SIGHT))
+            SetSight(max(2, 100 * (map->MapCoinCnt - state.score) / map->MapCoinCnt / 3));
 
-        if (_map->MapCoinCnt == state.score)
+        if (map->MapCoinCnt == state.score)
         {
             Core::Instance->ChangeScene(SCENE::WIN);
         }
     }
-    if (_map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
+    if (map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
     {
         if (state.isHaveSkill)
             return;
 
-        state.isHaveSkill = true;
         srand((unsigned int)time(nullptr));
-        int rVal = rand() % (int)Skill::END;
-        state.whatSkill = (Skill)rVal;
-        _map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
+        int rVal = rand() % (int)SKILL::END;
+        SetSkill((SKILL)rVal);
+        map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
     }
 }
 
 void Player::SetSight(int sight)
 {
-    if (!(state.usingSkill == Skill::SIGHT && state.isUsingSkill))
-        return;
-
-    state.maxSight = sight;
+    state.curSight = sight;
 }
 
-void Player::SetSightTime(float time)
+void Player::SetSkillTime(float time)
 {
-    skillMaxTime = time * 10;
+    skillMaxTime = time;
 }
 
-void Player::SetSkill(Skill skill)
+void Player::KillEnemy(const POS& killPos)
 {
-    state.whatSkill = skill;
+    if (OnKillEnemy)
+        OnKillEnemy(killPos);
 }
 
-bool Player::UseSkill()
+void Player::SetSkill(SKILL skill)
 {
-    if (!state.isHaveSkill) return false;
+    state.isHaveSkill = true;
+    state.haveSkill = skill;
+}
+
+void Player::UseSkill()
+{
+    if (!state.isHaveSkill) return;
     else
     {
         skillStartTime = clock() / CLOCKS_PER_SEC;
+        GotoXY(0, 0);
+        cout << "UseSkill";
         state.isHaveSkill = false;
         state.isUsingSkill = true;
-        if (state.whatSkill == Skill::KILL)
+        switch (state.haveSkill)
         {
-            state.usingSkill = Skill::KILL;
-            return true;
+        case SKILL::KILL:
+        {
+            state.haveSkill = SKILL::None;
+            state.usingSkill = SKILL::KILL;
+            POS killPos = pos.tPos + pos.tForward;
+            KillEnemy(killPos);
+            break;
         }
-        else if (state.whatSkill == Skill::SIGHT)
+        case SKILL::SIGHT:
         {
-            state.usingSkill = Skill::SIGHT;
-            return true;
+            state.haveSkill = SKILL::None;
+            state.usingSkill = SKILL::SIGHT;
+            const int& sight = state.curSight;
+            SetSkillTime(3);
+            SetSight(sight * 2);
+            break;
         }
-        else if (state.whatSkill == Skill::DASH)
+        case SKILL::DASH:
         {
-            state.usingSkill = Skill::DASH;
-            return true;
+            state.haveSkill = SKILL::None;
+            state.usingSkill = SKILL::DASH;
+            dashEndPos = POS{ 0,0 };
+            int num = 1;
+            break;
+        }
+        default:
+            state.haveSkill = SKILL::None;
+            state.isUsingSkill = false;
+            false;
         }
     }
-    return false;
 }

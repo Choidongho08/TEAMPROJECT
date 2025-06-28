@@ -1,8 +1,8 @@
 #include "Entity.h"
 #include "../Core/Console.h"
 
-Entity::Entity(ENTITYPOS entityPos, EntityState entityState, ENTITY_TYPE _type)
-	: pos(entityPos), state(entityState), dir(Direction::NONE), type(_type)
+Entity::Entity(ENTITYPOS entityPos, EntityState entityState, ENTITY_TYPE _type, Map* _map)
+	: pos(entityPos), state(entityState), dir(Direction::NONE), type(_type), map(_map)
 {
 }
 
@@ -87,9 +87,9 @@ void Entity::Render(std::string s)
 	cout << s;
 }
 
-void Entity::Move(Map* _map)
+void Entity::Move()
 {
-	if (!_map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
+	if (!map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
 	{
 		pos.tPos = pos.tNewPos;
 	}

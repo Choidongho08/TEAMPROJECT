@@ -29,13 +29,16 @@ public:
     Direction dir;
     ENTITY_TYPE type;
 
-    Entity(ENTITYPOS _entityPos, EntityState _entityState, ENTITY_TYPE _type);
+    Entity(ENTITYPOS _entityPos, EntityState _entityState, ENTITY_TYPE _type, Map* _map);
 
     void Rotate(Direction _direction);
     void Rotate90();
     void Rotate180();
     void RotationMove();
     void Render(std::string _s);
-    void Move(Map* _map);
+    void Move();
+
+protected:
+    Map* map = nullptr;
 };
 

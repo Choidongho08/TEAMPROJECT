@@ -9,39 +9,49 @@ class PlayerState : public EntityState
 {
 public:
     int score;
-    int maxSight;
+    int curSight;
     bool isHaveSkill;
-    Skill whatSkill;
+    SKILL haveSkill;
     bool isUsingSkill;
-    Skill usingSkill;
+    SKILL usingSkill;
 };
 
 class Player : public Entity
 {
 public:
     PlayerState state;
-    Skill skill;
 
 private:
     int mapHeight;
     int mapWidth;
+
+    // 공통 스킬 변수
     double skillStartTime;
     double skillMaxTime;
+    
+    // 대쉬 스킬 변수
+    POS dashEndPos;
+
+public:
+    // 킬 스킬 변수
+    std::function<void(POS)> OnKillEnemy;
+private:
 
 public:
     Player();
-    Player(PlayerState playerState, ENTITYPOS playerPos);
+    Player(PlayerState playerState, ENTITYPOS playerPos, Map* _map);
 
     void Initialize(
         int _mapHeight,
         int _mapWidth
     );
-    void Update(const Map& _map);
-    void SetSkill(Skill skill);
-    bool UseSkill();
-    void CheckTile(Map* _map);
+    void Update();
+    void SetSkill(SKILL skill);
+    void UseSkill();
+    void CheckTile();
     void SetSight(int sight);
-    void SetSightTime(float time);
+    void SetSkillTime(float time);
+    void KillEnemy(const POS& killPos);
     
 private:
 };

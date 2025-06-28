@@ -25,7 +25,7 @@ enum class Direction
 	NONE, RIGHT, LEFT, UP, DOWN
 };
 
-enum class Skill
+enum class SKILL
 {
 	None = -1, KILL, SIGHT, DASH, END
 };

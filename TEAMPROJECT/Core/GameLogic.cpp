@@ -21,7 +21,6 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 {
 	asciiObjects = _asciiObjects;
 
-
 	// 사운드 초기화
 
 	PlaySoundID(SOUNDID::GAME, true);
@@ -33,6 +32,8 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	LoadStage();
 	ItemInit();
 	EntityInit();
+
+	PlayerManager.player.OnKillEnemy = std::bind(&EnemyManager::DeadEnemy2, &EnemyManager, std::placeholders::_1);
 }
 
 void GameScene::LoadStage()
@@ -106,7 +107,7 @@ void GameScene::Update()
 	EntityUpdate();
 	Render();
 	
-	FrameSync(6);
+	FrameSync(7);
 
 	// if (pPlayer->pos.tPos == pPlayer->pos.tEndPos)
 	// {
@@ -121,22 +122,23 @@ void GameScene::EntitiesMove()
 	{
 		if (enemy.state.isAlive)
 		{
-			enemy.Move(&map);
+			enemy.Move();
 			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
 			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
-		}
-		if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
-		{
-			PlayerManager.PlayerDead();
-			Core::Instance->ChangeScene(SCENE::DEAD);
+
+			if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
+			{
+				PlayerManager.PlayerDead();
+				Core::Instance->ChangeScene(SCENE::DEAD);
+			}
 		}
 	}
 }
 
 void GameScene::EntityUpdate()
 {
-	PlayerManager.player.Update(map);
+	PlayerManager.player.Update();
 
 	for (auto enemy : EnemyManager.Enemies)
 	{
@@ -167,55 +169,11 @@ void GameScene::HandleInput()
 		PlayerManager.player.pos.tForward = { 1, 0 };
 		break;
 	case Key::SPACE:
-		if(PlayerManager.player.UseSkill())
-		{
-			while (PlayerManager.player.state.isUsingSkill)
-			{
-				if (PlayerManager.player.state.usingSkill == Skill::DASH)
-				{
-					POS dashEndPos{ 0,0 };
-					int num = 1;
-					while (true)
-					{
-						dashEndPos = (PlayerManager.player.pos.tForward * num) + PlayerManager.player.pos.tPos;
-						if (map.isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
-						{
-							dashEndPos = dashEndPos - PlayerManager.player.pos.tForward;
-							PlayerManager.player.state.isUsingSkill = false;
-							break;
-						}
-						num++;
-						PlayerManager.player.pos.tNewPos = dashEndPos;
-					}
-				}
-				else if (PlayerManager.player.state.usingSkill == Skill::KILL)
-				{
-					POS targetPos = PlayerManager.player.pos.tForward + PlayerManager.player.pos.tPos;
-					for (const Enemy& enemy : EnemyManager.Enemies)
-					{
-						if (enemy.pos.tPos == targetPos)
-						{
-							EnemyManager.DeadEnemy(enemy);
-							break;
-						}
-					}
-					PlayerManager.player.state.isUsingSkill = false;
-				}
-				else if (PlayerManager.player.state.usingSkill == Skill::SIGHT)
-				{
-					const int& sight = PlayerManager.player.state.maxSight;
-					PlayerManager.player.SetSightTime(3);
-					PlayerManager.player.SetSight(sight * 2);
-					break;
-				}
-			}
-		}
+		PlayerManager.player.UseSkill();
 		break;
 	}
-	PlayerManager.player.Move(&map);
-	PlayerManager.player.CheckTile(&map);
-	PlayerManager.player.pos.tPos.x = std::clamp(PlayerManager.player.pos.tPos.x, 0, map.COL);
-	PlayerManager.player.pos.tPos.y = std::clamp(PlayerManager.player.pos.tPos.y, 0, map.ROW);
+	PlayerManager.player.pos.tNewPos.x = std::clamp(PlayerManager.player.pos.tNewPos.x, 0, map.COL);
+	PlayerManager.player.pos.tNewPos.y = std::clamp(PlayerManager.player.pos.tNewPos.y, 0, map.ROW);
 }
 
 void GameScene::Render()
@@ -224,7 +182,7 @@ void GameScene::Render()
 	int offsetX = (resolution.X - map.COL * 2) / 2;
 	int offsetY = 0;
 	// 맵 렌더
-	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.maxSight);
+	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.curSight);
 	
 	for (int i = 0; i < map.ROW; ++i)
 	{
@@ -269,19 +227,19 @@ void GameScene::Render()
 void GameScene::RenderUI()
 {
 	string skill;
-	switch (PlayerManager.player.skill)
+	switch (PlayerManager.player.state.haveSkill)
 	{
-	case Skill::None:
-		skill = "None";
+	case SKILL::None:
+		skill = "NONE ";
 		break;
-	case Skill::KILL:
-		skill = "KILL";
+	case SKILL::KILL:
+		skill = "KILL ";
 		break;
-	case Skill::SIGHT:
+	case SKILL::SIGHT:
 		skill = "SIGHT";
 		break;
-	case Skill::DASH:
-		skill = "DASH";
+	case SKILL::DASH:
+		skill = "DASH ";
 		break;
 	default:
 		skill = "알 수 없음";
@@ -300,11 +258,11 @@ void GameScene::RenderUI()
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
 		 GotoXY(x, y++);
-		 if(PlayerManager.player.state.whatSkill == Skill::DASH)
+		 if(PlayerManager.player.state.haveSkill == SKILL::DASH)
 			cout << "-       ▶▶▶        -" << endl;
-		 else if(PlayerManager.player.state.whatSkill == Skill::KILL)
+		 else if(PlayerManager.player.state.haveSkill == SKILL::KILL)
 			wcout << "-       -- X --       -" << endl;
-		 else if(PlayerManager.player.state.whatSkill == Skill::SIGHT)
+		 else if(PlayerManager.player.state.haveSkill == SKILL::SIGHT)
 			cout << "-      << ○ >>       -" << endl;
 		 GotoXY(x, y++);
 		 cout << "-                     -" << endl;
@@ -330,7 +288,7 @@ void GameScene::RenderUI()
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
-	 cout << "     스코어 :  " << PlayerManager.player.state.score << " / " << map.MapCoinCnt << endl;
+	 cout << "     스코어 :  " << PlayerManager.player.state.score << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);

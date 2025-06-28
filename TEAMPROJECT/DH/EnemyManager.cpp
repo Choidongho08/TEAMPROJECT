@@ -5,7 +5,7 @@ void EnemyManager::SpawnEnemies(vector<Entity*>* _entities, Player* player)
 	int enemyCnt = 0;
 	for (POS pos : map->EnemySpawnPos)
 	{
-		Enemy newEnemy(*map);
+		Enemy newEnemy(map);
 		newEnemy.Initialize(EnemyState{ true, enemyCnt < map->MaxPlayerFollowingEnemyCnt }, pos, enemyCnt);
 		newEnemy.PPlayer = player;
 		Enemies.push_back(newEnemy);
@@ -23,6 +23,18 @@ void EnemyManager::DeadEnemy(const Enemy& enemy)
 	if (iter != Enemies.end())
 	{
 		iter->state.isAlive = false;
+	}
+}
+
+void EnemyManager::DeadEnemy2(POS deadPos)
+{
+	for (auto enemy : Enemies)
+	{
+		if (enemy.pos.tPos == deadPos)
+		{
+			enemy.state.isAlive = false;
+			break;
+		}
 	}
 }
 
