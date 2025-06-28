@@ -12,7 +12,7 @@ void CloseMciDevice(UINT& deviceId);
 void PlayMciDevice(UINT deviceId, bool repeat = false);
 enum class SOUNDID
 {
-    TITLE, GAME, COIN, CLICK, KILL, SIGHT, DASH, GAMESTART, PLAYERDIE, UPDOWN
+    TITLE, GAME, COIN, CLICK, KILL, SIGHT, DASH, GAMESTART, PLAYERDIE, UPDOWN, GAMEOVER, GAMEWIN
 };
 
 struct SoundEntry
