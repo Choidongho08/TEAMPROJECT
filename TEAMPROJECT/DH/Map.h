@@ -66,7 +66,7 @@ public:
 
     bool isWalkable(int x, int y) const 
     {
-        return isValid(x, y) && grid[y][x].tile != (int)Tile::WALL;
+        return isValid(x, y) && grid[y][x].tile != (int)Tile::WALL && grid[y][x].tile != (int)Tile::BEDROCK;
     }
 };
 

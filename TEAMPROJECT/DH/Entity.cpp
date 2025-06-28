@@ -83,7 +83,7 @@ void Entity::Render(std::string s)
 
 void Entity::Move()
 {
-	if (!map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL))
+	if (!map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::WALL) && !map->isTile(pos.tNewPos.x, pos.tNewPos.y, Tile::BEDROCK))
 	{
 		pos.tPos = pos.tNewPos;
 	}
