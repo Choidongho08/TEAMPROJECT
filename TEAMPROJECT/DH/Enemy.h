@@ -15,9 +15,11 @@ public:
 	EnemyState state;
 	Player* pPlayer;
 	AStar playerFindAStar;
+	int aStarDuration= 0;
 
 private:
 	int id;
+	int aStarSpeed = 0;
 
 public:
 	Enemy(Map* _map);

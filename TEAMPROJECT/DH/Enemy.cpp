@@ -1,4 +1,4 @@
-#include <math.h>
+ï»¿#include <math.h>
 #include "../Core/Console.h"
 #include "Enemy.h"
 
@@ -39,16 +39,20 @@ void Enemy::Update()
 
 void Enemy::AStarMove()
 {
-	// AStar·Î ÇÃ·¹ÀÌ¾î¸¦ ÇâÇØ °¡´Â °æ·Î
-	vector<Node*> path = playerFindAStar.findPath(pos.tPos.x, pos.tPos.y, pPlayer->pos.tPos.x, pPlayer->pos.tPos.y);
-	if (path.size() != 0)
+	aStarSpeed++;
+	if (aStarSpeed >= aStarDuration)
 	{
-		// ÇÃ·¹ÀÌ¾î¸¦ ÇâÇØ °¡´Â ¿òÁ÷ÀÓ
-		if (!path.empty())
+		// AStarë¡œ í”Œë ˆì´ì–´ë¥¼ í–¥í•´ ê°€ëŠ” ê²½ë¡œ
+		vector<Node*> path = playerFindAStar.findPath(pos.tPos.x, pos.tPos.y, pPlayer->pos.tPos.x, pPlayer->pos.tPos.y);
+		if (path.size() != 0)
 		{
-			pos.tNewPos = path[1]->pos;
-			pos.tForward = pos.tNewPos - pos.tPos;
+			// í”Œë ˆì´ì–´ë¥¼ í–¥í•´ ê°€ëŠ” ì›€ì§ì„
+			if (!path.empty())
+			{
+				pos.tNewPos = path[1]->pos;
+				pos.tForward = pos.tNewPos - pos.tPos;
+			}
 		}
+		aStarSpeed = 0;
 	}
-	
 }

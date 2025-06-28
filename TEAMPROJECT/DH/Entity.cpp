@@ -87,4 +87,6 @@ void Entity::Move()
 	{
 		pos.tPos = pos.tNewPos;
 	}
+	else
+		pos.tNewPos = pos.tPos;
 }
