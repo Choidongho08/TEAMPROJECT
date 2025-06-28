@@ -72,8 +72,6 @@ void Map::LoadStage()
 				rowGrid.push_back(col);
 				x++;
 			}
-			GotoXY(0, 0);
-			cout << x;
 			grid.push_back(rowGrid);
 			y++;
 		} // 맵 길이 구하면서 맵 초기화
