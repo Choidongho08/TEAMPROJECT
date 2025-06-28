@@ -47,61 +47,14 @@ Menu ResultScene::GetCurMenu()
 	case Key::LEFT:
 		PlaySoundID(SOUNDID::UPDOWN);
 		if (x > originX - 20)
-		{
-			GotoXY(x + 3, y + 2);
-			cout << "    ";
-			GotoXY(x - 3, y + 4);
-			cout << "                 ";
-			GotoXY(x - 5, y);
-			cout << "    ";
-			GotoXY(x + 10, y);
-			cout << "    ";
-
-			x -= 40;
-
-			GotoXY(x - 4, y);
-			cout << "  [";
-			GotoXY(x + 9, y);
-			cout << " ]";
-			GotoXY(x + 4, y + 2);
-			cout << "↑";
-			GotoXY(x - 3, y + 4);
-			cout << "스페이스바로 선택";
-			Sleep(100);
-		}
 		break;
 	case Key::RIGHT:
 		PlaySoundID(SOUNDID::UPDOWN);
-		if (x < originX)
-		{
-			GotoXY(x + 3, y + 2);
-			cout << "    ";
-			GotoXY(x - 3, y + 4);
-			cout << "                 ";
-			GotoXY(x - 5, y);
-			cout << "    ";
-			GotoXY(x + 10, y);
-			cout << "    ";
-
-			x += 40;
-
-			GotoXY(x - 4, y);
-			cout << "  [";
-			GotoXY(x + 9, y);
-			cout << " ]";
-			GotoXY(x + 4, y + 2);
-			cout << "↑";
-			GotoXY(x - 3, y + 4);
-			cout << "스페이스바로 선택";
-			Sleep(100);
-		}
 		break;
 	case Key::SPACE:
 		PlaySoundID(SOUNDID::CLICK);
 
-		if (originX - 40 == x) return Menu::TITLE;
-		else if (originX == x) return Menu::QUIT;
-		break;
+		if (originX == x) return Menu::QUIT;
 	}
 	return Menu::FAIL;
 }
@@ -129,13 +82,8 @@ void ResultScene::Render()
 	int originX = (resolution.X - 5) / 2;
 	int y = (resolution.Y - 11) / 2 + 11;
 
-	GotoXY(originX - 20, y);
-	cout << "메인 메뉴";
-
-	GotoXY(originX + 20, y);
+	GotoXY(originX , y);
 	cout << "게임 종료";
-
-	originX += 20;
 
 	GotoXY(originX - 4, y);
 	cout << "  [";
@@ -145,8 +93,6 @@ void ResultScene::Render()
 	cout << "↑";
 	GotoXY(originX - 3, y + 4);
 	cout << "스페이스바로 선택";
-
-
 }
 
 void ResultScene::RenderGameOver()
