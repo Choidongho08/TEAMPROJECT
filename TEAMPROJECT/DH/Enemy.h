@@ -18,8 +18,6 @@ public:
 
 private:
 	int id;
-	vector<Node*> aStarPath;
-	vector<Node*>* pAStarPath;
 
 public:
 	Enemy(Map* _map);
@@ -34,10 +32,8 @@ public:
 		int _enemyCnt
 	);
 
-	void Move();
-	void BasicMove();
+	void EnemyMove();
 	void Update();
-	void SettingAStar();
 	void AStarMove();
 
 private:

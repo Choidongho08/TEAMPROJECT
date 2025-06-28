@@ -1,6 +1,6 @@
 #include "EnemyManager.h"
 
-void EnemyManager::SpawnEnemies(vector<Entity*>* _entities, Player* player)
+void EnemyManager::SpawnEnemies(vector<Entity*>& _entities, Player* player)
 {
 	int enemyCnt = 0;
 	for (POS pos : map->EnemySpawnPos)
@@ -13,7 +13,7 @@ void EnemyManager::SpawnEnemies(vector<Entity*>* _entities, Player* player)
 	}
 	for (auto& enemy : Enemies)
 	{
-		_entities->push_back(&enemy);
+		_entities.push_back(&enemy);
 	}
 }
 

@@ -21,9 +21,8 @@ class GameScene : public Scene
 {
 public:
     Map map;
-    EnemyManager EnemyManager;
     PlayerManager PlayerManager;
-  
+    EnemyManager enemyManager;
 
 private:
     vector<Entity*> entities;
@@ -38,7 +37,7 @@ public:
 private:
     void EntityInit();
     
-    void EntitiesMove();
+    void EnemiesMove();
     void EntityUpdate();
     void HandleInput();
 

@@ -75,12 +75,6 @@ void Entity::Rotate180()
 	}
 }
 
-void Entity::RotationMove()
-{
-	pos.tNewPos = pos.tForward + pos.tPos;
-	pos.tPos = pos.tNewPos;
-}
-
 void Entity::Render(std::string s)
 {
 	GotoXY(pos.tPos.x * 2, pos.tPos.y);

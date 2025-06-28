@@ -12,7 +12,7 @@
 
 using std::format;
 
-GameScene::GameScene() : EnemyManager(&map), PlayerManager(&map)
+GameScene::GameScene() : PlayerManager(&map), enemyManager(&map)
 {
 }
 
@@ -31,13 +31,13 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	SetCursorVisual(true, 50);
 	EntityInit();
 
-	PlayerManager.player.OnKillEnemy = std::bind(&EnemyManager::DeadEnemy2, &EnemyManager, std::placeholders::_1);
+	PlayerManager.player.OnKillEnemy = std::bind(&EnemyManager::DeadEnemy2, &enemyManager, std::placeholders::_1);
 }
 
 void GameScene::EntityInit()
 {
+	enemyManager.SpawnEnemies(entities, &PlayerManager.player);
 	PlayerManager.SpawnPlayer(entities);
-	EnemyManager.SpawnEnemies(&entities, &PlayerManager.player);
 }
 
 void GameScene::Update()
@@ -45,7 +45,7 @@ void GameScene::Update()
 	//system("cls");
 	GotoXY(0, 0);
 	HandleInput();
-	EntitiesMove();
+	EnemiesMove();
 	EntityUpdate();
 	Render();
 	
@@ -58,32 +58,18 @@ void GameScene::Update()
 	// }
 }
 
-void GameScene::EntitiesMove()
+void GameScene::EnemiesMove()
 {
-	for (auto enemy : EnemyManager.Enemies)
+	for (auto& enemy : enemyManager.Enemies)
 	{
-		if (enemy.state.isAlive)
-		{
-			enemy.SettingAStar();
-			enemy.Move();
-			// enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
-			// enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
-			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
-
-			if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
-			{
-				PlayerManager.PlayerDead();
-				Core::Instance->ChangeScene(SCENE::DEAD);
-			}
-		}
+		enemy.EnemyMove();
 	}
 }
 
 void GameScene::EntityUpdate()
 {
 	PlayerManager.player.Update();
-
-	for (auto enemy : EnemyManager.Enemies)
+	for (auto& enemy : enemyManager.Enemies)
 	{
 		enemy.Update();
 	}
@@ -131,7 +117,6 @@ void GameScene::Render()
 	{
 		for (int j = 0; j < map.COL; ++j)
 		{
-			
 			for (auto entity : entities)
 			{
 				if (entity->state.isAlive)
@@ -139,6 +124,7 @@ void GameScene::Render()
 					// 적 그리기
 					if (entity->type == ENTITY_TYPE::Enemy)
 					{
+						entity->Move();
 						if (entity->pos.tPos.x == j && entity->pos.tPos.y == i)
 						{
 							int dx = j - PlayerManager.player.pos.tPos.x;
