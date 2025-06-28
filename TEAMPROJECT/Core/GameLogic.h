@@ -36,9 +36,7 @@ public:
     void SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects) override;
     void Update() override;
 private:
-    void LoadStage();
     void EntityInit();
-	void ItemInit();
     
     void EntitiesMove();
     void EntityUpdate();

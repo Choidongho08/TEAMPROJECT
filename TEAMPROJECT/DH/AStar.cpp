@@ -6,7 +6,7 @@ double AStar::heuristic(int x1, int y1, int x2, int y2) {
     double deltaY = abs(y2 - y1);
     return 1.0 * (deltaX + deltaY) + (1.414 - 2.0) * min(deltaX, deltaY);
 }
-
+    
 vector<Node*> AStar::reconstructPath(Node* node) {
     vector<Node*> path;
     while (node != nullptr) {
@@ -31,12 +31,12 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
     // priority_queue(우선순위 큐)는 내부적으로 힙(heap) 정렬을 사용하여 노드들을 f값에 따라 자동 정렬합니다.
     priority_queue<Node*, vector<Node*>, CompareNode> openPQ;           // 탐색할 노드들을 담는 목록
     vector<Node*> openList;                                             // 시각화를 위한 열린 목록
-    vector<vector<bool>> closedList(map.COL, vector<bool>(map.ROW, false));     // 이미 탐색한 노드들을 담는 목록
-    vector<vector<double>> gScore(map.COL, vector<double>(map.ROW, INFINITY));
+    vector<vector<bool>> closedList(map.ROW, vector<bool>(map.COL, false));     // 이미 탐색한 노드들을 담는 목록
+    vector<vector<double>> gScore(map.ROW, vector<double>(map.COL, INFINITY));
 
     start->h = heuristic(startX, startY, goalX, goalY);                 // 시작 노드의 휴리스틱 비용
     start->f = start->h;                                                // f = g + h: 시작 노드의 총 예상 비용
-    gScore[startX][startY] = 0;                                         // 시작 노드까지의 실제 비용
+    gScore[startY][startX] = 0;                                         // 시작 노드까지의 실제 비용
 
     openPQ.push(start);
     openList.push_back(start);
@@ -49,8 +49,6 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
         // 2.1 현재 노드 선택
         // - 열린 목록에서 f값이 가장 작은 노드 선택
         Node* current = openPQ.top();
-        GotoXY(0, 2 + steps);
-        cout << current->x << current->y;
         openPQ.pop();
 
         // Open List에서 현재 노드 제거
@@ -70,11 +68,11 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
 
         // 2.3 노드 목록 업데이트
         // - 현재 노드를 닫힌 목록에 추가
-        if (closedList[current->x][current->y]) {
+        if (closedList[current->y][current->x]) {
             continue;
         }
 
-        closedList[current->x][current->y] = true;
+        closedList[current->y][current->x] = true;
         currentPath = reconstructPath(current);
 
         // 2.4 인접 노드 탐색
@@ -84,7 +82,7 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
             int newY = current->y + dy[i];
 
             // 이미 탐색한 노드는 건너뛰기
-            if (!map.isWalkable(newX, newY) || closedList[newX][newY]) {
+            if (!map.isWalkable(newX, newY) || closedList[newY][newX]) {
                 continue;
             }
 
@@ -93,11 +91,11 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
             double moveCost = 1.0;
             moveCost *= 0.9;
 
-            double tentativeG = gScore[current->x][current->y] + moveCost;
+            double tentativeG = gScore[current->y][current->x] + moveCost;
 
             // 2.6 노드 추가 또는 업데이트
             // - 새로운 경로가 더 나은 경우 노드 정보 업데이트
-            if (tentativeG < gScore[newX][newY]) {
+            if (tentativeG < gScore[newY][newX]) {
                 Node* neighbor = new Node(newX, newY);
                 neighbor->parent = current;
                 // # 2.7 비용 업데이트
@@ -106,7 +104,7 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
                 neighbor->h = heuristic(newX, newY, goalX, goalY);
                 neighbor->f = neighbor->g + neighbor->h;
 
-                gScore[newX][newY] = tentativeG;
+                gScore[newY][newX] = tentativeG;
                 openPQ.push(neighbor);
                 openList.push_back(neighbor);
             }
