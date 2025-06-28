@@ -179,7 +179,7 @@ void GameScene::Render()
 							if (dx * dx + dy * dy <= PlayerManager.player.state.curSight * PlayerManager.player.state.curSight)
 							{
 								GotoXY(offsetX + j * 2, offsetY + i);
-								cout << "EM";
+								cout << "◆";
 								//entity->Render("EM");
 							}
 						}
