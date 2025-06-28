@@ -24,11 +24,11 @@ void Enemy::Initialize(EnemyState _state, POS _startPos, int _enemyCnt)
 
 void Enemy::Move()
 {
-	// if (state.isFollowing)
-	// {
-	// 	AStarMove();
-	// 	return;
-	// }
+	if (state.isFollowing)
+	{
+		AStarMove();
+		return;
+	}
 	// POS newPos = pos.tPos + (pos.tForward == POS{ 0,0 } ? POS{ 1,0 } : pos.tForward); // 기존에 움직인 방향으로 갔을 때
 	// if (!map->isTile(newPos.x, newPos.y, Tile::WALL) && newPos != pos.tPos)
 	// {

@@ -47,7 +47,7 @@ public:
 
     void setObstacle(int x, int y)
     {
-        if (isValid(x, y)) grid[x][y].tile = (int)Tile::WALL;
+        if (isValid(x, y)) grid[y][x].tile = (int)Tile::WALL;
     }
 
     bool isTile(int x, int y, Tile tile)
@@ -57,7 +57,7 @@ public:
 
     bool isValid(int x, int y) const
     {
-        return x >= 0 && x < ROW && y >= 0 && y < COL;
+        return x >= 0 && x < COL && y >= 0 && y < ROW;
     }
 
     bool isWalkable(int x, int y) const 
