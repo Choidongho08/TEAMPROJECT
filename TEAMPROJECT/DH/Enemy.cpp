@@ -10,7 +10,7 @@ Enemy::Enemy(Map* _map) :
 	_map),
 	playerFindAStar(*_map)
 {
-	PPlayer = nullptr;
+	pPlayer = nullptr;
 	state = EnemyState{ true, false };
 }
 
@@ -24,42 +24,38 @@ void Enemy::Initialize(EnemyState _state, POS _startPos, int _enemyCnt)
 
 void Enemy::Move()
 {
-	// if (_state.isFollowing)
+	if (state.isFollowing)
+	{
+		AStarMove();
+		return;
+	}
+	// POS newPos = pos.tPos + (pos.tForward == POS{ 0,0 } ? POS{ 1,0 } : pos.tForward); // 기존에 움직인 방향으로 갔을 때
+	// if (!map->isTile(newPos.x, newPos.y, Tile::WALL) && newPos != pos.tPos)
 	// {
-// 		AStarMove(_map);
-// 		return;
+	// 	pos.tNewPos = newPos;
+	// 	return;
 	// }
-	//POS newPos = pos.tPos + (pos.tForward == POS{ 0,0 } ? POS{ 1,0 } : pos.tForward); // 기존에 움직인 방향으로 갔을 때
-	//if (!map->isTile(newPos.x, newPos.y, Tile::WALL) && newPos != pos.tPos)
-	//{
-//		pos.tNewPos = newPos;
-//		Entity::Move();
-//		return;
-	//}
-	//Rotate90();
-	//newPos = pos.tPos + pos.tForward;
-	//if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
-	//{
-//		pos.tNewPos = newPos;
-//		Entity::Move();
-//		return;
-	//}
-	//Rotate90();
-	//newPos = pos.tPos + pos.tForward;
-	//if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
-	//{
-//		pos.tNewPos = newPos;
-//		Entity::Move();
-//		return;
-	//}
-	//Rotate90();
-	//newPos = pos.tPos + pos.tForward;
-	//if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
-	//{
-//		pos.tNewPos = newPos;
-//		Entity::Move();
-//		return;
-	//}
+	// Rotate90();
+	// newPos = pos.tPos + pos.tForward;
+	// if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
+	// {
+	// 	pos.tNewPos = newPos;
+	// 	return;
+	// }
+	// Rotate90();
+	// newPos = pos.tPos + pos.tForward;
+	// if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
+	// {
+	// 	pos.tNewPos = newPos;
+	// 	return;
+	// }
+	// Rotate90();
+	// newPos = pos.tPos + pos.tForward;
+	// if (!map->isTile(newPos.x, newPos.y, Tile::WALL))
+	// {
+	// 	pos.tNewPos = newPos;
+	// 	return;
+	// }
 }
 
 void Enemy::BasicMove()
@@ -73,7 +69,14 @@ void Enemy::Update()
 
 void Enemy::AStarMove()
 {
+	cout << "Stage : " << map->Stage;
 	// AStar로 플레이어를 향해 가는 움직임
-	vector<Node*> path = playerFindAStar.findPath(pos.tPos.x, pos.tPos.y, PPlayer->pos.tPos.x, PPlayer->pos.tPos.y, *map);
-	pos.tNewPos = path[0]->pos;
+	vector<Node*> path = playerFindAStar.findPath(pos.tPos.x, pos.tPos.y, pPlayer->pos.tPos.x, pPlayer->pos.tPos.y);
+	if (path.size() != 0)
+		pos.tNewPos = path[1]->pos;
+	else
+	{
+		GotoXY(0, 4);
+		cout << " No path " << endl;
+	}
 }

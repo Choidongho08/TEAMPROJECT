@@ -41,6 +41,7 @@ void GameScene::LoadStage()
 	srand((unsigned int)time(NULL));
 	int stageNumber = rand() % 3 + 1;
 	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
+	map.Stage = stageNumber;
 	std::ifstream mapFile(mapFileName);
 	if (mapFile.is_open())
 	{
