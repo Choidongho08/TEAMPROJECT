@@ -114,6 +114,8 @@ void Map::Render(const int& x, const int& y, const int& distance)
 					std::cout << "  ";
 				else if (isTile(j, i, Tile::ITEM))
 					std::cout << "б┌";
+				else if(isTile(j, i, Tile::BEDROCK))
+					std::cout << "бс";
 				else
 					std::cout <<  "  ";
 			}
