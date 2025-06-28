@@ -20,9 +20,11 @@ void ResultScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects
 
     Render(1);
     if (_type == SCENE::DEAD) {
+		PlaySoundID(SOUNDID::GAMEOVER);
         RenderGameOver();
     }
     else if (_type == SCENE::WIN) {
+		PlaySoundID(SOUNDID::GAMEWIN);
         RenderClear();
     }
 }
