@@ -110,7 +110,7 @@ vector<Node*> AStar::findPath(int startX, int startY, int goalX, int goalY) {
             }
         }
     }
-    // 3. 종료 조건
+    // 3. 종료 조건 
     // - 목표에 도달할 수 없는 경우 (열린 목록이 비어있음)
     return vector<Node*>();
 }

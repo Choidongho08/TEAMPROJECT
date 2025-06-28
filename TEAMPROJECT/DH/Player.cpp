@@ -37,7 +37,7 @@ void Player::Update()
             while (true)
             {
                 dashEndPos = pos.tForward + pos.tPos;
-                if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL))
+                if (map->isTile(dashEndPos.x, dashEndPos.y, Tile::WALL) || map->isTile(dashEndPos.x, dashEndPos.y, Tile::BEDROCK))
                 {
                     dashEndPos = dashEndPos - pos.tForward;
                     state.isUsingSkill = false;
