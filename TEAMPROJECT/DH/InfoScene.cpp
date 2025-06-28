@@ -86,9 +86,9 @@ void InfoScene::Render(bool isTrue)
 		GotoXY(x, y + 4);
 		cout << "3. 아이템을 먹으면 스킬 획득";
 		GotoXY(x, y + 6);
-		cout << " - KILL  : 근처 적 제거";
+		cout << " - KILL : 근처 적, 벽 제거";
 		GotoXY(x, y + 8);
-		cout << " - DASH  : 앞으로 대쉬";
+		cout << " - DASH : 앞으로 대쉬";
 		GotoXY(x, y + 10);
 		cout << " - SIGHT : 시야 넓어짐 ";
 		GotoXY(x, y + 12);
