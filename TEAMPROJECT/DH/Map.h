@@ -27,6 +27,10 @@ public:
 
     void InitializeMap(const vector<vector<Node>>& _grid);
 
+    void ItemInit();
+
+    void LoadStage();
+
     void SetMapTile(int _x, int _y, Tile _tile)
     {
         grid[_y][_x].tile = (int)_tile;

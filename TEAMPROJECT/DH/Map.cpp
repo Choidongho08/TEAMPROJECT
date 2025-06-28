@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "../Core/Console.h"
 #include <cmath>
+#include <fstream>
 
 void Map::InitializeMap(const vector<vector<Node>>& _grid)
 {
@@ -22,6 +23,67 @@ void Map::InitializeMap(const vector<vector<Node>>& _grid)
 				MapCoinCnt++;
 		}
 	}
+}
+
+void Map::ItemInit()
+{
+	int itemCount = 0;
+	srand((unsigned int)time(NULL));
+	MaxItemCnt = Random(6, 5);
+	while (itemCount < MaxItemCnt)
+	{
+		int y = rand() % ROW;
+		int x = rand() % COL;
+
+		if (isTile(x, y, Tile::COIN))
+		{
+			SetMapTile(x, y, Tile::ITEM);
+			itemCount++;
+			MapCoinCnt--;
+		}
+	}
+}
+
+void Map::LoadStage()
+{
+	srand((unsigned int)time(NULL));
+	int stageNumber = rand() % 3 + 1;
+	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
+	Stage = stageNumber;
+	std::ifstream mapFile(mapFileName);
+	if (mapFile.is_open())
+	{
+		// 초기화
+		std::string line;
+
+		int x = 0;
+		int y = 0;
+
+		std::vector<std::vector<Node>> grid;
+
+		while (std::getline(mapFile, line))
+		{
+			x = 0;
+			std::vector<Node> rowGrid;
+			for (char ch : line)
+			{
+				Node col = Node(ch - '0', x, y);
+				rowGrid.push_back(col);
+				x++;
+			}
+			GotoXY(0, 0);
+			cout << x;
+			grid.push_back(rowGrid);
+			y++;
+		} // 맵 길이 구하면서 맵 초기화
+
+		InitializeMap(grid);
+		SetMapRowCol(y, x);
+		mapFile.close();
+		return;
+	}
+	else
+		cout << "맵 파일 초기화 실패" << endl;
 }
 
 void Map::Render(const int& x, const int& y, const int& distance)

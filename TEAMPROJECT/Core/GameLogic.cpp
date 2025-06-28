@@ -5,7 +5,6 @@
 #include "TitleScene.h"
 #include "KeyController.h"
 #include <algorithm>
-#include <fstream>
 #include <random>
 #include <format>
 #include <future>
@@ -27,78 +26,18 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 
 	// 콘솔창 관련 초기화
 	
+	map.LoadStage();
+	map.ItemInit();
 	SetCursorVisual(true, 50);
-
-	LoadStage();
-	ItemInit();
 	EntityInit();
 
 	PlayerManager.player.OnKillEnemy = std::bind(&EnemyManager::DeadEnemy2, &EnemyManager, std::placeholders::_1);
-}
-
-void GameScene::LoadStage()
-{
-	srand((unsigned int)time(NULL));
-	int stageNumber = rand() % 3 + 1;
-	string mapFileName = "Stage" + std::to_string(stageNumber) + ".txt";
-	map.Stage = stageNumber;
-	std::ifstream mapFile(mapFileName);
-	if (mapFile.is_open())
-	{
-		// 초기화
-		std::string line;
-
-		int x = 0;
-		int y = 0;
-
-		std::vector<std::vector<Node>> grid;
-
-		while (std::getline(mapFile, line))
-		{
-			x = 0;
-			std::vector<Node> rowGrid;
-			for (char ch : line)
-			{
-				Node col = Node(ch - '0', x, y);	
-				rowGrid.push_back(col);
-				x++;
-			}
-			GotoXY(0, 0);
-			cout << x;
-			grid.push_back(rowGrid);
-			y++;
-		} // 맵 길이 구하면서 맵 초기화
-
-		map.InitializeMap(grid);
-		map.SetMapRowCol(y, x);
-		mapFile.close();
-		return;
-	}
-	else
-		cout << "맵 파일 초기화 실패" << endl;
 }
 
 void GameScene::EntityInit()
 {
 	PlayerManager.SpawnPlayer(entities);
 	EnemyManager.SpawnEnemies(&entities, &PlayerManager.player);
-}
-
-void GameScene::ItemInit()
-{
-	int itemCount = 0;
-	srand((unsigned int)time(NULL));
-	while (itemCount < map.MaxItemCnt)
-	{
-		int y = rand() % map.ROW;
-		int x = rand() % map.COL;
-
-		if (map.isTile(x, y, Tile::COIN))
-		{
-			map.SetMapTile(x, y, Tile::ITEM);
-			itemCount++;
-		}
-	}
 }
 
 void GameScene::Update()
@@ -125,9 +64,10 @@ void GameScene::EntitiesMove()
 	{
 		if (enemy.state.isAlive)
 		{
+			enemy.SettingAStar();
 			enemy.Move();
-			enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
-			enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
+			// enemy.pos.tPos.x = std::clamp(enemy.pos.tPos.x, 0, map.COL);
+			// enemy.pos.tPos.y = std::clamp(enemy.pos.tPos.y, 0, map.ROW);
 			enemy.pos.tForward = enemy.pos.tNewPos - enemy.pos.tPos;
 
 			if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
