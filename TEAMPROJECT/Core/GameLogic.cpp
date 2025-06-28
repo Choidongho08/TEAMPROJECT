@@ -72,6 +72,10 @@ void GameScene::EntityUpdate()
 	for (auto& enemy : enemyManager.Enemies)
 	{
 		enemy.Update();
+		if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
+		{
+			Core::Instance->ChangeScene(SCENE::DEAD);
+		}
 	}
 }
 
