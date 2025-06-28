@@ -123,7 +123,7 @@ void GameScene::Render()
 {
 	COORD resolution = GetConsoleResolution();
 	int offsetX = (resolution.X - map.COL * 2) / 2;
-	int offsetY = 0;
+	int offsetY = 2;
 	// 맵 렌더
 	map.Render(PlayerManager.player.pos.tPos.x, PlayerManager.player.pos.tPos.y, PlayerManager.player.state.curSight);
 	
@@ -189,8 +189,8 @@ void GameScene::RenderUI()
 		break;
 	}
 	COORD resolution = GetConsoleResolution();
-	int x = (resolution.X - 23) / 2;
-	int y = map.ROW + 2;
+	int x = (resolution.X - 23) / 2 - 20;
+	int y = map.ROW + 5;
 	 GotoXY(x, y++);
 	 cout << "=======================" << endl;
 	 GotoXY(x, y++);
@@ -225,13 +225,18 @@ void GameScene::RenderUI()
 		 GotoXY(x, y++);
 		 cout << "-----------------------" << endl;
 	 }
-
+	 x = (resolution.X - 23) / 2 + 20;
+	 y = map.ROW + 5;
+	 GotoXY(x, y++);
+	 cout << "=======================" << endl;
+	 GotoXY(x, y++);
+	 cout << "    현재     스코어    "<< endl;
 	 GotoXY(x, y++);
 	 cout << "-----------------------" << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
-	 cout << "     스코어 :  " << PlayerManager.player.state.score << endl;
+	 cout << "   스코어 :  " << PlayerManager.player.state.score << endl;
 	 GotoXY(x, y++);
 	 cout << "-                     -" << endl;
 	 GotoXY(x, y++);
