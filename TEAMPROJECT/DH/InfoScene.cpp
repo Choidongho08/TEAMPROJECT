@@ -49,7 +49,7 @@ void InfoScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 void InfoScene::Render(bool isTrue)
 {
 	COORD resolution = GetConsoleResolution();
-	int x = resolution.X / 3;
+	int x = resolution.X / 2.5;
 	int y = resolution.Y / 3;
 	if (isTrue) {
 		GotoXY(x, y++);

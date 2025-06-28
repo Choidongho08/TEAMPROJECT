@@ -22,8 +22,12 @@ void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
     int y = (resolution.Y - 11) / 2 + 9;
 	GotoXY(x - 4, y);
 	cout << "  [";
-	GotoXY(x + 10, y);
-	cout << "]  ← 스페이스바로 선택";
+	GotoXY(x + 9, y);
+	cout << " ]";
+	GotoXY(x + 4, y + 2);
+	cout << "↑";
+	GotoXY(x - 3, y + 4);
+	cout << "스페이스바로 선택";
 
 	asciiObjects = _asciiObjects;
 	textColor = COLOR::WHITE;
@@ -60,11 +64,11 @@ void TitleScene::Render()
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
 	x = (resolution.X - 5) / 2;
 	y = y + 5;
-	GotoXY(x, y); 
+	GotoXY(x - 20, y);
 	cout << "게임 시작";
-	GotoXY(x, y + 2);  
+	GotoXY(x, y);  
 	cout << "게임 정보";
-	GotoXY(x, y + 4) ; 
+	GotoXY(x + 20, y);
 	cout << "게임 종료";
 
 }
@@ -91,7 +95,7 @@ void TitleScene::Update()
 		Core::Instance->ChangeScene(SCENE::GAME);
 		break;
 	case Menu::INFO:
-		Core::Instance->ChangeScene(SCENE::END);
+		Core::Instance->ChangeScene(SCENE::INFO);
 		break;
 	case Menu::QUIT:
 		Core::Instance->ChangeScene(SCENE::QUIT);
@@ -106,55 +110,80 @@ void TitleScene::Update()
 Menu TitleScene::GetCurMenu()
 {
 	COORD resolution = GetConsoleResolution();
-	int x = (resolution.X - 5) / 2;
-	static int y = (resolution.Y - 11) / 2 + 9;
-	static int originY = y;
+	static const int originX = (resolution.X - 5) / 2;
+	static int x = originX;
+
+	int y = (resolution.Y - 11) / 2 + 9;
 	Key eKey = KeyController();
+
 	switch (eKey)
 	{
-	case Key::UP:
+	case Key::LEFT:
 		PlaySoundID(SOUNDID::UPDOWN);
-		if (y > originY)
+		if (x > originX - 20)
 		{
+			GotoXY(x + 3, y + 2);
+			cout << "    ";
+			GotoXY(x - 3, y + 4);
+			cout << "                 ";
 			GotoXY(x - 5, y);
 			cout << "    ";
 			GotoXY(x + 10, y);
-			cout << "                       ";
-			GotoXY(x - 4, ----y);
+			cout << "    ";
+
+			x -= 20;
+
+			GotoXY(x - 4, y);
 			cout << "  [";
-			GotoXY(x + 10, y);
-			cout << "]  ← 스페이스바로 선택";
+			GotoXY(x + 9, y);
+			cout << " ]";
+			GotoXY(x + 4, y + 2);
+			cout << "↑";
+			GotoXY(x - 3, y + 4);
+			cout << "스페이스바로 선택";
 			Sleep(100);
 		}
 		break;
-	case Key::DOWN:
+	case Key::RIGHT:
 		PlaySoundID(SOUNDID::UPDOWN);
-		if (y < originY + 4)
+		if (x < originX + 20)
 		{
+			GotoXY(x + 3, y + 2);
+			cout << "    ";
+			GotoXY(x - 3, y + 4);
+			cout << "                 ";
 			GotoXY(x - 5, y);
 			cout << "    ";
 			GotoXY(x + 10, y);
-			cout << "                       ";
-			GotoXY(x - 4, ++++y);
+			cout << "    ";
+
+			x += 20;
+
+			GotoXY(x - 4, y);
 			cout << "  [";
-			GotoXY(x + 10, y);
-			cout << "]  ← 스페이스바로 선택";
+			GotoXY(x + 9, y);
+			cout << " ]";
+			GotoXY(x + 4, y + 2);
+			cout << "↑";
+			GotoXY(x - 3, y + 4);
+			cout << "스페이스바로 선택";
 			Sleep(100);
 		}
 		break;
 	case Key::SPACE:
 		PlaySoundID(SOUNDID::CLICK);
 
-		if (originY == y) return Menu::START;
-		else if (originY + 2 == y) {
+		if (originX - 20 == x) return Menu::START;
+		else if (originX == x) {
 			y -= 2;
 			return Menu::INFO;
 		}
-		else if (originY + 4 == y) return Menu::QUIT;
+		else if (originX + 20 == x) return Menu::QUIT;
 		break;
 	}
 	return Menu::FAIL;
 }
+
 
 void TitleScene::EnterAnimation()
 {
