@@ -20,7 +20,7 @@ class Player : public Entity
 {
 public:
     PlayerState state;
-
+    bool Clear;
 private:
     int mapHeight;
     int mapWidth;
@@ -46,6 +46,7 @@ public:
         int _mapWidth
     );
     void Update();
+    void CrossAnimation();
     void SetSkill(SKILL skill);
     void UseSkill();
     void CheckTile();

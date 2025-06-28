@@ -34,6 +34,7 @@ Core::Core()
 
 void Core::Run()
 {
+	SetCursorVisual(false, 50);
 
 	SetConsoleFont(L"NSimSun", { 25, 25 }, FW_BOLD);
 
@@ -68,15 +69,13 @@ void Core::ChangeScene(SCENE newScene)
 		_infoScene.SceneInit(newScene, &_asciiObjects);
 		break;
 	case SCENE::QUIT:
+		exit(0);
 		break;
 	case SCENE::WIN:
-		_winScene.SceneInit(newScene, &_asciiObjects);
-		break;
-	case SCENE::END:
-		_resultScene.SceneInit(newScene, &_asciiObjects);
+		_resultScene.SceneInit(SCENE::WIN, &_asciiObjects);
 		break;
 	case SCENE::DEAD:
-		_deadScene.SceneInit(newScene, &_asciiObjects);
+		_resultScene.SceneInit(SCENE::DEAD, &_asciiObjects);
 		break;
 	}
 
@@ -106,13 +105,10 @@ void Core::Update()
 		case SCENE::QUIT:
 			break;
 		case SCENE::WIN:
-			_winScene.Update();
-			break;
-		case SCENE::END:
 			_resultScene.Update();
 			break;
 		case SCENE::DEAD:
-			_deadScene.Update();
+			_resultScene.Update();
 			break;
 		}
 	}

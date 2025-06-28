@@ -23,7 +23,7 @@ public:
     Map map;
     PlayerManager PlayerManager;
     EnemyManager enemyManager;
-
+    bool isDead;
 private:
     vector<Entity*> entities;
     int maxDebugCnt = 4;
@@ -34,6 +34,7 @@ public:
 
     void SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects) override;
     void Update() override;
+    void CrossAnimation();
 private:
     void EntityInit();
     

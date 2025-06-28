@@ -14,6 +14,7 @@ using std::format;
 
 GameScene::GameScene() : PlayerManager(&map), enemyManager(&map)
 {
+	isDead = false;
 }
 
 
@@ -30,7 +31,7 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	
 	map.LoadStage();
 	map.ItemInit();
-	SetCursorVisual(true, 50);
+	SetCursorVisual(false, 50);
 	EntityInit();
 
 	PlayerManager.player.OnKillEnemy = std::bind(&GameScene::KillSkill, this, std::placeholders::_1);
@@ -86,9 +87,36 @@ void GameScene::EntityUpdate()
 		enemy.Update();
 		if (enemy.state.isAlive && enemy.pos.tPos == PlayerManager.player.pos.tPos)
 		{
-			Core::Instance->ChangeScene(SCENE::DEAD);
+			isDead = true;
+			CrossAnimation();
+			return;
 		}
 	}
+}
+
+void GameScene::CrossAnimation()
+{
+	StopSound(SOUNDID::GAME);
+	PlaySoundID(SOUNDID::PLAYERDIE);
+	COORD resolution = GetConsoleResolution();
+	int delaytime = 20;
+	SetColor(COLOR::BLACK, COLOR::WHITE);
+	for (int i = 0; i < resolution.X / 2; ++i)
+	{
+		for (int j = 0; j < resolution.Y; j += 2)
+		{
+			GotoXY(i * 2, j);
+			cout << "  ";
+		}
+		for (int j = 1; j < resolution.Y; j += 2)
+		{
+			GotoXY(resolution.X - 2 - i * 2, j);
+			cout << "  ";
+		}
+		Sleep(delaytime);
+	}
+	SetColor();
+	Core::Instance->ChangeScene(SCENE::DEAD);
 }
 
 void GameScene::HandleInput()
@@ -123,6 +151,9 @@ void GameScene::HandleInput()
 
 void GameScene::Render()
 {
+	if (isDead || PlayerManager.player.Clear) 
+		return;
+
 	COORD resolution = GetConsoleResolution();
 	int offsetX = (resolution.X - map.COL * 2) / 2;
 	int offsetY = 2;

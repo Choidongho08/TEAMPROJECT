@@ -14,6 +14,8 @@ TitleScene::TitleScene()
 
 void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
+	SetCursorVisual(false, 50);
+
 	COORD resolution = GetConsoleResolution();
 	int x = (resolution.X - 5) / 2;
     int y = (resolution.Y - 11) / 2 + 11;

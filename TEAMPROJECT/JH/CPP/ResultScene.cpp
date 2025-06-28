@@ -6,7 +6,7 @@
 
 ResultScene::ResultScene()
 {
-
+	
 }
 
 ResultScene::~ResultScene()
@@ -16,9 +16,12 @@ ResultScene::~ResultScene()
 
 void ResultScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
-    system("cls");
+	SetCursorVisual(false, 50);
 
-    Render(1);
+	Sleep(100);
+
+	system("cls");
+
     if (_type == SCENE::DEAD) {
 		PlaySoundID(SOUNDID::GAMEOVER);
         RenderGameOver();
@@ -27,6 +30,8 @@ void ResultScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects
 		PlaySoundID(SOUNDID::GAMEWIN);
         RenderClear();
     }
+
+	Render();
 }
 
 Menu ResultScene::GetCurMenu()
@@ -103,9 +108,6 @@ Menu ResultScene::GetCurMenu()
 
 void ResultScene::Update()
 {
-	if (Core::Instance->GetCurrentScene() != SCENE::END)
-		return;
-
 	Sleep(30);
 
 	Menu eMenu = GetCurMenu();
@@ -121,7 +123,7 @@ void ResultScene::Update()
 	}
 }
 
-void ResultScene::Render(int score)
+void ResultScene::Render()
 {
 	COORD resolution = GetConsoleResolution();
 	int originX = (resolution.X - 5) / 2;

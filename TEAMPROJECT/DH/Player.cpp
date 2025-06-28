@@ -5,6 +5,7 @@
 
 Player::Player() : Entity(ENTITYPOS{{0,0}, {0,0}}, EntityState{false}, ENTITY_TYPE{ENTITY_TYPE::Player}, new Map())
 {
+    Clear = false;
 }
 
 Player::Player(PlayerState _state, ENTITYPOS _pos, Map* _map) : Entity(_pos, _state, ENTITY_TYPE::Player, _map)
@@ -80,10 +81,35 @@ void Player::Update()
     CheckTile();
 }
 
+void Player::CrossAnimation()
+{
+    StopSound(SOUNDID::GAME);
+    COORD resolution = GetConsoleResolution();
+    int delaytime = 20;
+    SetColor(COLOR::BLACK, COLOR::WHITE);
+    for (int i = 0; i < resolution.X / 2; ++i)
+    {
+        for (int j = 0; j < resolution.Y; j += 2)
+        {
+            GotoXY(i * 2, j);
+            cout << "  ";
+        }
+        for (int j = 1; j < resolution.Y; j += 2)
+        {
+            GotoXY(resolution.X - 2 - i * 2, j);
+            cout << "  ";
+        }
+        Sleep(delaytime);
+    }
+    SetColor();
+    Core::Instance->ChangeScene(SCENE::WIN);
+}
+
 void Player::CheckTile()
 {
     if (map->isTile(pos.tPos.x, pos.tPos.y, Tile::COIN))
     {
+        PlaySoundID(SOUNDID::COIN);
         state.score++;
         map->SetMapTile(pos.tPos.x, pos.tPos.y, Tile::ROAD);
 
@@ -92,7 +118,9 @@ void Player::CheckTile()
 
         if (map->MapCoinCnt == state.score)
         {
-            Core::Instance->ChangeScene(SCENE::WIN);
+            Clear = true;
+            CrossAnimation();
+            return;
         }
     }
     if (map->isTile(pos.tPos.x, pos.tPos.y, Tile::ITEM))
@@ -147,6 +175,7 @@ void Player::UseSkill()
             state.usingSkill = SKILL::KILL;
             POS killPos = pos.tPos + pos.tForward;
             KillEnemy(killPos);
+			PlaySoundID(SOUNDID::KILL);
             break;
         }
         case SKILL::SIGHT:
@@ -156,6 +185,7 @@ void Player::UseSkill()
             const int& sight = state.curSight;
             SetSkillTime(3);
             SetSight(sight * 2);
+            PlaySoundID(SOUNDID::SIGHT);
             break;
         }
         case SKILL::DASH:
@@ -164,6 +194,7 @@ void Player::UseSkill()
             state.usingSkill = SKILL::DASH;
             dashEndPos = POS{ 0,0 };
             int num = 1;
+            PlaySoundID(SOUNDID::DASH);
             break;
         }
         default:

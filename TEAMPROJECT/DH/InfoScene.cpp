@@ -19,16 +19,19 @@ void InfoScene::Update()
 
 	if (key == Key::ESC)
 	{
+		PlaySoundID(SOUNDID::CLICK);
 		system("cls");
 		Core::Instance->ChangeScene(SCENE::TITLE);
 	}
 	else if (isQNow && !wasQPressed)
 	{
+		PlaySoundID(SOUNDID::UPDOWN);
 		system("cls");
 		Render(true);
 	}
 	else if (isENow && !wasEPressed)
 	{
+		PlaySoundID(SOUNDID::UPDOWN);
 		system("cls");
 		Render(false);
 	}
@@ -41,6 +44,8 @@ void InfoScene::Update()
 
 void InfoScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
+	SetCursorVisual(false, 50);
+
 	Scene::SceneInit(_type, _asciiObjects);
 	system("cls");
 	Render(true);

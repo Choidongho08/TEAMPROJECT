@@ -15,7 +15,7 @@ public:
 
 	Menu GetCurMenu();
 	void Update() override;
-	void Render(int score);
+	void Render();
 	void RenderGameOver();
 	void RenderClear();
 };
