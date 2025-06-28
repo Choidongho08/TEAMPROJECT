@@ -163,8 +163,6 @@ void Player::UseSkill()
     else
     {
         skillStartTime = clock() / CLOCKS_PER_SEC;
-        GotoXY(0, 0);
-        cout << "UseSkill";
         state.isHaveSkill = false;
         state.isUsingSkill = true;
         switch (state.haveSkill)
