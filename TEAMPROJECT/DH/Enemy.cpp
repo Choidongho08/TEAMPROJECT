@@ -49,7 +49,10 @@ void Enemy::AStarMove()
 			// 플레이어를 향해 가는 움직임
 			if (!path.empty())
 			{
-				pos.tNewPos = path[1]->pos;
+				if (path.size() > 1)
+					pos.tNewPos = path[1]->pos;
+				else if (path.size() == 1)
+					pos.tNewPos = path[0]->pos;
 				pos.tForward = pos.tNewPos - pos.tPos;
 			}
 		}
