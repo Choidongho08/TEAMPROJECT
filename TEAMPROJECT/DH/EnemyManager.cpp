@@ -30,7 +30,7 @@ void EnemyManager::DeadEnemy(const Enemy& enemy)
 
 void EnemyManager::DeadEnemy2(POS deadPos)
 {
-	for (auto enemy : Enemies)
+	for (auto& enemy : Enemies)
 	{
 		if (enemy.pos.tPos == deadPos)
 		{

@@ -54,6 +54,7 @@ void Player::Update()
         }
         case SKILL::KILL:
         {
+            KillEnemy(pos.tForward + pos.tPos);
             state.isUsingSkill = false;
             skillStartTime = 0;
             skillMaxTime = 0;

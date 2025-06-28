@@ -40,6 +40,7 @@ private:
     void EnemiesMove();
     void EntityUpdate();
     void HandleInput();
+    void KillSkill(POS targetPos);
 
     void Render();
     void RenderUI();

@@ -16,6 +16,8 @@ GameScene::GameScene() : PlayerManager(&map), enemyManager(&map)
 {
 }
 
+
+
 void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 {
 	asciiObjects = _asciiObjects;
@@ -31,7 +33,17 @@ void GameScene::SceneInit(SCENE _type, vector<AsciiObject>* _asciiObjects)
 	SetCursorVisual(true, 50);
 	EntityInit();
 
-	PlayerManager.player.OnKillEnemy = std::bind(&EnemyManager::DeadEnemy2, &enemyManager, std::placeholders::_1);
+	PlayerManager.player.OnKillEnemy = std::bind(&GameScene::KillSkill, this, std::placeholders::_1);
+}
+
+void GameScene::KillSkill(POS targetPos)
+{
+	if (map.isTile(targetPos.x, targetPos.y, Tile::WALL))
+	{
+		map.SetMapTile(targetPos.x, targetPos.y, Tile::BROKEN_WALL);
+	}
+	else
+		enemyManager.DeadEnemy2(targetPos);
 }
 
 void GameScene::EntityInit()
@@ -72,7 +84,7 @@ void GameScene::EntityUpdate()
 	for (auto& enemy : enemyManager.Enemies)
 	{
 		enemy.Update();
-		if (enemy.pos.tPos == PlayerManager.player.pos.tPos)
+		if (enemy.state.isAlive && enemy.pos.tPos == PlayerManager.player.pos.tPos)
 		{
 			Core::Instance->ChangeScene(SCENE::DEAD);
 		}
@@ -121,7 +133,7 @@ void GameScene::Render()
 	{
 		for (int j = 0; j < map.COL; ++j)
 		{
-			for (auto entity : entities)
+			for (auto& entity : entities)
 			{
 				if (entity->state.isAlive)
 				{
