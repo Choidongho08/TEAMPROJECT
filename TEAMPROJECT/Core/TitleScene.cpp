@@ -19,7 +19,7 @@ void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 	SetConsoleSettings(1200, 600, true, L"HackMan");
 	COORD resolution = GetConsoleResolution();
 	int x = (resolution.X - 5) / 2;
-    int y = (resolution.Y - 11) / 2 + 9;
+    int y = (resolution.Y - 11) / 2 + 11;
 	GotoXY(x - 4, y);
 	cout << "  [";
 	GotoXY(x + 9, y);
@@ -63,7 +63,7 @@ void TitleScene::Render()
 
 	int wcoutmode = _setmode(_fileno(stdout), coutmode);
 	x = (resolution.X - 5) / 2;
-	y = y + 5;
+	y = y + 7;
 	GotoXY(x - 20, y);
 	cout << "게임 시작";
 	GotoXY(x, y);  
@@ -113,7 +113,7 @@ Menu TitleScene::GetCurMenu()
 	static const int originX = (resolution.X - 5) / 2;
 	static int x = originX;
 
-	int y = (resolution.Y - 11) / 2 + 9;
+	int y = (resolution.Y - 11) / 2 +11;
 	Key eKey = KeyController();
 
 	switch (eKey)

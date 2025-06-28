@@ -33,7 +33,7 @@ Menu ResultScene::GetCurMenu()
 	static const int originX = (resolution.X - 5) / 2 +20;
 	static int x = originX;
 
-	int y = (resolution.Y - 11) / 2 + 9;
+	int y = (resolution.Y - 11) / 2 + 11;
 	Key eKey = KeyController();
 	switch (eKey)
 	{
@@ -123,7 +123,7 @@ void ResultScene::Render(int score)
 {
 	COORD resolution = GetConsoleResolution();
 	int originX = (resolution.X - 5) / 2;
-	int y = (resolution.Y - 11) / 2 + 9;
+	int y = (resolution.Y - 11) / 2 + 11;
 
 	GotoXY(originX - 20, y);
 	cout << "메인 메뉴";
