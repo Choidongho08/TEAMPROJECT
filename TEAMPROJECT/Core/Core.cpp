@@ -35,6 +35,10 @@ Core::Core()
 void Core::Run()
 {
 
+	SetConsoleFont(L"NSimSun", { 25, 25 }, FW_BOLD);
+
+	SetConsoleSettings(1200, 600, true, L"HackMan");
+
 	ReleaseAllSounds();
 
 	if (!InitAllSounds()) return;

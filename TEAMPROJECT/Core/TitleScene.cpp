@@ -14,9 +14,6 @@ TitleScene::TitleScene()
 
 void TitleScene::SceneInit(SCENE _type, std::vector<AsciiObject>* _asciiObjects)
 {
-	SetConsoleFont(L"NSimSun", { 25, 25 }, FW_BOLD);
-
-	SetConsoleSettings(1200, 600, true, L"HackMan");
 	COORD resolution = GetConsoleResolution();
 	int x = (resolution.X - 5) / 2;
     int y = (resolution.Y - 11) / 2 + 11;
