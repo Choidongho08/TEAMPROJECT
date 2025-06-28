@@ -28,7 +28,7 @@ void Map::Render(const int& x, const int& y, const int& distance)
 {
 	COORD resolution = GetConsoleResolution(); // 콘솔 크기 가져오기
 	int offsetX = (resolution.X - COL * 2) / 2; // 문자 너비 2칸
-	int offsetY = 0;
+	int offsetY = 2;
 
 	for (int i = 0; i < ROW; ++i)
 	{
